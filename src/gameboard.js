@@ -23,19 +23,42 @@ export class Gameboard {
     this.missed = [];
   }
 
-  placeShip(ship, coordinate, orientation) {
-    // check if placement is valid
+  validMove(x, y) {
+    if (!(x >= 0 && x <= 9 && y >= 0 && y <= 9)) {
+      throw new Error("Coordinate is not valid")
+    }
+    return true
+  }
+
+  placeShip(ship, x, y, orientation) {
     // update array locations for ship from null to false
     /*
     confirm this is valid move
-    */
-    if ( orientation === "horizontal") {
-      //
-    }
+    valid moves will stay between index values of 0 to 9 for each input
+   
+    test coordinate is not valid
+    test that coordinate + ship length coordinate is not valid
 
-    this.board[coordinate[0]][coordinate[1]] = false;
-    this.board[coordinate[0]][coordinate[1]+1] = false;
+    */
+
+    try {
+      // test valid move for entry point
+      this.validMove(x, y)
+      // calculate entry point for ships final coordinate
+      if (orientation === "horizontal") {
+        // horizontal
+        this.validMove(x, y + ship.length);
+        this.board[x][y] = false;
+        this.board[x][y + 1] = false;
+      } else {
+        // verticle 
+        this.board[x][y] = false;
+        this.board[x + 1][y] = false;
+      }
+    } catch (e) {
+      console.error(e.message)
+    }
   }
 
-  receiveAttack() {}
+  receiveAttack() { }
 }
