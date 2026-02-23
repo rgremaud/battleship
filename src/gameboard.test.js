@@ -9,4 +9,5 @@ test("Place ship test", () => {
   // board.board[x][y]
 
   expect(board.board[0][0]).toBe(false);
+  expect(board.board[0][1]).toBe(false);
 });

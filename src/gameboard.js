@@ -19,15 +19,22 @@ ships: two sets of 5, 4, 3, 3, 2 - tie to players
 export class Gameboard {
   constructor() {
     // build an array of 10x10
-    this.board = Array.from({ length: 10 }, () => Array(10).fill(false));
+    this.board = Array.from({ length: 10 }, () => Array(10).fill(null));
     this.missed = [];
   }
 
   placeShip(ship, coordinate, orientation) {
     // check if placement is valid
-    // update all array points to true for ship plavement
+    // update array locations for ship from null to false
+    /*
+    confirm this is valid move
+    */
+    if ( orientation === "horizontal") {
+      //
+    }
 
-    this.board[coordinate[0]][coordinate[1]];
+    this.board[coordinate[0]][coordinate[1]] = false;
+    this.board[coordinate[0]][coordinate[1]+1] = false;
   }
 
   receiveAttack() {}
