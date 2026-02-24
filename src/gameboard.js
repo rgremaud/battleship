@@ -3,8 +3,11 @@ Create a Gameboard class/factory.
 
 Note that we have not yet created any User Interface. 
 We should know our code is coming together by running the tests. 
+Done:
 You shouldn’t be relying on console.log or DOM methods to make sure your code is doing what you expect it to.
 Gameboards should be able to place ships at specific coordinates by calling the ship factory or class.
+
+To do:
 Gameboards should have a receiveAttack function that takes a pair of coordinates, 
 determines whether or not the attack hit a ship and then sends the ‘hit’ function to the correct ship, 
 or records the coordinates of the missed shot.
@@ -21,6 +24,8 @@ export class Gameboard {
     // build an array of 10x10
     this.board = Array.from({ length: 10 }, () => Array(10).fill(null));
     this.missed = [];
+    this.ships = [];
+    this.sunkShips = 0;
   }
 
   validMove(x, y) {
@@ -31,34 +36,41 @@ export class Gameboard {
   }
 
   placeShip(ship, x, y, orientation) {
-    // update array locations for ship from null to false
-    /*
-    confirm this is valid move
-    valid moves will stay between index values of 0 to 9 for each input
-   
-    test coordinate is not valid
-    test that coordinate + ship length coordinate is not valid
-
-    */
-
     try {
       // test valid move for entry point
       this.validMove(x, y)
       // calculate entry point for ships final coordinate
       if (orientation === "horizontal") {
         // horizontal
-        this.validMove(x, y + ship.length);
-        this.board[x][y] = false;
-        this.board[x][y + 1] = false;
-      } else {
+        this.validMove(x, y + ship.length - 1);
+       
+        for ( let i = 0; i < ship.length; i++) {
+          this.board[x][y + i] = ship;
+        }
+      } else if ( orientation === "verticle" ) {
         // verticle 
-        this.board[x][y] = false;
-        this.board[x + 1][y] = false;
+        this.validMove(x - ship.length +1, y)
+          
+        for ( let i = 0; i < ship.length; i++) {
+          this.board[x - i][y] = ship;
+        }
+
+        this.ships.push(ship);
       }
     } catch (e) {
       console.error(e.message)
     }
   }
 
-  receiveAttack() { }
+  receiveAttack(x, y) {
+    // recieves an attack and sends it to the appropriate ship
+    if ( this.board[x][y] ) {
+      this.board[x][y].hit();
+      if ( this.board[x][y].sunk === true ) this.sunkShips += 1;
+      return this.board[x][y]
+    } else {
+      // push coordinate to missed hits
+      this.missed.push([x, y])
+    }
+   }
 }

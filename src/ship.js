@@ -20,7 +20,8 @@ export class Ship {
   }
 
   hit() {
-    return (this.hits += 1);
+    this.hits += 1;
+    this.isSunk();
   }
 
   isSunk() {
