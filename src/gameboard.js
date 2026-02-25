@@ -42,17 +42,17 @@ export class Gameboard {
       // calculate entry point for ships final coordinate
       if (orientation === "horizontal") {
         // horizontal
-        this.validMove(x, y + ship.length - 1);
-       
-        for ( let i = 0; i < ship.length; i++) {
-          this.board[x][y + i] = ship;
+        this.validMove(x + ship.length - 1, y);
+
+        for (let i = 0; i < ship.length; i++) {
+          this.board[x + i][y] = ship;
         }
-      } else if ( orientation === "verticle" ) {
+      } else if (orientation === "verticle") {
         // verticle 
-        this.validMove(x - ship.length +1, y)
-          
-        for ( let i = 0; i < ship.length; i++) {
-          this.board[x - i][y] = ship;
+        this.validMove(x, y - ship.length + 1)
+
+        for (let i = 0; i < ship.length; i++) {
+          this.board[x][y - i] = ship;
         }
 
         this.ships.push(ship);
@@ -64,13 +64,21 @@ export class Gameboard {
 
   receiveAttack(x, y) {
     // recieves an attack and sends it to the appropriate ship
-    if ( this.board[x][y] ) {
+    if (this.board[x][y]) {
       this.board[x][y].hit();
-      if ( this.board[x][y].sunk === true ) this.sunkShips += 1;
-      return this.board[x][y]
+      if (this.board[x][y].sunk === true) this.sunkShips += 1;
+      // return this.board[x][y]
     } else {
       // push coordinate to missed hits
       this.missed.push([x, y])
     }
-   }
+  }
+
+  allSunk() {
+    if (this.sunkShips === 5) {
+      return true
+    } else {
+      return false
+    }
+  }
 }
