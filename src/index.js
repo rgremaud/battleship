@@ -4,9 +4,7 @@ import your classes/factories into another file, and drive the game using event 
 import "./reset.css";
 import "./styles.css";
 
-import { Gameboard } from "./gameboard";
 import { Player } from "./player";
-import { Ship } from "./ship";
 
 /*
 Create a module that helps you manage actions that should happen in the DOM.
@@ -20,7 +18,17 @@ Upon select - initiate game by creating two players
 render each board to the screen
 
 */
-
+// function initiate() { 
+//     // create two players
+//     const playerOne = new Player();
+//     const playerTwo = new Player();
+//     // place the ships
+//     // ship1 = 0,0
+//     // ship2 = 1,0
+//     // ship3 = 2,0
+//     // ship4 = 3,0
+//     // ship5 = 4,0
+// }
 
 /*
 Set up a new game by creating Players. 
