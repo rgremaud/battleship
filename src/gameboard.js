@@ -3,21 +3,20 @@ export class Gameboard {
     // build an array of 10x10
     this.board = Array.from({ length: 10 }, () => Array(10).fill(null));
     this.missed = [];
-    this.ships = [];
     this.sunkShips = 0;
   }
 
   validMove(x, y) {
     if (!(x >= 0 && x <= 9 && y >= 0 && y <= 9)) {
-      throw new Error("Coordinate is not valid")
+      throw new Error("Coordinate is not valid");
     }
-    return true
+    return true;
   }
 
   placeShip(ship, x, y, orientation) {
     try {
       // test valid move for entry point
-      this.validMove(x, y)
+      this.validMove(x, y);
       // calculate entry point for ships final coordinate
       if (orientation === "horizontal") {
         // horizontal
@@ -27,17 +26,15 @@ export class Gameboard {
           this.board[x + i][y] = ship;
         }
       } else if (orientation === "verticle") {
-        // verticle 
-        this.validMove(x, y - ship.length + 1)
+        // verticle
+        this.validMove(x, y - ship.length + 1);
 
         for (let i = 0; i < ship.length; i++) {
           this.board[x][y - i] = ship;
         }
-
-        this.ships.push(ship);
       }
     } catch (e) {
-      console.error(e.message)
+      console.error(e.message);
     }
   }
 
@@ -49,15 +46,15 @@ export class Gameboard {
       // return this.board[x][y]
     } else {
       // push coordinate to missed hits
-      this.missed.push([x, y])
+      this.missed.push([x, y]);
     }
   }
 
   allSunk() {
     if (this.sunkShips === 5) {
-      return true
+      return true;
     } else {
-      return false
+      return false;
     }
   }
 }

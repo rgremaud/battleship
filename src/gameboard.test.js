@@ -18,22 +18,26 @@ test("Recieve Attack - sink ship", () => {
 
   board.placeShip(ship3, 1, 2, "verticle");
 
-  board.receiveAttack(1, 2)
-  board.receiveAttack(1, 1)
-  board.receiveAttack(1, 0)
+  board.receiveAttack(1, 2);
+  board.receiveAttack(1, 1);
+  board.receiveAttack(1, 0);
   // expect(ship3.hits).toBe(3);
   expect(board.sunkShips).toBe(1);
-})
+});
 
 test("Recieve attack - missed hits", () => {
   board = new Gameboard();
 
-  board.receiveAttack(2, 1)
-  board.receiveAttack(8, 9)
-  board.receiveAttack(0, 1)
+  board.receiveAttack(2, 1);
+  board.receiveAttack(8, 9);
+  board.receiveAttack(0, 1);
 
-  expect(board.missed).toStrictEqual([[2, 1], [8, 9], [0, 1]])
-})
+  expect(board.missed).toStrictEqual([
+    [2, 1],
+    [8, 9],
+    [0, 1],
+  ]);
+});
 
 // // check how x and y coordinates are applied
 
@@ -53,28 +57,28 @@ test("All sunk", () => {
 
   expect(sunk).toBe(false);
 
-  // sink ship 1 - [0,0] 
-  board.receiveAttack(0, 0)
-  board.receiveAttack(1, 0)
-  board.receiveAttack(2, 0)
-  board.receiveAttack(3, 0)
-  board.receiveAttack(4, 0)
+  // sink ship 1 - [0,0]
+  board.receiveAttack(0, 0);
+  board.receiveAttack(1, 0);
+  board.receiveAttack(2, 0);
+  board.receiveAttack(3, 0);
+  board.receiveAttack(4, 0);
   // sink ship 2
-  board.receiveAttack(0, 1)
-  board.receiveAttack(1, 1)
-  board.receiveAttack(2, 1)
-  board.receiveAttack(3, 1)
+  board.receiveAttack(0, 1);
+  board.receiveAttack(1, 1);
+  board.receiveAttack(2, 1);
+  board.receiveAttack(3, 1);
   // sink ship 3
-  board.receiveAttack(0, 2)
-  board.receiveAttack(1, 2)
-  board.receiveAttack(2, 2)
+  board.receiveAttack(0, 2);
+  board.receiveAttack(1, 2);
+  board.receiveAttack(2, 2);
   // sink ship 4
-  board.receiveAttack(0, 3)
-  board.receiveAttack(1, 3)
-  board.receiveAttack(2, 3)
+  board.receiveAttack(0, 3);
+  board.receiveAttack(1, 3);
+  board.receiveAttack(2, 3);
   // sink ship 5
-  board.receiveAttack(0, 4)
-  board.receiveAttack(1, 4)
+  board.receiveAttack(0, 4);
+  board.receiveAttack(1, 4);
 
   expect(board.sunkShips).toBe(5);
-})
+});
