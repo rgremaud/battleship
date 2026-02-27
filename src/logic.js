@@ -38,7 +38,7 @@ export function buildBoards() {
 function buildGrid(boardDiv) {
     for ( let i = 0; i <= 9; i++ ) { 
         const row = document.createElement("div");
-        row.id = `row${i}`;
+        row.id = `row${9-i}`;
         for ( let i = 0; i <= 9; i++) {
             const box = document.createElement("div");
             box.id = `box${i}`;
