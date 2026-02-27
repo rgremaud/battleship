@@ -4,7 +4,9 @@ import your classes/factories into another file, and drive the game using event 
 import "./reset.css";
 import "./styles.css";
 
-import { Player } from "./player";
+import { buildBoards } from "./logic";
+
+buildBoards();
 
 /*
 Create a module that helps you manage actions that should happen in the DOM.
@@ -18,7 +20,7 @@ Upon select - initiate game by creating two players
 render each board to the screen
 
 */
-// function initiate() { 
+// function initiate() {
 //     // create two players
 //     const playerOne = new Player();
 //     const playerTwo = new Player();

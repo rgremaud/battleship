@@ -30,7 +30,7 @@ class Dog extends Animal {
 */
 
 import { Gameboard } from "./gameboard";
-import { Ship } from "./ship"
+import { Ship } from "./ship";
 
 export class Player {
   constructor() {

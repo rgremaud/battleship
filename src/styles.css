@@ -1,0 +1,11 @@
+#game {
+    display: flex;
+    flex: row;
+}
+
+.board { 
+    width: 400px;
+    height: 400px;
+    border: 1px solid red;
+    margin: 10px;
+}
