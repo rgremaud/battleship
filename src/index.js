@@ -5,9 +5,14 @@ import "./reset.css";
 import "./styles.css";
 
 import { buildBoards } from "./logic";
+import { playerInit } from "./logic";
+import { scanGrid } from "./logic";
 
 buildBoards();
-
+const playerOne = playerInit();
+const playerTwo = playerInit();
+scanGrid(playerOne, "#playerOne");
+scanGrid(playerTwo, "#playerTWo");
 /*
 Create a module that helps you manage actions that should happen in the DOM.
 At this point it is appropriate to begin crafting your User Interface.
