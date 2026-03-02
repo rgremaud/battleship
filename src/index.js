@@ -4,15 +4,22 @@ import your classes/factories into another file, and drive the game using event 
 import "./reset.css";
 import "./styles.css";
 
-import { buildBoards } from "./logic";
-import { playerInit } from "./logic";
-import { scanGrid } from "./logic";
+// import { buildBoards } from "./ui";
+import { playerInit } from "./ui";
+import { printGrid } from "./ui";
+import { buildGrid } from "./ui";
 
-buildBoards();
 const playerOne = playerInit();
 const playerTwo = playerInit();
-scanGrid(playerOne, "#playerOne");
-scanGrid(playerTwo, "#playerTWo");
+console.log(playerOne);
+
+buildGrid(playerOne, "playerOne");
+buildGrid(playerTwo, "playerTwo");
+
+// prints initial grid
+printGrid(playerOne, "playerOne");
+printGrid(playerTwo, "playerTwo");
+
 /*
 Create a module that helps you manage actions that should happen in the DOM.
 At this point it is appropriate to begin crafting your User Interface.

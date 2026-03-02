@@ -39,14 +39,15 @@ export class Gameboard {
   }
 
   receiveAttack(x, y) {
-    // recieves an attack and sends it to the appropriate ship
+    // recieves an attack and sends it to the appropriate ship if value is non-null
     if (this.board[x][y]) {
       this.board[x][y].hit();
       if (this.board[x][y].sunk === true) this.sunkShips += 1;
-      // return this.board[x][y]
+      return true;
     } else {
       // push coordinate to missed hits
       this.missed.push([x, y]);
+      return false;
     }
   }
 
