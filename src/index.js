@@ -11,7 +11,6 @@ import { buildGrid } from "./ui";
 
 const playerOne = playerInit();
 const playerTwo = playerInit();
-console.log(playerOne);
 
 buildGrid(playerOne, "playerOne");
 buildGrid(playerTwo, "playerTwo");

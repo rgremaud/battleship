@@ -28,10 +28,10 @@ export function buildGrid(player, boardDivId) {
     for (let j = 0; j <= 9; j++) {
       const box = document.createElement("div");
       box.className = "gridBox";
-      box.id = `${boardDivId}[${9 - j}, ${i}]`;
+      box.id = `${boardDivId}[${i}, ${9 - j}]`;
       // add click event that displays id when clicked
       box.addEventListener("click", () => {
-        console.log(`[${9 - j}, ${i}]`);
+        console.log(`[${i}, ${9 - j}]`);
         // build logic to check if the coordinate is occupied by a ship
         // hitEventListener(player, box, 9 - j, i);
         const board = player.gameboard;
@@ -58,7 +58,7 @@ export function printGrid(player, boardDivId) {
   for (let i = 0; i < boardArray.length; i++) {
     for (let j = 0; j < boardArray[i].length; j++) {
       if (boardArray[i][j] !== null) {
-        const box = document.getElementById(`${boardDivId}[${j}, ${i}]`);
+        const box = document.getElementById(`${boardDivId}[${i}, ${j}]`);
         box.style.backgroundColor = "green";
       }
     }
