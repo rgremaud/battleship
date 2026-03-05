@@ -1,6 +1,5 @@
 export class Gameboard {
   constructor() {
-    // build an array of 10x10
     this.board = Array.from({ length: 10 }, () => Array(10).fill(null));
     this.missed = [];
     this.sunkShips = 0;

@@ -40,8 +40,9 @@ export class Player {
     this.ship3v1 = new Ship(3);
     this.ship3v2 = new Ship(3);
     this.ship2 = new Ship(2);
+    this.active = false; // possibly remove
   }
 }
 
 // class Human extends Player {}
-// class Computer extends Playerr {}
+// class Computer extends Player {}

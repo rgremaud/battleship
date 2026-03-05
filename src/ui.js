@@ -4,6 +4,7 @@
 import { Player } from "./player";
 
 // create game initiate function
+// good for testing
 export function playerInit() {
   // build two players and place all ships
   const player = new Player();
@@ -18,29 +19,23 @@ export function playerInit() {
   return player;
 }
 
-// builds visual grid
+// build display grid
 export function buildGrid(player, boardDivId) {
   const playerBoard = document.getElementById(boardDivId);
   for (let i = 0; i <= 9; i++) {
     const row = document.createElement("div");
     row.className = "row";
-    // row.id = `row${9 - i}`; prob don't need
     for (let j = 0; j <= 9; j++) {
       const box = document.createElement("div");
       box.className = "gridBox";
       box.id = `${boardDivId}[${i}, ${9 - j}]`;
       // add click event that displays id when clicked
       box.addEventListener("click", () => {
-        console.log(`[${i}, ${9 - j}]`);
-        // build logic to check if the coordinate is occupied by a ship
-        // hitEventListener(player, box, 9 - j, i);
-        const board = player.gameboard;
-        // take the div coordinate from box clicked
-        // verify that x, y coordinates are properly transitioning to recieve attack
-        if (board.receiveAttack(i, 9-j) === true) {
-          box.style.backgroundColor = "red";
+        if ( player.active === true ) { 
+        boxEventListener(player, box, i, j)
+        player.active = false
         } else {
-          box.style.backgroundColor = "purple";
+          console.log("Not your turn!")
         }
       });
 
@@ -65,13 +60,21 @@ export function printGrid(player, boardDivId) {
   }
 }
 
-// function hitEventListener(player, box, x, y) {
-//   // define player board
-//   const board = player.gameboard;
-//   // take the div coordinate from box clicked
-//   if (board.recieveAttack(x, y) === true) {
-//     box.style.backgroundColor = "red";
-//   } else {
-//     box.style.backgroundColor = "purple";
-//   }
-// }
+function boxEventListener(player, box, i, j) {
+  console.log(`[${i}, ${9 - j}]`);
+
+  // build logic to check if the coordinate is occupied by a ship
+  // hitEventListener(player, box, 9 - j, i);
+  const board = player.gameboard;
+
+  // take the div coordinate from box clicked
+  // verify that x, y coordinates are properly transitioning to recieve attack
+  if (board.receiveAttack(i, 9 - j) === true) {
+    box.style.backgroundColor = "red";
+  } else {
+    box.style.backgroundColor = "purple";
+  }
+
+  // set the 
+  player.active = false;
+}

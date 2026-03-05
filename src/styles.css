@@ -20,5 +20,5 @@
 
 .gridBox:hover {
   background-color: lightblue;
-  cursor: pointer; /* Changes the cursor to a hand icon */
+  cursor: pointer;
 }
