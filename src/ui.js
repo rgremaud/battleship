@@ -1,13 +1,6 @@
-// store game ui here
-// currently using tag input to differentiate between two boards when printing - look for better solution
 
-import { Player } from "./player";
-
-// create game initiate function
-// good for testing
-export function playerInit() {
+export function placeShips(player) {
   // build two players and place all ships
-  const player = new Player();
 
   // player board
   player.gameboard.placeShip(player.ship5, 0, 0, "horizontal");
@@ -16,11 +9,10 @@ export function playerInit() {
   player.gameboard.placeShip(player.ship3v2, 0, 3, "horizontal");
   player.gameboard.placeShip(player.ship2, 0, 4, "horizontal");
 
-  return player;
 }
 
 // build display grid
-export function buildGrid(player, boardDivId) {
+export function buildGrid(game, player, boardDivId) {
   const playerBoard = document.getElementById(boardDivId);
   for (let i = 0; i <= 9; i++) {
     const row = document.createElement("div");
@@ -30,12 +22,11 @@ export function buildGrid(player, boardDivId) {
       box.className = "gridBox";
       box.id = `${boardDivId}[${i}, ${9 - j}]`;
       // add click event that displays id when clicked
-      box.addEventListener("click", () => {
-        if ( player.active === true ) { 
-        boxEventListener(player, box, i, j)
-        player.active = false
+      box.addEventListener("click", () => { 
+        if ( game.activePlayer === player ) { 
+        boxEventListener(game, player, box, i, j)
         } else {
-          console.log("Not your turn!")
+          console.log("Not your turn");
         }
       });
 
@@ -46,7 +37,7 @@ export function buildGrid(player, boardDivId) {
   }
 }
 
-export function printGrid(player, boardDivId) {
+export function printGrid(game, player, boardDivId) {
   // accept a player and then scan their board to populate their ship coordinates
   const boardArray = player.gameboard.board;
   // boardArray is 10 arrays of 10 items
@@ -60,21 +51,24 @@ export function printGrid(player, boardDivId) {
   }
 }
 
-function boxEventListener(player, box, i, j) {
-  console.log(`[${i}, ${9 - j}]`);
-
-  // build logic to check if the coordinate is occupied by a ship
-  // hitEventListener(player, box, 9 - j, i);
+function boxEventListener(game, player, box, i, j) {
   const board = player.gameboard;
 
-  // take the div coordinate from box clicked
-  // verify that x, y coordinates are properly transitioning to recieve attack
+  // update box
   if (board.receiveAttack(i, 9 - j) === true) {
     box.style.backgroundColor = "red";
   } else {
     box.style.backgroundColor = "purple";
   }
 
-  // set the 
-  player.active = false;
+  // switch active player
+  if ( game.activePlayer === game.playerOne ) {
+    game.activePlayer = game.playerTwo;
+  } else {
+    game.activePlayer = game.playerOne;
+  }
+
+  // update active player
+  const div = document.getElementById("activePlayer");
+  div.textContent = `Active player: ${game.activePlayer.name}`
 }

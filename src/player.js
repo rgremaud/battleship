@@ -33,8 +33,9 @@ import { Gameboard } from "./gameboard";
 import { Ship } from "./ship";
 
 export class Player {
-  constructor() {
+  constructor(name) {
     this.gameboard = new Gameboard();
+    this.name = name;
     this.ship5 = new Ship(5);
     this.ship4 = new Ship(4);
     this.ship3v1 = new Ship(3);

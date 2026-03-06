@@ -1,23 +1,26 @@
-/*
-import your classes/factories into another file, and drive the game using event listeners to interact with your objects. 
-*/
 import "./reset.css";
 import "./styles.css";
 
 // import { buildBoards } from "./ui";
-import { playerInit } from "./ui";
+import { Battleship } from "./battleship";
+import { placeShips } from "./ui";
 import { printGrid } from "./ui";
 import { buildGrid } from "./ui";
 
-const playerOne = playerInit();
-const playerTwo = playerInit();
+const game = new Battleship();
 
-buildGrid(playerOne, "playerOne");
-buildGrid(playerTwo, "playerTwo");
+const playerOne = game.playerOne;
+const playerTwo = game.playerTwo;
+
+placeShips(playerOne);
+placeShips(playerTwo);
+
+buildGrid(game, playerOne, "playerOne");
+buildGrid(game, playerTwo, "playerTwo");
 
 // prints initial grid
-printGrid(playerOne, "playerOne");
-printGrid(playerTwo, "playerTwo");
+printGrid(game, playerOne, "playerOne");
+printGrid(game, playerTwo, "playerTwo");
 
 // set playerOne to active
 playerOne.active = true;
