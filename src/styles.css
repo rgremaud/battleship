@@ -15,6 +15,7 @@
 .gridBox {
   width: 50px;
   height: 50px;
+  background-color: lightblue;
   border: 1px solid blue;
 }
 

@@ -1,38 +1,7 @@
-/*
-Create a Player class/factory.
-There will be two types of players in the game, ‘real’ players and ‘computer’ players.
-Each player object should contain its own gameboard.
-
-example of extending
-class Animal {
-  constructor(name) {
-    this.name = name;
-  }
-
-  speak() {
-    console.log(`${this.name} makes a noise.`);
-  }
-}
-
-// Extend the base class
-class Dog extends Animal {
-  constructor(name, breed) {
-    // Call the parent class constructor using super()
-    super(name);
-    this.breed = breed;
-  }
-
-  // Override the speak method
-  speak() {
-    console.log(`${this.name} barks.`);
-  }
-}
-*/
-
 import { Gameboard } from "./gameboard";
 import { Ship } from "./ship";
 
-export class Player {
+class Player {
   constructor(name) {
     this.gameboard = new Gameboard();
     this.name = name;
@@ -46,4 +15,26 @@ export class Player {
 }
 
 // class Human extends Player {}
+export class Human extends Player {
+  constructor(name) {
+    super(name);
+  }
+}
+
 // class Computer extends Player {}
+export class Computer extends Player {
+  constructor(name) {
+    super(name);
+    this.previousMoves = [];
+  }
+
+  /*
+  function to make a move
+  Math.round(Math.random() * (9-0)+0)
+  */
+ makeMove() {
+  const move = [Math.round(Math.random() * (9-0)+0), Math.round(Math.random() * (9-0)+0)];
+  this.previousMoves.push(move);
+  return move;
+ }
+}

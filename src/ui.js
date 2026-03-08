@@ -25,8 +25,6 @@ export function buildGrid(game, player, boardDivId) {
       box.addEventListener("click", () => { 
         if ( game.activePlayer === player ) { 
         boxEventListener(game, player, box, i, j)
-        } else {
-          console.log("Not your turn");
         }
       });
 
@@ -37,19 +35,20 @@ export function buildGrid(game, player, boardDivId) {
   }
 }
 
-export function printGrid(game, player, boardDivId) {
-  // accept a player and then scan their board to populate their ship coordinates
-  const boardArray = player.gameboard.board;
-  // boardArray is 10 arrays of 10 items
-  for (let i = 0; i < boardArray.length; i++) {
-    for (let j = 0; j < boardArray[i].length; j++) {
-      if (boardArray[i][j] !== null) {
-        const box = document.getElementById(`${boardDivId}[${i}, ${j}]`);
-        box.style.backgroundColor = "green";
-      }
-    }
-  }
-}
+// possible remove
+// export function printGrid(game, player, boardDivId) {
+//   // accept a player and then scan their board to populate their ship coordinates
+//   const boardArray = player.gameboard.board;
+//   // boardArray is 10 arrays of 10 items
+//   for (let i = 0; i < boardArray.length; i++) {
+//     for (let j = 0; j < boardArray[i].length; j++) {
+//       if (boardArray[i][j] !== null) {
+//         const box = document.getElementById(`${boardDivId}[${i}, ${j}]`);
+//         box.style.backgroundColor = "green";
+//       }
+//     }
+//   }
+// }
 
 function boxEventListener(game, player, box, i, j) {
   const board = player.gameboard;
@@ -61,6 +60,10 @@ function boxEventListener(game, player, box, i, j) {
     box.style.backgroundColor = "purple";
   }
 
+  if (board.allSunk()) {
+    alert("All your ships are sunk!")
+  }
+
   // switch active player
   if ( game.activePlayer === game.playerOne ) {
     game.activePlayer = game.playerTwo;
@@ -70,5 +73,5 @@ function boxEventListener(game, player, box, i, j) {
 
   // update active player
   const div = document.getElementById("activePlayer");
-  div.textContent = `Active player: ${game.activePlayer.name}`
+  div.textContent = `Active board: ${game.activePlayer.name}`
 }
