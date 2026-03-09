@@ -7,7 +7,7 @@ import { placeShips } from "./ui";
 // import { printGrid } from "./ui";
 import { buildGrid } from "./ui";
 
-const game = new Battleship();
+const game = new Battleship("single");
 
 const playerOne = game.playerOne;
 const playerTwo = game.playerTwo;

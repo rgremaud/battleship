@@ -1,3 +1,5 @@
+import { Battleship } from "./battleship"
+
 export function placeShips(player) {
   // build two players and place all ships
 
@@ -24,6 +26,10 @@ export function buildGrid(game, player, boardDivId) {
         if (game.activePlayer === player) {
           boxEventListener(game, player, box, i, j);
         }
+        // attempt to add a click event that triggers computer attack after human attack
+        if (game.type === "single") {
+          game.playerTwo.attack(player.gameboard)
+        }
       });
 
       row.appendChild(box);
@@ -32,21 +38,6 @@ export function buildGrid(game, player, boardDivId) {
     playerBoard.appendChild(row);
   }
 }
-
-// possible remove
-// export function printGrid(game, player, boardDivId) {
-//   // accept a player and then scan their board to populate their ship coordinates
-//   const boardArray = player.gameboard.board;
-//   // boardArray is 10 arrays of 10 items
-//   for (let i = 0; i < boardArray.length; i++) {
-//     for (let j = 0; j < boardArray[i].length; j++) {
-//       if (boardArray[i][j] !== null) {
-//         const box = document.getElementById(`${boardDivId}[${i}, ${j}]`);
-//         box.style.backgroundColor = "green";
-//       }
-//     }
-//   }
-// }
 
 function boxEventListener(game, player, box, i, j) {
   const board = player.gameboard;
@@ -77,5 +68,9 @@ function boxEventListener(game, player, box, i, j) {
 /*
 single player init
 
+call the battleship class w/1 human and 1 computer player
+const game = new Battleship("single")
+update click event to call computer player class after human makes a move
+prompt human player to make first move
 
 */

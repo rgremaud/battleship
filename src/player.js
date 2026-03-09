@@ -26,17 +26,18 @@ export class Computer extends Player {
     this.previousMoves = [];
   }
 
-  /*
-  function to make a move
-  Math.round(Math.random() * (9-0)+0)
-  */
-  makeMove(board) {
-    const move = [
+  move() {
+    return [
       Math.round(Math.random() * (9 - 0) + 0),
       Math.round(Math.random() * (9 - 0) + 0),
     ];
+  }
 
-    if (this.previousMoves.includes(move)) {
+  attack(board) {
+    // call the receiveAttack move for opp's board
+    const move = this.move();
+
+    if (!this.previousMoves.includes(move)) {
       board.receiveAttack(move[0], move[1]);
       this.previousMoves.push(move);
     } else {

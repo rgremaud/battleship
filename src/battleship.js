@@ -1,10 +1,17 @@
 import { Human } from "./player";
-// import { Computer } from "./player"
+import { Computer } from "./player"
 
 export class Battleship {
-  constructor() {
-    this.playerOne = new Human("playerOne");
-    this.playerTwo = new Human("playerTwo");
-    this.activePlayer = this.playerOne;
+  constructor(type) {
+    this.type = type;
+    if (type === "single") {
+      this.playerOne = new Human("playerOne");
+      this.playerTwo = new Computer("playerTwo");
+      this.activePlayer = this.playerOne;
+    } else {
+      this.playerOne = new Human("playerOne");
+      this.playerTwo = new Human("playerTwo");
+      this.activePlayer = this.playerOne;
+    }
   }
 }
