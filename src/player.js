@@ -14,14 +14,12 @@ class Player {
   }
 }
 
-// class Human extends Player {}
 export class Human extends Player {
   constructor(name) {
     super(name);
   }
 }
 
-// class Computer extends Player {}
 export class Computer extends Player {
   constructor(name) {
     super(name);
@@ -32,9 +30,17 @@ export class Computer extends Player {
   function to make a move
   Math.round(Math.random() * (9-0)+0)
   */
- makeMove() {
-  const move = [Math.round(Math.random() * (9-0)+0), Math.round(Math.random() * (9-0)+0)];
-  this.previousMoves.push(move);
-  return move;
- }
+  makeMove(board) {
+    const move = [
+      Math.round(Math.random() * (9 - 0) + 0),
+      Math.round(Math.random() * (9 - 0) + 0),
+    ];
+
+    if (this.previousMoves.includes(move)) {
+      board.receiveAttack(move[0], move[1]);
+      this.previousMoves.push(move);
+    } else {
+      this.makeMove(board);
+    }
+  }
 }

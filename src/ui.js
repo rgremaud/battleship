@@ -1,4 +1,3 @@
-
 export function placeShips(player) {
   // build two players and place all ships
 
@@ -8,7 +7,6 @@ export function placeShips(player) {
   player.gameboard.placeShip(player.ship3v1, 0, 2, "horizontal");
   player.gameboard.placeShip(player.ship3v2, 0, 3, "horizontal");
   player.gameboard.placeShip(player.ship2, 0, 4, "horizontal");
-
 }
 
 // build display grid
@@ -22,9 +20,9 @@ export function buildGrid(game, player, boardDivId) {
       box.className = "gridBox";
       box.id = `${boardDivId}[${i}, ${9 - j}]`;
       // add click event that displays id when clicked
-      box.addEventListener("click", () => { 
-        if ( game.activePlayer === player ) { 
-        boxEventListener(game, player, box, i, j)
+      box.addEventListener("click", () => {
+        if (game.activePlayer === player) {
+          boxEventListener(game, player, box, i, j);
         }
       });
 
@@ -61,11 +59,11 @@ function boxEventListener(game, player, box, i, j) {
   }
 
   if (board.allSunk()) {
-    alert("All your ships are sunk!")
+    alert("All your ships are sunk!");
   }
 
   // switch active player
-  if ( game.activePlayer === game.playerOne ) {
+  if (game.activePlayer === game.playerOne) {
     game.activePlayer = game.playerTwo;
   } else {
     game.activePlayer = game.playerOne;
@@ -73,5 +71,11 @@ function boxEventListener(game, player, box, i, j) {
 
   // update active player
   const div = document.getElementById("activePlayer");
-  div.textContent = `Active board: ${game.activePlayer.name}`
+  div.textContent = `Active board: ${game.activePlayer.name}`;
 }
+
+/*
+single player init
+
+
+*/
