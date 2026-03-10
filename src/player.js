@@ -38,8 +38,10 @@ export class Computer extends Player {
     const move = this.move();
 
     if (!this.previousMoves.includes(move)) {
-      board.receiveAttack(move[0], move[1]);
+      const coordinate = board.receiveAttack(move[0], move[1]); // returns true or false
       this.previousMoves.push(move);
+      
+      return coordinate;
     } else {
       this.makeMove(board);
     }

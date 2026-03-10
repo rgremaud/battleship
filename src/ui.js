@@ -1,4 +1,4 @@
-import { Battleship } from "./battleship"
+// import { Battleship } from "./battleship";
 
 export function placeShips(player) {
   // build two players and place all ships
@@ -26,10 +26,20 @@ export function buildGrid(game, player, boardDivId) {
         if (game.activePlayer === player) {
           boxEventListener(game, player, box, i, j);
         }
-        // attempt to add a click event that triggers computer attack after human attack
-        if (game.type === "single") {
-          game.playerTwo.attack(player.gameboard)
-        }
+        // doesn't work
+        // // attempt to add a click event that triggers computer attack after human attack
+        // if (game.activePlayer === game.playerOne) {
+        //   // // call player two function to attack
+        //   const attack = game.playerTwo.attack(game.playerOne.gameboard); // returns true or false
+        //   // // verify if hit
+        //   // // update color
+        //   // if ( attack === true ) {
+        //   //   box.style.backgroundColor = "red";
+        //   // } else {
+        //   //   box.style.backgroundColor = "purple";
+        //   // }
+        //   console.log(attack);
+        // }
       });
 
       row.appendChild(box);
@@ -63,14 +73,16 @@ function boxEventListener(game, player, box, i, j) {
   // update active player
   const div = document.getElementById("activePlayer");
   div.textContent = `Active board: ${game.activePlayer.name}`;
+
+  // doesnt work
+  // box.removeEventListener('click', this.boxEventListener, false);
 }
 
 /*
-single player init
 
-call the battleship class w/1 human and 1 computer player
-const game = new Battleship("single")
-update click event to call computer player class after human makes a move
-prompt human player to make first move
+to do:
+
+Get single player init to work
+Remove the ability to click a box multiple times
 
 */

@@ -1,5 +1,5 @@
 import { Human } from "./player";
-import { Computer } from "./player"
+import { Computer } from "./player";
 
 export class Battleship {
   constructor(type) {
