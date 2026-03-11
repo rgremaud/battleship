@@ -1,4 +1,4 @@
-// import { Battleship } from "./battleship";
+import { Battleship } from "./battleship";
 
 export function placeShips(player) {
   // build two players and place all ships
@@ -76,6 +76,33 @@ function boxEventListener(game, player, box, i, j) {
 
   // doesnt work
   // box.removeEventListener('click', this.boxEventListener, false);
+}
+
+export function buttonEvents() {
+    const singlePlayer = document.getElementById("single");
+    const twoPlayer = document.getElementById("double");
+
+    singlePlayer.addEventListener("click", () =>{
+        singlePlayerInit();
+    })
+
+    twoPlayer.addEventListener("click", () => {
+        alert("Yahoo!");
+    })
+}
+function singlePlayerInit() {
+  const game = new Battleship("single");
+
+  const playerOne = game.playerOne;
+  const playerTwo = game.playerTwo;
+
+  placeShips(playerOne);
+  placeShips(playerTwo);
+
+  buildGrid(game, playerOne, "playerOne");
+  buildGrid(game, playerTwo, "playerTwo");
+
+  playerOne.active = true;
 }
 
 /*
