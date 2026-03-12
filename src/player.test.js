@@ -23,3 +23,4 @@ test("Computer move", () => {
   expect(move[1]).toBeGreaterThanOrEqual(0);
   expect(move[1]).toBeLessThanOrEqual(9);
 });
+

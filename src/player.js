@@ -24,6 +24,7 @@ export class Computer extends Player {
   constructor(name) {
     super(name);
     this.previousMoves = [];
+    this.pendingMoves = [];
   }
 
   move() {
@@ -33,17 +34,42 @@ export class Computer extends Player {
     ];
   }
 
-  attack(board) {
+  attackRandom(board) {
     // call the receiveAttack move for opp's board
     const move = this.move();
 
     if (!this.previousMoves.includes(move)) {
       const coordinate = board.receiveAttack(move[0], move[1]); // returns true or false
       this.previousMoves.push(move);
-      
+
       return [move[0], move[1], coordinate];
     } else {
-      this.makeMove(board);
+      this.attackRandom(board);
     }
+  }
+
+  attackSmart(board) {
+    /*
+    Identify if there are any pending moves
+    if ( this.pendingMoves.length > 0) {
+      const coordinate = this.pendingMoves[0]
+      pop out first element from this.pendingMoves
+      board.receiveAttack(coordinate[0], coordinate[1])
+      this.previousMoves.push(coordinate)
+
+      return [coordinate[0], coordinate[1], coordinate];
+    }
+
+    Use the move function for randomly picking attack
+    const move = this.move();
+
+    if (!this.previousMoves.includes(move)) { 
+    const coordinate = board.receiveAttack(move[0], move[1]); // returns true or false
+      if true -> build out pendingMoves based on neighboring points
+
+      return [move[0], move[1], coordinate];
+    }   
+    
+    */
   }
 }

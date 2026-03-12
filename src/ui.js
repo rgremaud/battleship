@@ -1,9 +1,7 @@
 import { Battleship } from "./battleship";
 
-export function placeShips(player) {
-  // build two players and place all ships
-
-  // player board
+function placeShips(player) {
+  // player board - Remove after done w/testing
   player.gameboard.placeShip(player.ship5, 0, 0, "horizontal");
   player.gameboard.placeShip(player.ship4, 0, 1, "horizontal");
   player.gameboard.placeShip(player.ship3v1, 0, 2, "horizontal");
@@ -11,13 +9,8 @@ export function placeShips(player) {
   player.gameboard.placeShip(player.ship2, 0, 4, "horizontal");
 }
 
-// build display grid
-// update this to build grid w/no event listeners on boxes
-// break out the box click events so it only adds to player based boxes
-// single player game needs to include a click event that pushes the computers play to the opponents board
-// current iteration attempts to push computer clicks to the same grid as player's
-// updates so click events are only active once
-export function buildGrid(game, player, boardDivId) {
+// build grid boxes
+function buildGrid(game, player, boardDivId) {
   const playerBoard = document.getElementById(boardDivId);
   for (let i = 0; i <= 9; i++) {
     const column = document.createElement("div");
@@ -26,26 +19,6 @@ export function buildGrid(game, player, boardDivId) {
       const box = document.createElement("div");
       box.className = `gridBox-${player.name}`;
       box.id = `${i}${9 - j}${boardDivId}`;
-      // add click event that displays id when clicked
-      // box.addEventListener("click", () => {
-      //   if (game.activePlayer === player) {
-      //     boxEventListener(game, player, box, i, j);
-      //   }
-      // doesn't work
-      // // attempt to add a click event that triggers computer attack after human attack
-      // if (game.activePlayer === game.playerOne) {
-      //   // // call player two function to attack
-      //   const attack = game.playerTwo.attack(game.playerOne.gameboard); // returns true or false
-      //   // // verify if hit
-      //   // // update color
-      //   // if ( attack === true ) {
-      //   //   box.style.backgroundColor = "red";
-      //   // } else {
-      //   //   box.style.backgroundColor = "purple";
-      //   // }
-      //   console.log(attack);
-      // }
-      // });
 
       column.appendChild(box);
     }
@@ -54,6 +27,7 @@ export function buildGrid(game, player, boardDivId) {
   }
 }
 
+// possibly remove
 function boxEventListener(game, player, box, i, j) {
   const board = player.gameboard;
 
@@ -152,11 +126,11 @@ function newBoxEventListener(game, player, opponent, box, x, y) {
   }
 
   // trigger computer player's move
-  const play = player.attack(opponentBoard);
+  const play = player.attackRandom(opponentBoard);
 
   const attackBox = document.getElementById(`${play[0]}${play[1]}playerOne`);
 
-  if (play[2] === true ) {
+  if (play[2] === true) {
     attackBox.style.backgroundColor = "red";
   } else {
     attackBox.style.backgroundColor = "purple";
