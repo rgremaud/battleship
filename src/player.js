@@ -41,7 +41,7 @@ export class Computer extends Player {
       const coordinate = board.receiveAttack(move[0], move[1]); // returns true or false
       this.previousMoves.push(move);
       
-      return coordinate;
+      return [move[0], move[1], coordinate];
     } else {
       this.makeMove(board);
     }

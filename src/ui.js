@@ -20,12 +20,12 @@ export function placeShips(player) {
 export function buildGrid(game, player, boardDivId) {
   const playerBoard = document.getElementById(boardDivId);
   for (let i = 0; i <= 9; i++) {
-    const row = document.createElement("div");
-    row.className = "row";
+    const column = document.createElement("div");
+    column.className = "column";
     for (let j = 0; j <= 9; j++) {
       const box = document.createElement("div");
-      box.className = "gridBox";
-      box.id = `${boardDivId}[${i}, ${9 - j}]`;
+      box.className = `gridBox-${player.name}`;
+      box.id = `${i}${9 - j}${boardDivId}`;
       // add click event that displays id when clicked
       // box.addEventListener("click", () => {
       //   if (game.activePlayer === player) {
@@ -47,10 +47,10 @@ export function buildGrid(game, player, boardDivId) {
       // }
       // });
 
-      row.appendChild(box);
+      column.appendChild(box);
     }
 
-    playerBoard.appendChild(row);
+    playerBoard.appendChild(column);
   }
 }
 
@@ -89,11 +89,11 @@ export function buttonEvents() {
 
   singlePlayer.addEventListener("click", () => {
     singlePlayerInit();
-  })
+  });
 
   twoPlayer.addEventListener("click", () => {
     alert("Yahoo!");
-  })
+  });
 }
 function singlePlayerInit() {
   const game = new Battleship("single");
@@ -108,20 +108,74 @@ function singlePlayerInit() {
   buildGrid(game, computerPlayer, "playerTwo");
 
   // add in funtion to add click event listeners only to the computer players board
-  // addClickEvents(game);
+  addClickEvents(game);
 
-  playerOne.active = true;
+  humanPlayer.active = true;
 }
 
 function addClickEvents(game) {
   // accept board as input
   // if game.type = single
-  // add click events to only the playerTwo board
-  /*
+  if (game.type === "single") {
+    const boxes = document.querySelectorAll(".gridBox-playerTwo");
+
+    boxes.forEach((box) => {
+      box.addEventListener("click", () => {
+        newBoxEventListener(game, game.playerTwo, game.playerOne, box, box.id.charAt(0), box.id.charAt(1))
+      });
+    });
+    // add click events to only the playerTwo board
+    /*
     const board = game.playerTwo.gameboard;
+    loop all of the row - 10 rows
+    loop within each row - 10 boxes
   */
-  // else add click events to playerOne and playerTwo board
-  // required inputs for each box: boxEventListener(game, player, box, i, j) 
+    // else add click events to playerOne and playerTwo board
+    // required inputs for each box: boxEventListener(game, player, box, i, j)
+  }
+}
+
+// new event listener
+function newBoxEventListener(game, player, opponent, box, x, y) {
+  const board = player.gameboard;
+  const opponentBoard = opponent.gameboard;
+
+  // update box
+  if (board.receiveAttack(x, y) === true) {
+    box.style.backgroundColor = "red";
+  } else {
+    box.style.backgroundColor = "purple";
+  }
+
+  if (board.allSunk()) {
+    alert("All your ships are sunk!");
+  }
+
+  // trigger computer player's move
+  const play = player.attack(opponentBoard);
+
+  const attackBox = document.getElementById(`${play[0]}${play[1]}playerOne`);
+
+  if (play[2] === true ) {
+    attackBox.style.backgroundColor = "red";
+  } else {
+    attackBox.style.backgroundColor = "purple";
+  }
+  // example boxId for playerOne div - 09playerOne
+
+  // // switch active player
+  // if (game.activePlayer === game.playerOne) {
+  //   game.activePlayer = game.playerTwo;
+  // } else {
+  //   game.activePlayer = game.playerOne;
+  // }
+
+  // // update active player
+  // const div = document.getElementById("activePlayer");
+  // div.textContent = `Active board: ${game.activePlayer.name}`;
+
+  // // doesnt work
+  // // box.removeEventListener('click', this.boxEventListener, false);
 }
 
 /*
