@@ -24,3 +24,11 @@ test("Computer move", () => {
   expect(move[1]).toBeLessThanOrEqual(9);
 });
 
+test("Valid move", () => {
+  const computer = new Computer();
+
+  expect(computer.validMove([-1, 3])).toBe(false);
+  expect(computer.validMove([5, 5])).toBe(true);
+  expect(computer.validMove([9, 10])).toBe(false);
+})
+

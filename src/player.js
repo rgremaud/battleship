@@ -48,28 +48,50 @@ export class Computer extends Player {
     }
   }
 
+  validMove([x, y]) {
+    return 0 <= x && x <= 9 && 0 <= y && y <= 9;
+  }
+
   attackSmart(board) {
-    /*
-    Identify if there are any pending moves
-    if ( this.pendingMoves.length > 0) {
-      const coordinate = this.pendingMoves[0]
-      pop out first element from this.pendingMoves
-      board.receiveAttack(coordinate[0], coordinate[1])
-      this.previousMoves.push(coordinate)
+    // need to test the cycling of possible moves is working correctly
 
-      return [coordinate[0], coordinate[1], coordinate];
+    // Identify if there are any pending moves
+    if (this.pendingMoves.length > 0) {
+      const coordinate = this.pendingMoves[0]; // returns true or false
+      this.pendingMoves.shift(); // removes 1st element
+      board.receiveAttack(coordinate[0], coordinate[1]); // play the attack
+
+      if (coordinate) {
+        const possibleMoves = [
+          [coordinate[0] + 1 , coordinate[1]],
+          [coordinate[0] - 1, coordinate[1]],
+          [coordinate[0], coordinate[1] + 1],
+          [coordinate[0], coordinate[1] - 1],
+        ];
+        // add only valid moves (0 =< x =< 9, 0 <= y <= 9)
+        // ex [3, 2] -> [4, 2] [2, ,2] [3, 3] [3, 1]
+        possibleMoves.forEach((coord) => {
+          if ( this.validMove(coord)) {
+            this.pendingMoves.push(coord)
+          }
+        })
+      }
+
+      this.previousMoves.push(coordinate); // track the move
+
+      return [coordinate[0], coordinate[1], coordinate]; // return the coordinate
     }
-
-    Use the move function for randomly picking attack
+    // call the receiveAttack move for opp's board
     const move = this.move();
 
-    if (!this.previousMoves.includes(move)) { 
-    const coordinate = board.receiveAttack(move[0], move[1]); // returns true or false
-      if true -> build out pendingMoves based on neighboring points
+    if (!this.previousMoves.includes(move)) {
+      const coordinate = board.receiveAttack(move[0], move[1]); // returns true or false
+
+      if (coordinate) this.previousMoves.push(move);
 
       return [move[0], move[1], coordinate];
-    }   
-    
-    */
+    } else {
+      this.attackRandom(board);
+    }
   }
 }
