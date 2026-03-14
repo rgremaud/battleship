@@ -52,46 +52,60 @@ export class Computer extends Player {
     return 0 <= x && x <= 9 && 0 <= y && y <= 9;
   }
 
+  checkArray(array, subArray){
+    if(JSON.stringify(array).includes(JSON.stringify(subArray))) return true;
+    return false;
+}
+
   attackSmart(board) {
-    // need to test the cycling of possible moves is working correctly
-
-    // Identify if there are any pending moves
+    // Identify if there are any pending moves and play them
     if (this.pendingMoves.length > 0) {
-      const coordinate = this.pendingMoves[0]; // returns true or false
-      this.pendingMoves.shift(); // removes 1st element
-      board.receiveAttack(coordinate[0], coordinate[1]); // play the attack
-
-      if (coordinate) {
-        const possibleMoves = [
-          [coordinate[0] + 1 , coordinate[1]],
-          [coordinate[0] - 1, coordinate[1]],
-          [coordinate[0], coordinate[1] + 1],
-          [coordinate[0], coordinate[1] - 1],
+      const move = this.pendingMoves[0]; // assigns next move up
+      this.previousMoves.push(move); // track the move
+      this.pendingMoves.shift(); // removes element at 0 index
+      const play = board.receiveAttack(move[0], move[1]); // play the move - returns true or false
+      // if hit update calculate all possible moves from hit and add them to queue
+      if (play) {
+        let possibleMoves = [
+          [move[0] + 1, move[1]],
+          [move[0] - 1, move[1]],
+          [move[0], move[1] + 1],
+          [move[0], move[1] - 1],
         ];
-        // add only valid moves (0 =< x =< 9, 0 <= y <= 9)
-        // ex [3, 2] -> [4, 2] [2, ,2] [3, 3] [3, 1]
         possibleMoves.forEach((coord) => {
-          if ( this.validMove(coord)) {
-            this.pendingMoves.push(coord)
+          if (this.validMove(coord) && !this.checkArray(this.previousMoves, coord)) {
+            this.pendingMoves.push(coord);
           }
-        })
+        });
       }
 
-      this.previousMoves.push(coordinate); // track the move
-
-      return [coordinate[0], coordinate[1], coordinate]; // return the coordinate
-    }
-    // call the receiveAttack move for opp's board
-    const move = this.move();
-
-    if (!this.previousMoves.includes(move)) {
-      const coordinate = board.receiveAttack(move[0], move[1]); // returns true or false
-
-      if (coordinate) this.previousMoves.push(move);
-
-      return [move[0], move[1], coordinate];
+      return [move[0], move[1], play]; // return the coordinate
     } else {
-      this.attackRandom(board);
+      // generate a random move
+      const move = this.move();
+      if (!this.checkArray(this.previousMoves, move)) { 
+      // if (!this.previousMoves.includes(move)) { // doesnt work
+        this.previousMoves.push(move);
+        const play = board.receiveAttack(move[0], move[1]); // returns true or false
+
+        if (play) {
+          let possibleMoves = [
+            [move[0] + 1, move[1]],
+            [move[0] - 1, move[1]],
+            [move[0], move[1] + 1],
+            [move[0], move[1] - 1],
+          ];
+          possibleMoves.forEach((coord) => {
+            if (this.validMove(coord) && !this.checkArray(this.previousMoves, coord))  {
+              this.pendingMoves.push(coord);
+            }
+          });
+        }
+
+        return [move[0], move[1], play];
+      } else {
+        this.attackSmart(board);
+      }
     }
   }
 }

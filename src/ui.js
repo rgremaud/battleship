@@ -126,7 +126,7 @@ function newBoxEventListener(game, player, opponent, box, x, y) {
   }
 
   // trigger computer player's move
-  const play = player.attackRandom(opponentBoard);
+  const play = player.attackSmart(opponentBoard);
 
   const attackBox = document.getElementById(`${play[0]}${play[1]}playerOne`);
 
