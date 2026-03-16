@@ -126,9 +126,9 @@ function newBoxEventListener(game, player, opponent, box, x, y) {
   }
 
   // trigger computer player's move
-  const play = player.attackSmart(opponentBoard);
+  const play = player.attack(opponentBoard);
 
-  const attackBox = document.getElementById(`${play[0]}${play[1]}playerOne`);
+  const attackBox = document.getElementById(`${play[0]}${play[1]}playerOne`); // returning invalid at times
 
   if (play[2] === true) {
     attackBox.style.backgroundColor = "red";

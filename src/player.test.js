@@ -32,3 +32,23 @@ test("Valid move", () => {
   expect(computer.validMove([9, 10])).toBe(false);
 })
 
+test("Check Array", () => {
+  const computer = new Computer();
+
+  const arrayOne = [[1,2], [3, 4]];
+  const arrayTwo = [3,4];
+  const arrayThree = [5, 6];
+
+  expect(computer.checkArray(arrayOne, arrayTwo)).toBe(true);
+  expect(computer.checkArray(arrayOne, arrayThree)).toBe(false);
+});
+
+test("Build queue", () => {
+  const computer = new Computer();
+  // hit is at [4, 5] -> next moves = [5, 5], [3, 5] [4, 6] [4, 4]
+  computer.previousMoves = [[5, 5] [4, 4]];
+  // computer.queue = [[5, 5]]
+  computer.buildQueue([4, 5]);
+  
+  expect(computer.queue).toStrictEqual([3, 5], [4, 6]);
+})
