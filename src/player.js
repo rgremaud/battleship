@@ -23,7 +23,7 @@ export class Human extends Player {
 export class Computer extends Player {
   constructor(name) {
     super(name);
-    this.previousMoves = [];
+    this.moves = [];
     this.queue = [];
   }
 
@@ -45,10 +45,14 @@ export class Computer extends Player {
 
     // add valid moves that have not been visited and not currently in queue 
     moves.forEach((move) => {
-      if (this.validMove(move) && !this.checkArray(this.previousMoves, move) && !this.checkArray(this.queue, move)) {
+      if (this.validMove(move) && !this.checkArray(this.moves, move) && !this.checkArray(this.queue, move)) {
         this.queue.push(move);
       }
-    });
+    }
+)  }
+
+  validMove([x, y]) {
+    return 0 <= x && x <= 9 && 0 <= y && y <= 9;
   }
 
   attack(board) {
@@ -56,14 +60,13 @@ export class Computer extends Player {
     if (this.queue.length === 0) {
       const move = this.move();
 
-      if (!this.previousMoves.includes(`${move[0]}${move[1]}`) && this.validMove(move)) {
+      if (!this.moves.includes(`${move[0]}${move[1]}`) && this.validMove(move)) {
         const coordinate = board.receiveAttack(move[0], move[1]); // returns true or false
 
-        if (coordinate === true) {
-          // build all possible coordinates
-        }
-
-        this.previousMoves.push(`${move[0]}${move[1]}`);
+        // if (coordinate === true) {
+        //   // build all possible coordinates
+        // }
+        this.moves.push(`${move[0]}${move[1]}`);
 
         return [move[0], move[1], coordinate];
       } else {
@@ -73,65 +76,4 @@ export class Computer extends Player {
       // logic for if there are pending moves
     }
   }
-
-  validMove([x, y]) {
-    return 0 <= x && x <= 9 && 0 <= y && y <= 9;
-  }
-
-  checkArray(array, subArray) {
-    if (JSON.stringify(array).includes(JSON.stringify(subArray))) return true;
-    return false;
-  }
-
-  // attack(board) {
-  //   // Identify if there are any pending moves and play them
-  //   if (this.pendingMoves.length > 0) {
-  //     const move = this.pendingMoves[0]; // assigns next move up
-  //     this.previousMoves.push(move); // track the move
-  //     this.pendingMoves.shift(); // removes element at 0 index
-  //     const play = board.receiveAttack(move[0], move[1]); // play the move - returns true or false
-  //     // if hit update calculate all possible moves from hit and add them to queue
-  //     if (play) {
-  //       let possibleMoves = [
-  //         [move[0] + 1, move[1]],
-  //         [move[0] - 1, move[1]],
-  //         [move[0], move[1] + 1],
-  //         [move[0], move[1] - 1],
-  //       ];
-  //       possibleMoves.forEach((coord) => {
-  //         if (this.validMove(coord) && !this.checkArray(this.previousMoves, coord)) {
-  //           this.pendingMoves.push(coord);
-  //         }
-  //       });
-  //     }
-
-  //     return [move[0], move[1], play]; // return the coordinate
-  //   } else {
-  //     // generate a random move
-  //     const move = this.move();
-  //     if (this.validMove(move) && !this.checkArray(this.previousMoves, move) && !this.checkArray(this.previousMoves, move)) { 
-  //     // if (!this.previousMoves.includes(move)) { // doesnt work
-  //       this.previousMoves.push(move);
-  //       const play = board.receiveAttack(move[0], move[1]); // returns true or false
-
-  //       if (play) {
-  //         let possibleMoves = [
-  //           [move[0] + 1, move[1]],
-  //           [move[0] - 1, move[1]],
-  //           [move[0], move[1] + 1],
-  //           [move[0], move[1] - 1],
-  //         ];
-  //         possibleMoves.forEach((coord) => {
-  //           if (this.validMove(coord) && !this.checkArray(this.previousMoves, coord) && !this.checkArray(this.previousMoves, coord))  {
-  //             this.pendingMoves.push(coord);
-  //           }
-  //         });
-  //       }
-
-  //       return [move[0], move[1], play];
-  //     } else {
-  //       this.attackSmart(board);
-  //     }
-  //   }
-  // }
 }

@@ -27,35 +27,6 @@ function buildGrid(game, player, boardDivId) {
   }
 }
 
-// possibly remove
-// function boxEventListener(game, player, box, i, j) {
-//   const board = player.gameboard;
-
-//   // update box
-//   if (board.receiveAttack(i, 9 - j) === true) {
-//     box.style.backgroundColor = "red";
-//   } else {
-//     box.style.backgroundColor = "purple";
-//   }
-
-//   if (board.allSunk()) {
-//     alert("All your ships are sunk!");
-//   }
-
-//   // switch active player
-//   if (game.activePlayer === game.playerOne) {
-//     game.activePlayer = game.playerTwo;
-//   } else {
-//     game.activePlayer = game.playerOne;
-//   }
-
-//   // update active player
-//   const div = document.getElementById("activePlayer");
-//   div.textContent = `Active board: ${game.activePlayer.name}`;
-
-//   // doesnt work
-//   // box.removeEventListener('click', this.boxEventListener, false);
-// }
 
 export function buttonEvents() {
   const singlePlayer = document.getElementById("single");
