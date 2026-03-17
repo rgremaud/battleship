@@ -37,10 +37,10 @@ export class Computer extends Player {
   buildQueue([x, y]) {
     // take a coordinate that was a hit and return all eligible board spots around it
     const moves = [
-      [x+1, y],
-      [x-1, y],
-      [x, y+1],
-      [x, y-1]
+      [x + 1, y],
+      [x - 1, y],
+      [x, y + 1],
+      [x, y - 1]
     ]
 
     // add valid moves that have not been visited and not currently in queue 
@@ -53,33 +53,33 @@ export class Computer extends Player {
 
   attack(board) {
     // call the receiveAttack move for opp's board
-    if ( this.queue.length === 0 ) { 
-    const move = this.move();
+    if (this.queue.length === 0) {
+      const move = this.move();
 
-    if (!this.previousMoves.includes(move)) {
-      const coordinate = board.receiveAttack(move[0], move[1]); // returns true or false
+      if (!this.previousMoves.includes(`${move[0]}${move[1]}`) && this.validMove(move)) {
+        const coordinate = board.receiveAttack(move[0], move[1]); // returns true or false
 
-      if ( coordinate === true ) {
-        // build all possible coordinates
+        if (coordinate === true) {
+          // build all possible coordinates
+        }
+
+        this.previousMoves.push(`${move[0]}${move[1]}`);
+
+        return [move[0], move[1], coordinate];
+      } else {
+        this.attack(board);
       }
-
-      this.previousMoves.push(move);
-
-      return [move[0], move[1], coordinate];
     } else {
-      this.attack(board);
+      // logic for if there are pending moves
     }
-  } else {
-    // logic for if there are pending moves
-  }
   }
 
   validMove([x, y]) {
     return 0 <= x && x <= 9 && 0 <= y && y <= 9;
   }
 
-  checkArray(array, subArray){
-    if(JSON.stringify(array).includes(JSON.stringify(subArray))) return true;
+  checkArray(array, subArray) {
+    if (JSON.stringify(array).includes(JSON.stringify(subArray))) return true;
     return false;
   }
 
