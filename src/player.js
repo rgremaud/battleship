@@ -40,16 +40,20 @@ export class Computer extends Player {
       [x + 1, y],
       [x - 1, y],
       [x, y + 1],
-      [x, y - 1]
-    ]
+      [x, y - 1],
+    ];
 
-    // add valid moves that have not been visited and not currently in queue 
+    // add valid moves that have not been visited and not currently in queue
     moves.forEach((move) => {
-      if (this.validMove(move) && !this.checkArray(this.moves, move) && !this.checkArray(this.queue, move)) {
+      if (
+        this.validMove(move) &&
+        !this.checkArray(this.moves, move) &&
+        !this.checkArray(this.queue, move)
+      ) {
         this.queue.push(move);
       }
-    }
-)  }
+    });
+  }
 
   validMove([x, y]) {
     return 0 <= x && x <= 9 && 0 <= y && y <= 9;
@@ -57,23 +61,20 @@ export class Computer extends Player {
 
   attack(board) {
     // call the receiveAttack move for opp's board
-    if (this.queue.length === 0) {
-      const move = this.move();
+    // if (this.queue.length === 0) {
+    const move = this.move();
+    // const gameboard = board;
+    if ( this.validMove(move) ) {  
 
-      if (!this.moves.includes(`${move[0]}${move[1]}`) && this.validMove(move)) {
-        const coordinate = board.receiveAttack(move[0], move[1]); // returns true or false
+      const coordinate = board.receiveAttack(move[0], move[1]); // returns true or false
+      // if (coordinate === true) {
+      //   // build all possible coordinates
+      // }
+      this.moves.push(`${move[0]}${move[1]}`);
 
-        // if (coordinate === true) {
-        //   // build all possible coordinates
-        // }
-        this.moves.push(`${move[0]}${move[1]}`);
-
-        return [move[0], move[1], coordinate];
-      } else {
-        this.attack(board);
-      }
-    } else {
-      // logic for if there are pending moves
-    }
+      return [move[0], move[1], coordinate];
+      } // else {
+      //   this.attack(gameboard);
+      // }
   }
 }
