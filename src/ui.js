@@ -66,8 +66,8 @@ function addClickEvents(game) {
 
     boxes.forEach((box) => {
       box.addEventListener("click", () => {
-        newBoxEventListener(game, game.playerTwo, game.playerOne, box, box.id.charAt(0), box.id.charAt(1))
-      });
+        gridBoxClick(game, game.playerTwo, game.playerOne, box, box.id.charAt(0), box.id.charAt(1)) 
+      }, { once: true });
     });
     // add click events to only the playerTwo board
     /*
@@ -81,7 +81,7 @@ function addClickEvents(game) {
 }
 
 // new event listener
-function newBoxEventListener(game, player, opponent, box, x, y) {
+function gridBoxClick(game, player, opponent, box, x, y) {
   const board = player.gameboard;
   const opponentBoard = opponent.gameboard;
 
@@ -119,7 +119,6 @@ function newBoxEventListener(game, player, opponent, box, x, y) {
   // div.textContent = `Active board: ${game.activePlayer.name}`;
 
   // // doesnt work
-  // // box.removeEventListener('click', this.boxEventListener, false);
 }
 
 /*
