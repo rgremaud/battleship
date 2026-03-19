@@ -62,9 +62,17 @@ export class Computer extends Player {
   attack(board) {
     // call the receiveAttack move for opp's board
     // if (this.queue.length === 0) {
-    const move = this.move();
+    let move = this.move();
+    while (this.moves.includes(`${move[0]}${move[1]}`)) {
+      move = this.move();
+    }
+    // if (this.moves.includes(`${move[0]}${move[1]}`)) {
+    //   const gameboard = board
+    //   this.attack(board);
+    //   console.log("dupe move")
+    // }
     // const gameboard = board;
-    if ( this.validMove(move) ) {  
+    if (this.validMove(move)) {
 
       const coordinate = board.receiveAttack(move[0], move[1]); // returns true or false
       // if (coordinate === true) {
@@ -73,8 +81,8 @@ export class Computer extends Player {
       this.moves.push(`${move[0]}${move[1]}`);
 
       return [move[0], move[1], coordinate];
-      } // else {
-      //   this.attack(gameboard);
-      // }
+    } // else {
+    //   this.attack(gameboard);
+    // }
   }
 }

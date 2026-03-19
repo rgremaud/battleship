@@ -34,11 +34,11 @@ export function buttonEvents() {
 
   singlePlayer.addEventListener("click", () => {
     singlePlayerInit();
-  });
+  }, { once: true });
 
   twoPlayer.addEventListener("click", () => {
     alert("Yahoo!");
-  });
+  }, { once: true });
 }
 function singlePlayerInit() {
   const game = new Battleship("single");
@@ -66,7 +66,7 @@ function addClickEvents(game) {
 
     boxes.forEach((box) => {
       box.addEventListener("click", () => {
-        gridBoxClick(game, game.playerTwo, game.playerOne, box, box.id.charAt(0), box.id.charAt(1)) 
+        gridBoxClick(game, game.playerTwo, game.playerOne, box, box.id.charAt(0), box.id.charAt(1))
       }, { once: true });
     });
     // add click events to only the playerTwo board
