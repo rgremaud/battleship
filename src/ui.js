@@ -31,6 +31,7 @@ function buildGrid(game, player, boardDivId) {
 export function buttonEvents() {
   const singlePlayer = document.getElementById("single");
   const twoPlayer = document.getElementById("double");
+  const clear = document.getElementById("clear")
 
   singlePlayer.addEventListener("click", () => {
     singlePlayerInit();
@@ -39,6 +40,10 @@ export function buttonEvents() {
   twoPlayer.addEventListener("click", () => {
     alert("Yahoo!");
   }, { once: true });
+
+  clear.addEventListener("click", () => {
+    alert("You clicked me!")
+  })
 }
 function singlePlayerInit() {
   const game = new Battleship("single");
@@ -120,12 +125,3 @@ function gridBoxClick(game, player, opponent, box, x, y) {
 
   // // doesnt work
 }
-
-/*
-
-to do:
-
-Get single player init to work
-Remove the ability to click a box multiple times
-
-*/

@@ -35,7 +35,6 @@ export class Computer extends Player {
   }
 
   buildQueue([x, y]) {
-    // take a coordinate that was a hit and return all eligible board spots around it
     const moves = [
       [x + 1, y],
       [x - 1, y],
@@ -43,13 +42,8 @@ export class Computer extends Player {
       [x, y - 1],
     ];
 
-    // add valid moves that have not been visited and not currently in queue
     moves.forEach((move) => {
-      if (
-        this.validMove(move) &&
-        !this.checkArray(this.moves, move) &&
-        !this.checkArray(this.queue, move)
-      ) {
+      if (!this.moves.includes(`${move[0]}${move[1]}`) && this.validMove(move) ) {
         this.queue.push(move);
       }
     });
@@ -60,29 +54,25 @@ export class Computer extends Player {
   }
 
   attack(board) {
-    // call the receiveAttack move for opp's board
-    // if (this.queue.length === 0) {
     let move = this.move();
+
+    if (this.queue.length > 0) {
+      move = this.queue[0];
+      this.queue.shift();
+    }
+
     while (this.moves.includes(`${move[0]}${move[1]}`)) {
       move = this.move();
     }
-    // if (this.moves.includes(`${move[0]}${move[1]}`)) {
-    //   const gameboard = board
-    //   this.attack(board);
-    //   console.log("dupe move")
-    // }
-    // const gameboard = board;
+    
     if (this.validMove(move)) {
-
-      const coordinate = board.receiveAttack(move[0], move[1]); // returns true or false
-      // if (coordinate === true) {
-      //   // build all possible coordinates
-      // }
+      const coordinate = board.receiveAttack(move[0], move[1]);
+      if (coordinate === true) {
+        this.buildQueue(move);
+      }
       this.moves.push(`${move[0]}${move[1]}`);
 
       return [move[0], move[1], coordinate];
-    } // else {
-    //   this.attack(gameboard);
-    // }
+    }
   }
 }
