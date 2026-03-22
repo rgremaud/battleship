@@ -24,8 +24,8 @@ export class Gameboard {
         for (let i = 0; i < ship.length; i++) {
           this.board[x + i][y] = ship;
         }
-      } else if (orientation === "verticle") {
-        // verticle
+      } else if (orientation === "vertical") {
+        // vertical
         this.validMove(x, y - ship.length + 1);
 
         for (let i = 0; i < ship.length; i++) {

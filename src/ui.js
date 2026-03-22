@@ -60,7 +60,24 @@ function singlePlayerInit() {
   // add in funtion to add click event listeners only to the computer players board
   addClickEvents(game);
 
+  // add function to print computer players ship location for testing
+  computerShips(computerPlayer);
+
   humanPlayer.active = true;
+}
+
+function computerShips(player) {
+  const boardArray = player.gameboard.board;
+  
+  for (let i = 0; i <= 9; i++) {
+    for (let j =0; j <= 9; j++) {
+      const box = document.getElementById(`${i}${j}playerTwo`)
+
+      if ( boardArray[i][j] ) {
+        box.style.backgroundColor = "green";
+      }
+    }
+  }
 }
 
 function addClickEvents(game) {
