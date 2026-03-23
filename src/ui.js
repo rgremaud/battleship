@@ -53,7 +53,7 @@ function singlePlayerInit() {
 
   placeShips(humanPlayer);
   // placeShips(computerPlayer);
-  computerPlayer.placeShips();
+  computerPlayer.shipSetup();
 
   buildGrid(game, humanPlayer, "playerOne");
   buildGrid(game, computerPlayer, "playerTwo");
@@ -69,12 +69,12 @@ function singlePlayerInit() {
 
 function computerShips(player) {
   const boardArray = player.gameboard.board;
-  
+
   for (let i = 0; i <= 9; i++) {
-    for (let j =0; j <= 9; j++) {
+    for (let j = 0; j <= 9; j++) {
       const box = document.getElementById(`${i}${j}playerTwo`)
 
-      if ( boardArray[i][j] ) {
+      if (boardArray[i][j]) {
         box.style.backgroundColor = "green";
       }
     }

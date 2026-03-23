@@ -86,43 +86,59 @@ export class Computer extends Player {
     }
   }
 
-  placeShips() {
+  shipSetup() {
     this.ships.forEach((ship) => {
-      // placeShip(ship, x, y, orientation)
+      // set validPlacement flag to false
       let validPlacement = false;
 
       while (validPlacement === false) {
-        // set initial variables
-        let entry = this.coordinate();
-        let orientation = "";
+        // flip to true for testing
+        validPlacement = true;
 
-        // randomize an orientation
+        // create entry point and assign blank orientation
+
+        let entry = this.coordinate();
+        while (this.gameboard.board[entry[0]][entry[1]] !== null) {
+          entry = this.coordinate();
+        }
+        let orientation = "horizontal";
+
+        // randomize if the ship is horizontal or vertical placement
         const randomizer = Math.random();
-        
+        if (randomizer > 0.5) {
+          orientation = "vertical";
+        }
+
         const shipArray = [entry];
         // build array for all coordinates of ship
-        for (let i = 1; i <= ship.length; i++) {
+        for (let i = 1; i < ship.length; i++) {
           // horizontal if randomizer > 0.5 -- vertical if <= 0.5
           if (randomizer > 0.5) {
             // horizontal example: [0, 0]
             orientation = "horizontal";
-            shipArray.push([entry[0] + 1, entry[1]]);
+            shipArray.push([entry[0] + i, entry[1]]);
           } else {
             orientation = "vertical";
-            shipArray.push([entry[0], entry[1] + 1]);
+            shipArray.push([entry[0], entry[1] - i]);
           }
         }
 
         // test all of the shipArray coordinates for validMove and being null
         shipArray.forEach((el) => {
-          if (this.validMove(el) && this.gameboard.board[el[0]][el[1]] === null) {
-            validPlacement = true;
-            // place ship
-            this.gameboard.placeShip(ship, entry[0], entry[1], orientation)
-          } else {
+          if (
+            !this.validMove(el) ||
+            this.gameboard.board[el[0]][el[1]] !== null
+          ) {
             validPlacement = false;
           }
-        })
+        });
+
+        // place ship
+        // issue with ship placement on gameboard calculating the placement w/left to right and top/bottom when actual
+        // vertical placement is bottom to top
+        if (validPlacement === true) {
+          this.gameboard.placeShip(ship, entry[0], entry[1], orientation);
+        }
       }
     });
   }

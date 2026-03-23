@@ -7,7 +7,7 @@ export class Gameboard {
 
   validMove(x, y) {
     if (!(x >= 0 && x <= 9 && y >= 0 && y <= 9)) {
-      throw new Error("Coordinate is not valid");
+      throw new Error(`Coordinate is not valid: [${x}, ${y}]`);
     }
     return true;
   }
