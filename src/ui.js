@@ -52,7 +52,8 @@ function singlePlayerInit() {
   const computerPlayer = game.playerTwo;
 
   placeShips(humanPlayer);
-  placeShips(computerPlayer);
+  // placeShips(computerPlayer);
+  computerPlayer.placeShips();
 
   buildGrid(game, humanPlayer, "playerOne");
   buildGrid(game, computerPlayer, "playerTwo");

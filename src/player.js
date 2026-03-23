@@ -87,39 +87,42 @@ export class Computer extends Player {
   }
 
   placeShips() {
-    /*
-    randomize the placement of all ships for computer player
-    start w/largest ship and cycle through each ship
-
-    decide if ship will be placed horizontally or vertically
-    pick a random coordinate
-    calculate if there is enough room for ship to fit
-    place ship
-    */
     this.ships.forEach((ship) => {
-      // set initial variables
-      let entry = "";
-      let validPlacement = false;
-      let orientation = "";
       // placeShip(ship, x, y, orientation)
+      let validPlacement = false;
+
       while (validPlacement === false) {
-        entry = this.coordinate();
+        // set initial variables
+        let entry = this.coordinate();
+        let orientation = "";
 
         // randomize an orientation
         const randomizer = Math.random();
-        if (randomizer > 0.5) {
-          orientation = "horizontal";
-        } else {
-          orientation = "vertical";
+        
+        const shipArray = [entry];
+        // build array for all coordinates of ship
+        for (let i = 1; i <= ship.length; i++) {
+          // horizontal if randomizer > 0.5 -- vertical if <= 0.5
+          if (randomizer > 0.5) {
+            // horizontal example: [0, 0]
+            orientation = "horizontal";
+            shipArray.push([entry[0] + 1, entry[1]]);
+          } else {
+            orientation = "vertical";
+            shipArray.push([entry[0], entry[1] + 1]);
+          }
         }
 
-        // test end point for valid placement
-        if ( orientation === "horizontal") { 
-          // build array for all coordinates of ship
-          // test if each coordinate is valid and unoccupied on board
-          // if true then update validPlacement to true 
-        }
-
+        // test all of the shipArray coordinates for validMove and being null
+        shipArray.forEach((el) => {
+          if (this.validMove(el) && this.gameboard.board[el[0]][el[1]] === null) {
+            validPlacement = true;
+            // place ship
+            this.gameboard.placeShip(ship, entry[0], entry[1], orientation)
+          } else {
+            validPlacement = false;
+          }
+        })
       }
     });
   }
