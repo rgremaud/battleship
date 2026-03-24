@@ -35,10 +35,7 @@ export class Computer extends Player {
   }
 
   coordinate() {
-    return [
-      Math.round(Math.random() * (9 - 0) + 0),
-      Math.round(Math.random() * (9 - 0) + 0),
-    ];
+    return [Math.round(Math.random() * 9), Math.round(Math.random() * 9)];
   }
 
   buildQueue([x, y]) {

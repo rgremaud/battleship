@@ -1,8 +1,16 @@
 #game {
   display: flex;
-  flex: row;
+  flex-direction: row;
 }
 
+.shipYard { 
+  width: 500px;
+  height: 100px;
+  border: 1px solid red;
+  display: flex;
+  margin: 10px;
+  flex-direction: row;
+}
 .board {
   width: 500px;
   height: 500px;

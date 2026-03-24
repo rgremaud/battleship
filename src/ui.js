@@ -1,13 +1,13 @@
 import { Battleship } from "./battleship";
 
-function placeShips(player) {
-  // player board - Remove after done w/testing
-  player.gameboard.placeShip(player.ship5, 0, 0, "horizontal");
-  player.gameboard.placeShip(player.ship4, 0, 1, "horizontal");
-  player.gameboard.placeShip(player.ship3v1, 0, 2, "horizontal");
-  player.gameboard.placeShip(player.ship3v2, 0, 3, "horizontal");
-  player.gameboard.placeShip(player.ship2, 0, 4, "horizontal");
-}
+// function placeShips(player) {
+//   // player board - Remove after done w/testing
+//   player.gameboard.placeShip(player.ship5, 0, 0, "horizontal");
+//   player.gameboard.placeShip(player.ship4, 0, 1, "horizontal");
+//   player.gameboard.placeShip(player.ship3v1, 0, 2, "horizontal");
+//   player.gameboard.placeShip(player.ship3v2, 0, 3, "horizontal");
+//   player.gameboard.placeShip(player.ship2, 0, 4, "horizontal");
+// }
 
 // build grid boxes
 function buildGrid(game, player, boardDivId) {
@@ -27,38 +27,53 @@ function buildGrid(game, player, boardDivId) {
   }
 }
 
-
 export function buttonEvents() {
   const singlePlayer = document.getElementById("single");
   const twoPlayer = document.getElementById("double");
-  const clear = document.getElementById("clear")
+  const clear = document.getElementById("clear");
 
-  singlePlayer.addEventListener("click", () => {
-    singlePlayerInit();
-  }, { once: true });
+  singlePlayer.addEventListener(
+    "click",
+    () => {
+      singlePlayerInit();
+    },
+    { once: true },
+  );
 
-  twoPlayer.addEventListener("click", () => {
-    alert("Yahoo!");
-  }, { once: true });
+  twoPlayer.addEventListener(
+    "click",
+    () => {
+      alert("Yahoo!");
+    },
+    { once: true },
+  );
 
   clear.addEventListener("click", () => {
-    alert("You clicked me!")
-  })
+    alert("You clicked me!");
+  });
 }
+
+function shipButtonClicks(player) {
+  // assign the button ids to their respective ships and log them
+  const ship = document.getElementById("ship5");
+  ship.addEventListener("click", () => {
+    console.log(player.ship5);
+  });
+}
+
 function singlePlayerInit() {
   const game = new Battleship("single");
 
   const humanPlayer = game.playerOne;
   const computerPlayer = game.playerTwo;
 
-  placeShips(humanPlayer);
-  // placeShips(computerPlayer);
+  // placeShips(humanPlayer);
+  shipButtonClicks(humanPlayer);
   computerPlayer.shipSetup();
 
   buildGrid(game, humanPlayer, "playerOne");
   buildGrid(game, computerPlayer, "playerTwo");
 
-  // add in funtion to add click event listeners only to the computer players board
   addClickEvents(game);
 
   // add function to print computer players ship location for testing
@@ -72,7 +87,7 @@ function computerShips(player) {
 
   for (let i = 0; i <= 9; i++) {
     for (let j = 0; j <= 9; j++) {
-      const box = document.getElementById(`${i}${j}playerTwo`)
+      const box = document.getElementById(`${i}${j}playerTwo`);
 
       if (boardArray[i][j]) {
         box.style.backgroundColor = "green";
@@ -88,9 +103,20 @@ function addClickEvents(game) {
     const boxes = document.querySelectorAll(".gridBox-playerTwo");
 
     boxes.forEach((box) => {
-      box.addEventListener("click", () => {
-        gridBoxClick(game, game.playerTwo, game.playerOne, box, box.id.charAt(0), box.id.charAt(1))
-      }, { once: true });
+      box.addEventListener(
+        "click",
+        () => {
+          gridBoxClick(
+            game,
+            game.playerTwo,
+            game.playerOne,
+            box,
+            box.id.charAt(0),
+            box.id.charAt(1),
+          );
+        },
+        { once: true },
+      );
     });
     // add click events to only the playerTwo board
     /*
