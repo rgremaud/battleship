@@ -53,11 +53,11 @@ export function buttonEvents() {
   });
 }
 
-function shipButtonClicks(player) {
+function shipButtons(player) {
   // assign the button ids to their respective ships and log them
   const ship = document.getElementById("ship5");
   ship.addEventListener("click", () => {
-    console.log(player.ship5);
+    console.log(`You want to place ship 5 for ${player.name}`);
   });
 }
 
@@ -68,7 +68,7 @@ function singlePlayerInit() {
   const computerPlayer = game.playerTwo;
 
   // placeShips(humanPlayer);
-  shipButtonClicks(humanPlayer);
+  shipButtons(humanPlayer);
   computerPlayer.shipSetup();
 
   buildGrid(game, humanPlayer, "playerOne");

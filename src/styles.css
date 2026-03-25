@@ -5,12 +5,21 @@
 
 .shipYard { 
   width: 500px;
-  height: 100px;
+  height: 175px;
   border: 1px solid red;
   display: flex;
   margin: 10px;
   flex-direction: row;
 }
+
+form { 
+  width: 20%;
+}
+
+input {
+  width: 75%
+}
+
 .board {
   width: 500px;
   height: 500px;
