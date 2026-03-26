@@ -54,10 +54,17 @@ export function buttonEvents() {
 }
 
 function shipButtons(player) {
-  // assign the button ids to their respective ships and log them
   const ship = document.getElementById("ship5");
   ship.addEventListener("click", () => {
-    console.log(`You want to place ship 5 for ${player.name}`);
+    event.preventDefault();
+    const x = document.getElementById("xCoord");
+    const y = document.getElementById("yCoord");
+    const orientation = document.getElementById("orientation");
+
+    // document ship type being requested and create it 
+    
+    player.gameboard.placeShip(player.ship5, Number(x.value), Number(y.value), orientation.value)
+    displayShips(player, "One")
   });
 }
 
@@ -77,17 +84,17 @@ function singlePlayerInit() {
   addClickEvents(game);
 
   // add function to print computer players ship location for testing
-  computerShips(computerPlayer);
+  displayShips(computerPlayer, "Two");
 
   humanPlayer.active = true;
 }
 
-function computerShips(player) {
+function displayShips(player, number) {
   const boardArray = player.gameboard.board;
 
   for (let i = 0; i <= 9; i++) {
     for (let j = 0; j <= 9; j++) {
-      const box = document.getElementById(`${i}${j}playerTwo`);
+      const box = document.getElementById(`${i}${j}player${number}`);
 
       if (boardArray[i][j]) {
         box.style.backgroundColor = "green";
