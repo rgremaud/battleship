@@ -5,11 +5,23 @@
 
 .shipYard { 
   width: 500px;
-  height: 225px;
+  height: 265px;
   border: 1px solid red;
   display: flex;
   margin: 10px;
   flex-direction: row;
+}
+
+.ship {
+  display: flex;
+  flex-direction: column;
+}
+
+.shipBox {
+  height: 50px;
+  width: 50px;
+  margin: 1px;
+  background-color: gray;
 }
 
 form { 

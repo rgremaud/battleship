@@ -53,19 +53,9 @@ export function buttonEvents() {
   });
 }
 
-function shipButtons(player) {
-  const ship = document.getElementById("ship5");
-  ship.addEventListener("click", () => {
-    event.preventDefault();
-    const x = document.getElementById("xCoord");
-    const y = document.getElementById("yCoord");
-    const orientation = document.getElementById("orientation");
-
-    // document ship type being requested and create it 
-    
-    player.gameboard.placeShip(player.ship5, Number(x.value), Number(y.value), orientation.value)
-    displayShips(player, "One")
-  });
+function placeShips() {
+  // prompt user to place ships one by one
+  // include a horizontal or vertical button under the ship section
 }
 
 function singlePlayerInit() {
@@ -74,8 +64,8 @@ function singlePlayerInit() {
   const humanPlayer = game.playerOne;
   const computerPlayer = game.playerTwo;
 
-  // placeShips(humanPlayer);
-  shipButtons(humanPlayer);
+  // prompt human player to place all their ships for gave to start
+  // placeShips(humanPlayer); 
   computerPlayer.shipSetup();
 
   buildGrid(game, humanPlayer, "playerOne");

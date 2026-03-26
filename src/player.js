@@ -5,39 +5,6 @@ class Player {
   constructor(name) {
     this.gameboard = new Gameboard();
     this.name = name;
-    // testing out only creating these for computer player and using button clicks to build human player ships
-    // this.ship5 = new Ship(5);
-    // this.ship4 = new Ship(4);
-    // this.ship3v1 = new Ship(3);
-    // this.ship3v2 = new Ship(3);
-    // this.ship2 = new Ship(2);
-    // this.ships = [
-    //   this.ship5,
-    //   this.ship4,
-    //   this.ship3v1,
-    //   this.ship3v2,
-    //   this.ship2,
-    // ];
-    this.active = false; // possibly remove
-  }
-}
-
-export class Human extends Player {
-  constructor(name) {
-    super(name);
-    this.ship5 = "";
-    this.ship4 = "";
-    this.ship3v1 = "";
-    this.ship3v2 = "";
-    this.ship2 = "";
-    this.ships = [];
-    this.moves = [];
-  }
-}
-
-export class Computer extends Player {
-  constructor(name) {
-    super(name);
     this.ship5 = new Ship(5);
     this.ship4 = new Ship(4);
     this.ship3v1 = new Ship(3);
@@ -50,6 +17,19 @@ export class Computer extends Player {
       this.ship3v2,
       this.ship2,
     ];
+    this.active = false; // possibly remove
+  }
+}
+
+export class Human extends Player {
+  constructor(name) {
+    super(name);
+  }
+}
+
+export class Computer extends Player {
+  constructor(name) {
+    super(name);  
     this.moves = [];
     this.queue = [];
   }

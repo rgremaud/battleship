@@ -17,23 +17,37 @@
   <div id="activePlayer"></div>
   <div id="game">
     <div class="fullboard" id="p1">
-      <div class="shipYard">   
-        <form action="">Ship 5<br>
-          <label for="xCoord">x-coordinate: </label><br>
-          <input type="number" id="xCoord" name="xCoord"><br>
-          <label for="yCoord">y-coordinate: </label><br>
-          <input type="number" id="yCoord" name="yCoord"><br>
-          <label for="orientation">Orientation: </label>
-          <select name="orientation" id="orientation">
-            <option value="horizontal">Horizontal</option>
-            <option value="vertical">Vertical</option>
-          </select>
-          <button id="ship5" type="submit">Place ship!</button>
-        </form>
-        <form action="">Ship 4</form>
-        <form action="">Ship 3v1</form>
-        <form action="">Ship 3v2</form>
-        <form action="">Ship 2</form>
+      <div class="shipYard">
+        <div class="ship">
+          <div class="shipBox"></div>
+          <div class="shipBox"></div>
+          <div class="shipBox"></div>
+          <div class="shipBox"></div>
+          <div class="shipBox"></div>
+        </div>
+        <div class="ship">
+          <div class="shipBox"></div>
+          <div class="shipBox"></div>
+          <div class="shipBox"></div>
+          <div class="shipBox"></div>
+        </div>
+      <div class="ship">
+        <div class="shipBox"></div>
+        <div class="shipBox"></div>
+        <div class="shipBox"></div>
+      </div>
+       <div class="ship">
+        <div class="shipBox"></div>
+        <div class="shipBox"></div>
+        <div class="shipBox"></div>
+      </div>
+      <div class="ship">
+        <div class="shipBox"></div>
+        <div class="shipBox"></div>
+      </div>  
+      <div>
+          <button>Horizontal</button><button>Vertical</button>   
+      </div>
       </div>
       <div class="board" id="playerOne"></div>
     </div>
