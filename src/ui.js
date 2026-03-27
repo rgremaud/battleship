@@ -44,13 +44,38 @@ export function buttonEvents() {
   });
 }
 
-function placeShips(player) {
-/*
-  shipyard has ship class - ids are p1s5, p1s4, p1s3v1, p1s3v2, p1s2
-  player.ships is array for all ships
-  document.querySelectorAll()
-  assign a variable to a counter
-*/
+function shipYard(player) {
+  /*
+    shipyard has ship class - ids are p1ship1, p1ship2, p1ship3, p1ship4, p1ship5
+    player.ships is array for all ships
+    document.querySelectorAll()
+    assign a variable to a counter
+  */
+  let shipCount = 0;
+  const shipDivs = document.querySelectorAll(".ship")
+
+  let activeShip = shipDivs[0];
+  shipHighlight(activeShip, "cyan");
+  // add a click event to all of the player one grid boxes that increases ship count by 1
+  const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`)
+  gridBoxes.forEach((box) => {
+    box.addEventListener("click", () => {
+      shipCount += 1
+      shipDivs.forEach((ship) => {
+        shipHighlight(ship, "gray")
+      })
+      shipHighlight(shipDivs[shipCount], "cyan")
+    })
+  })
+}
+
+function shipHighlight(ship, color) {
+
+  for (let i = 0; i < ship.children.length; i++) {
+    let child = ship.children[i];
+
+    child.style.backgroundColor = color
+  }
 }
 
 function singlePlayerInit() {
@@ -60,13 +85,13 @@ function singlePlayerInit() {
   const computerPlayer = game.playerTwo;
 
   // prompt human player to place all their ships for gave to start
-  placeShips(humanPlayer); 
   computerPlayer.shipSetup();
 
   buildGrid(game, humanPlayer, "playerOne");
   buildGrid(game, computerPlayer, "playerTwo");
 
   addClickEvents(game);
+  shipYard(humanPlayer);
 
   // add function to print computer players ship location for testing
   displayShips(computerPlayer);
