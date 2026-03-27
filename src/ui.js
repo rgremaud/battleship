@@ -1,14 +1,5 @@
 import { Battleship } from "./battleship";
 
-// function placeShips(player) {
-//   // player board - Remove after done w/testing
-//   player.gameboard.placeShip(player.ship5, 0, 0, "horizontal");
-//   player.gameboard.placeShip(player.ship4, 0, 1, "horizontal");
-//   player.gameboard.placeShip(player.ship3v1, 0, 2, "horizontal");
-//   player.gameboard.placeShip(player.ship3v2, 0, 3, "horizontal");
-//   player.gameboard.placeShip(player.ship2, 0, 4, "horizontal");
-// }
-
 // build grid boxes
 function buildGrid(game, player, boardDivId) {
   const playerBoard = document.getElementById(boardDivId);
@@ -53,9 +44,13 @@ export function buttonEvents() {
   });
 }
 
-function placeShips() {
-  // prompt user to place ships one by one
-  // include a horizontal or vertical button under the ship section
+function placeShips(player) {
+/*
+  shipyard has ship class - ids are p1s5, p1s4, p1s3v1, p1s3v2, p1s2
+  player.ships is array for all ships
+  document.querySelectorAll()
+  assign a variable to a counter
+*/
 }
 
 function singlePlayerInit() {
@@ -65,7 +60,7 @@ function singlePlayerInit() {
   const computerPlayer = game.playerTwo;
 
   // prompt human player to place all their ships for gave to start
-  // placeShips(humanPlayer); 
+  placeShips(humanPlayer); 
   computerPlayer.shipSetup();
 
   buildGrid(game, humanPlayer, "playerOne");
@@ -74,17 +69,17 @@ function singlePlayerInit() {
   addClickEvents(game);
 
   // add function to print computer players ship location for testing
-  displayShips(computerPlayer, "Two");
+  displayShips(computerPlayer);
 
   humanPlayer.active = true;
 }
 
-function displayShips(player, number) {
+function displayShips(player) {
   const boardArray = player.gameboard.board;
 
   for (let i = 0; i <= 9; i++) {
     for (let j = 0; j <= 9; j++) {
-      const box = document.getElementById(`${i}${j}player${number}`);
+      const box = document.getElementById(`${i}${j}${player.name}`);
 
       if (boardArray[i][j]) {
         box.style.backgroundColor = "green";
