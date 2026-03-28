@@ -52,29 +52,39 @@ function shipYard(player) {
     assign a variable to a counter
   */
   let shipCount = 0;
-  const shipDivs = document.querySelectorAll(".ship")
-
+  const shipDivs = document.querySelectorAll(".ship");
   let activeShip = shipDivs[0];
   shipHighlight(activeShip, "cyan");
+
+  const shipObjects = player.ships;
+
   // add a click event to all of the player one grid boxes that increases ship count by 1
-  const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`)
+  const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`);
   gridBoxes.forEach((box) => {
     box.addEventListener("click", () => {
-      shipCount += 1
+      // throws an error when you have highlighted all ships and click a gain
+      shipCount += 1;
       shipDivs.forEach((ship) => {
-        shipHighlight(ship, "gray")
-      })
-      shipHighlight(shipDivs[shipCount], "cyan")
-    })
-  })
+        shipHighlight(ship, "gray");
+      });
+      shipHighlight(shipDivs[shipCount], "cyan");
+
+      player.gameboard.placeShip(
+        shipObjects[0],
+        Number(box.id.charAt(0)),
+        Number(box.id.charAt(1)),
+        "horizontal",
+      );
+      displayShips(player);
+    });
+  });
 }
 
 function shipHighlight(ship, color) {
-
   for (let i = 0; i < ship.children.length; i++) {
     let child = ship.children[i];
 
-    child.style.backgroundColor = color
+    child.style.backgroundColor = color;
   }
 }
 

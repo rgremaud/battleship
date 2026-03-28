@@ -29,7 +29,7 @@ export class Human extends Player {
 
 export class Computer extends Player {
   constructor(name) {
-    super(name);  
+    super(name);
     this.moves = [];
     this.queue = [];
   }

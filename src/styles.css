@@ -3,7 +3,7 @@
   flex-direction: row;
 }
 
-.shipYard { 
+.shipYard {
   width: 500px;
   height: 265px;
   border: 1px solid red;
@@ -24,12 +24,12 @@
   background-color: gray;
 }
 
-form { 
+form {
   width: 20%;
 }
 
 input {
-  width: 75%
+  width: 75%;
 }
 
 .board {

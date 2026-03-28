@@ -26,19 +26,24 @@ test("Computer move", () => {
 test("Valid move", () => {
   const computer = new Computer();
 
-  for(let i = 0; i <= 100; i++ ) {
-    expect(computer.validMove([
-      Math.round(Math.random() * (9 - 0) + 0),
-      Math.round(Math.random() * (9 - 0) + 0),
-    ])).toBe(true);
-  };
-})
+  for (let i = 0; i <= 100; i++) {
+    expect(
+      computer.validMove([
+        Math.round(Math.random() * (9 - 0) + 0),
+        Math.round(Math.random() * (9 - 0) + 0),
+      ]),
+    ).toBe(true);
+  }
+});
 
 test("Build queue", () => {
   const computer = new Computer();
   // hit is at [4, 5] -> next moves = [5, 5], [3, 5] [4, 6] [4, 4]
   computer.moves = ["55", "44"];
-  
+
   computer.buildQueue([4, 5]);
-  expect(computer.queue).toStrictEqual([[3, 5], [4, 6]]);
-})
+  expect(computer.queue).toStrictEqual([
+    [3, 5],
+    [4, 6],
+  ]);
+});
