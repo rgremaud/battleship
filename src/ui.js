@@ -45,19 +45,12 @@ export function buttonEvents() {
 }
 
 function shipYard(player) {
-  /*
-    shipyard has ship class - ids are p1ship1, p1ship2, p1ship3, p1ship4, p1ship5
-    player.ships is array for all ships
-    document.querySelectorAll()
-    assign a variable to a counter
-  */
-  let shipCount = 0;
   const shipDivs = document.querySelectorAll(".ship");
-  let activeShip = shipDivs[0];
-  shipHighlight(activeShip, "cyan");
+  let shipCount = 0;
+  shipHighlight(shipDivs[shipCount], "cyan");
 
   const shipObjects = player.ships;
-
+  let activeShip = shipObjects[0];
   // add a click event to all of the player one grid boxes that increases ship count by 1
   const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`);
   gridBoxes.forEach((box) => {
@@ -67,15 +60,16 @@ function shipYard(player) {
       shipDivs.forEach((ship) => {
         shipHighlight(ship, "gray");
       });
-      shipHighlight(shipDivs[shipCount], "cyan");
+      if ( shipCount <= 4) { shipHighlight(shipDivs[shipCount], "cyan"); }
 
       player.gameboard.placeShip(
-        shipObjects[0],
+        activeShip,
         Number(box.id.charAt(0)),
         Number(box.id.charAt(1)),
         "horizontal",
       );
       displayShips(player);
+      activeShip = shipObjects[shipCount]
     });
   });
 }
