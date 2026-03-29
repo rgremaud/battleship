@@ -34,23 +34,45 @@ export function buttonEvents() {
   twoPlayer.addEventListener(
     "click",
     () => {
-      alert("Yahoo!");
+      alert("This button doesnt work yet!");
     },
     { once: true },
   );
 
   clear.addEventListener("click", () => {
-    alert("You clicked me!");
+    alert("You clicked me! I don't do anything yet!");
   });
 }
 
-function shipYard(player) {
+function shipYardActions(player) {
+  // set orientation click events
+  let shipOrientation = "horizontal"
+
+  const horizontalButton = document.getElementById(`${player.name}Horizontal`);
+  horizontalButton.style.backgroundColor = "cyan"
+  const verticalButton = document.getElementById(`${player.name}Vertical`);
+
+  horizontalButton.addEventListener("click", () => {
+    shipOrientation = "horizontal";
+    horizontalButton.style.backgroundColor = "cyan";
+    verticalButton.style.backgroundColor = "gray";
+  })
+
+  verticalButton.addEventListener("click", () => {
+    shipOrientation = "vertical";
+
+    horizontalButton.style.backgroundColor = "gray";
+    verticalButton.style.backgroundColor = "cyan";
+  })
+  
+  // set ship variables
   const shipDivs = document.querySelectorAll(".ship");
   let shipCount = 0;
   shipHighlight(shipDivs[shipCount], "cyan");
 
   const shipObjects = player.ships;
   let activeShip = shipObjects[0];
+
   // add a click event to all of the player one grid boxes that increases ship count by 1
   const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`);
   gridBoxes.forEach((box) => {
@@ -62,11 +84,12 @@ function shipYard(player) {
       });
       if ( shipCount <= 4) { shipHighlight(shipDivs[shipCount], "cyan"); }
 
+      // need to add logic to utilize invalid move notification when placing ship
       player.gameboard.placeShip(
         activeShip,
         Number(box.id.charAt(0)),
         Number(box.id.charAt(1)),
-        "horizontal",
+        shipOrientation
       );
       displayShips(player);
       activeShip = shipObjects[shipCount]
@@ -95,10 +118,7 @@ function singlePlayerInit() {
   buildGrid(game, computerPlayer, "playerTwo");
 
   addClickEvents(game);
-  shipYard(humanPlayer);
-
-  // add function to print computer players ship location for testing
-  displayShips(computerPlayer);
+  shipYardActions(humanPlayer);
 
   humanPlayer.active = true;
 }

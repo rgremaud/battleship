@@ -34,6 +34,7 @@ export class Gameboard {
       }
     } catch (e) {
       console.error(e.message);
+      return false;
     }
   }
 

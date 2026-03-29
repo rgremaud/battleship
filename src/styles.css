@@ -1,15 +1,26 @@
 #game {
   display: flex;
+}
+
+.fullBoard { 
+  display: flex;
   flex-direction: row;
+  width: 50%;
+  flex-wrap: nowrap;
 }
 
 .shipYard {
-  width: 500px;
-  height: 265px;
+  height: 50%;
   border: 1px solid red;
   display: flex;
   margin: 10px;
-  flex-direction: row;
+  flex-direction: column;
+  width: 10vw;
+}
+
+.allShips { 
+  display: flex;
+  flex: row;
 }
 
 .ship {
@@ -18,8 +29,8 @@
 }
 
 .shipBox {
-  height: 50px;
-  width: 50px;
+  height: 1vw;
+  width: 1vw;
   margin: 1px;
   background-color: gray;
 }
