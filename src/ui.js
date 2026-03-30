@@ -1,6 +1,5 @@
 import { Battleship } from "./battleship";
 
-// build grid boxes
 function buildGrid(game, player, boardDivId) {
   const playerBoard = document.getElementById(boardDivId);
   for (let i = 0; i <= 9; i++) {
@@ -22,11 +21,13 @@ export function buttonEvents() {
   const singlePlayer = document.getElementById("single");
   const twoPlayer = document.getElementById("double");
   const clear = document.getElementById("clear");
+  const console = document.getElementById("console")
 
   singlePlayer.addEventListener(
     "click",
     () => {
       singlePlayerInit();
+      console.textContent = "Please place your ships!"
     },
     { once: true },
   );
@@ -46,25 +47,26 @@ export function buttonEvents() {
 
 function shipYardActions(player) {
   // set orientation click events
-  let shipOrientation = "horizontal"
+  let shipOrientation = "horizontal";
 
   const horizontalButton = document.getElementById(`${player.name}Horizontal`);
-  horizontalButton.style.backgroundColor = "cyan"
+  horizontalButton.style.backgroundColor = "cyan";
   const verticalButton = document.getElementById(`${player.name}Vertical`);
+  const console = document.getElementById("console")
 
   horizontalButton.addEventListener("click", () => {
     shipOrientation = "horizontal";
     horizontalButton.style.backgroundColor = "cyan";
     verticalButton.style.backgroundColor = "gray";
-  })
+  });
 
   verticalButton.addEventListener("click", () => {
     shipOrientation = "vertical";
 
     horizontalButton.style.backgroundColor = "gray";
     verticalButton.style.backgroundColor = "cyan";
-  })
-  
+  });
+
   // set ship variables
   const shipDivs = document.querySelectorAll(".ship");
   let shipCount = 0;
@@ -78,21 +80,35 @@ function shipYardActions(player) {
   gridBoxes.forEach((box) => {
     box.addEventListener("click", () => {
       // throws an error when you have highlighted all ships and click a gain
-      shipCount += 1;
-      shipDivs.forEach((ship) => {
-        shipHighlight(ship, "gray");
-      });
-      if ( shipCount <= 4) { shipHighlight(shipDivs[shipCount], "cyan"); }
+      if (
+        player.gameboard.placeShip(
+          activeShip,
+          Number(box.id.charAt(0)),
+          Number(box.id.charAt(1)),
+          shipOrientation,
+        ) !== "error"
+      ) {
+        shipCount += 1;
+        shipDivs.forEach((ship) => {
+          shipHighlight(ship, "gray");
+        });
+        if (shipCount <= 4) {
+          shipHighlight(shipDivs[shipCount], "cyan");
+        }
 
-      // need to add logic to utilize invalid move notification when placing ship
-      player.gameboard.placeShip(
-        activeShip,
-        Number(box.id.charAt(0)),
-        Number(box.id.charAt(1)),
-        shipOrientation
-      );
-      displayShips(player);
-      activeShip = shipObjects[shipCount]
+        // need to add logic to utilize invalid move notification when placing ship
+        player.gameboard.placeShip(
+          activeShip,
+          Number(box.id.charAt(0)),
+          Number(box.id.charAt(1)),
+          shipOrientation,
+        );
+        displayShips(player);
+        if ( activeShip.length === 2 ) { 
+          console.textContent = "All ships placed.  Please fire your first missle!"
+        }
+        activeShip = shipObjects[shipCount];
+      }
     });
   });
 }

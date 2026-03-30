@@ -85,14 +85,10 @@ export class Computer extends Player {
 
   shipSetup() {
     this.ships.forEach((ship) => {
-      // set validPlacement flag to false
       let validPlacement = false;
 
       while (validPlacement === false) {
-        // flip to true for testing
         validPlacement = true;
-
-        // create entry point and assign blank orientation
 
         let entry = this.coordinate();
         while (this.gameboard.board[entry[0]][entry[1]] !== null) {
@@ -100,27 +96,20 @@ export class Computer extends Player {
         }
         let orientation = "horizontal";
 
-        // randomize if the ship is horizontal or vertical placement
         const randomizer = Math.random();
         if (randomizer > 0.5) {
           orientation = "vertical";
         }
 
         const shipArray = [entry];
-        // build array for all coordinates of ship
         for (let i = 1; i < ship.length; i++) {
-          // horizontal if randomizer > 0.5 -- vertical if <= 0.5
-          if (randomizer > 0.5) {
-            // horizontal example: [0, 0]
-            orientation = "horizontal";
+          if ( orientation === "horizontal" ) {
             shipArray.push([entry[0] + i, entry[1]]);
           } else {
-            orientation = "vertical";
             shipArray.push([entry[0], entry[1] - i]);
           }
         }
 
-        // test all of the shipArray coordinates for validMove and being null
         shipArray.forEach((el) => {
           if (
             !this.validMove(el) ||
@@ -130,9 +119,6 @@ export class Computer extends Player {
           }
         });
 
-        // place ship
-        // issue with ship placement on gameboard calculating the placement w/left to right and top/bottom when actual
-        // vertical placement is bottom to top
         if (validPlacement === true) {
           this.gameboard.placeShip(ship, entry[0], entry[1], orientation);
         }

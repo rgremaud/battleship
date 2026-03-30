@@ -14,18 +14,14 @@ export class Gameboard {
 
   placeShip(ship, x, y, orientation) {
     try {
-      // test valid move for entry point
       this.validMove(x, y);
-      // calculate entry point for ships final coordinate
       if (orientation === "horizontal") {
-        // horizontal
         this.validMove(x + ship.length - 1, y);
 
         for (let i = 0; i < ship.length; i++) {
           this.board[x + i][y] = ship;
         }
       } else if (orientation === "vertical") {
-        // vertical
         this.validMove(x, y - ship.length + 1);
 
         for (let i = 0; i < ship.length; i++) {
@@ -34,18 +30,16 @@ export class Gameboard {
       }
     } catch (e) {
       console.error(e.message);
-      return false;
+      return "error";
     }
   }
 
   receiveAttack(x, y) {
-    // recieves an attack and sends it to the appropriate ship if value is non-null
     if (this.board[x][y]) {
       this.board[x][y].hit();
       if (this.board[x][y].sunk === true) this.sunkShips += 1;
       return true;
     } else {
-      // push coordinate to missed hits
       this.missed.push([x, y]);
       return false;
     }
