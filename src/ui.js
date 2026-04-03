@@ -1,6 +1,6 @@
 import { Battleship } from "./battleship";
 
-function buildGrid(game, player, boardDivId) {
+function buildGrid(player, boardDivId) {
   const playerBoard = document.getElementById(boardDivId);
   for (let i = 0; i <= 9; i++) {
     const column = document.createElement("div");
@@ -79,7 +79,7 @@ function shipYardActions(player) {
   const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`);
   gridBoxes.forEach((box) => {
     box.addEventListener("click", () => {
-      // throws an error when you have highlighted all ships and click a gain
+      // throws an error when you have highlighted all ships and click again
       if (
         player.gameboard.placeShip(
           activeShip,
@@ -124,20 +124,23 @@ function shipHighlight(ship, color) {
 function singlePlayerInit() {
   const game = new Battleship("single");
 
-  const humanPlayer = game.playerOne;
-  const computerPlayer = game.playerTwo;
-
   // prompt human player to place all their ships for gave to start
-  computerPlayer.shipSetup();
+  game.playerTwo.shipSetup();
 
-  buildGrid(game, humanPlayer, "playerOne");
-  buildGrid(game, computerPlayer, "playerTwo");
+  buildGrid(game.playerOne, "playerOne");
+  buildGrid(game.playerTwo, "playerTwo");
 
   addClickEvents(game);
-  shipYardActions(humanPlayer);
+  shipYardActions(game.playerOne);
 
-  humanPlayer.active = true;
+  game.playerOne.active = true;
 }
+
+// function doublePlayerInit() {
+//   const game = new Battleship("double");
+
+  
+// }
 
 function displayShips(player) {
   const boardArray = player.gameboard.board;
@@ -154,8 +157,6 @@ function displayShips(player) {
 }
 
 function addClickEvents(game) {
-  // accept board as input
-  // if game.type = single
   if (game.type === "single") {
     const boxes = document.querySelectorAll(".gridBox-playerTwo");
 
@@ -164,7 +165,6 @@ function addClickEvents(game) {
         "click",
         () => {
           gridBoxClick(
-            game,
             game.playerTwo,
             game.playerOne,
             box,
@@ -175,21 +175,13 @@ function addClickEvents(game) {
         { once: true },
       );
     });
-    // add click events to only the playerTwo board
-    /*
-    const board = game.playerTwo.gameboard;
-    loop all of the row - 10 rows
-    loop within each row - 10 boxes
-  */
-    // else add click events to playerOne and playerTwo board
-    // required inputs for each box: boxEventListener(game, player, box, i, j)
   }
 }
 
-// new event listener
-function gridBoxClick(game, player, opponent, box, x, y) {
+function gridBoxClick(player, opponent, box, x, y) {
   const board = player.gameboard;
   const opponentBoard = opponent.gameboard;
+  const console = document.getElementById("console");
 
   // update box
   if (board.receiveAttack(x, y) === true) {
@@ -199,7 +191,7 @@ function gridBoxClick(game, player, opponent, box, x, y) {
   }
 
   if (board.allSunk()) {
-    alert("All your ships are sunk!");
+    console.textContent = `${player.name} has lost!`
   }
 
   // trigger computer player's move
@@ -211,18 +203,4 @@ function gridBoxClick(game, player, opponent, box, x, y) {
   } else {
     attackBox.style.backgroundColor = "purple";
   }
-  // example boxId for playerOne div - 09playerOne
-
-  // // switch active player
-  // if (game.activePlayer === game.playerOne) {
-  //   game.activePlayer = game.playerTwo;
-  // } else {
-  //   game.activePlayer = game.playerOne;
-  // }
-
-  // // update active player
-  // const div = document.getElementById("activePlayer");
-  // div.textContent = `Active board: ${game.activePlayer.name}`;
-
-  // // doesnt work
 }
