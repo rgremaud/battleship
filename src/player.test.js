@@ -14,7 +14,7 @@ test("Create player and place ship", () => {
 test("Computer move", () => {
   const computer = new Computer();
 
-  move = computer.move();
+  move = computer.coordinate();
 
   expect(move[0]).toBeGreaterThanOrEqual(0);
   expect(move[0]).toBeLessThanOrEqual(9);

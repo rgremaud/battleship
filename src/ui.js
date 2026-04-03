@@ -68,7 +68,7 @@ function shipYardActions(player) {
   });
 
   // set ship variables
-  const shipDivs = document.querySelectorAll(".ship");
+  cQ RS TUV onst shipDivs = document.querySelectorAll(".ship");
   let shipCount = 0;
   shipHighlight(shipDivs[shipCount], "cyan");
 

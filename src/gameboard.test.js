@@ -5,7 +5,7 @@ test("Place ship test", () => {
   ship3 = new Ship(3);
   board = new Gameboard();
 
-  board.placeShip(ship3, 1, 2, "verticle");
+  board.placeShip(ship3, 1, 2, "vertical");
 
   expect(board.board[1][2]).toBe(ship3);
   expect(board.board[1][1]).toBe(ship3);
@@ -16,7 +16,7 @@ test("Recieve Attack - sink ship", () => {
   ship3 = new Ship(3);
   board = new Gameboard();
 
-  board.placeShip(ship3, 1, 2, "verticle");
+  board.placeShip(ship3, 1, 2, "vertical");
 
   board.receiveAttack(1, 2);
   board.receiveAttack(1, 1);
