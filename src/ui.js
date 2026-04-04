@@ -136,11 +136,21 @@ function singlePlayerInit() {
   game.playerOne.active = true;
 }
 
-// function doublePlayerInit() {
-//   const game = new Battleship("double");
+/*
+function doublePlayerInit() {
+   const game = new Battleship("double");
+ 
+   // set up grid for both players
+   buildGrid(game.playerOne, "playerOne");
+   buildGrid(game.playerOne, "playerTwo");
 
-  
-// }
+  // add click events
+  shipYardActions(game.playerOne);
+  shipYardActions(game.playerTwo);
+
+  game.playerOne.active = true;
+  }
+*/
 
 function displayShips(player) {
   const boardArray = player.gameboard.board;
