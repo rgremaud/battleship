@@ -103,7 +103,7 @@ export class Computer extends Player {
 
         const shipArray = [entry];
         for (let i = 1; i < ship.length; i++) {
-          if ( orientation === "horizontal" ) {
+          if (orientation === "horizontal") {
             shipArray.push([entry[0] + i, entry[1]]);
           } else {
             shipArray.push([entry[0], entry[1] - i]);

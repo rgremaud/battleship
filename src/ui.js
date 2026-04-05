@@ -35,7 +35,8 @@ export function buttonEvents() {
   twoPlayer.addEventListener(
     "click",
     () => {
-      alert("This button doesnt work yet!");
+      doublePlayerInit(); // still testing this
+      console.textContent = "You selected a two player game!  This is still under development"
     },
     { once: true },
   );
@@ -68,7 +69,7 @@ function shipYardActions(player) {
   });
 
   // set ship variables
-  cQ RS TUV onst shipDivs = document.querySelectorAll(".ship");
+  const shipDivs = document.querySelectorAll(".ship");
   let shipCount = 0;
   shipHighlight(shipDivs[shipCount], "cyan");
 
@@ -136,7 +137,6 @@ function singlePlayerInit() {
   game.playerOne.active = true;
 }
 
-/*
 function doublePlayerInit() {
    const game = new Battleship("double");
  
@@ -145,12 +145,13 @@ function doublePlayerInit() {
    buildGrid(game.playerOne, "playerTwo");
 
   // add click events
+  addClickEvents(game);
   shipYardActions(game.playerOne);
+  // need to add a function that pushs playerTwo to place ships
   shipYardActions(game.playerTwo);
 
   game.playerOne.active = true;
   }
-*/
 
 function displayShips(player) {
   const boardArray = player.gameboard.board;
@@ -167,7 +168,7 @@ function displayShips(player) {
 }
 
 function addClickEvents(game) {
-  if (game.type === "single") {
+  if (game.type === "single" || game.type === "double" /* adding for testing */) {
     const boxes = document.querySelectorAll(".gridBox-playerTwo");
 
     boxes.forEach((box) => {
