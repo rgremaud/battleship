@@ -46,6 +46,7 @@ export function buttonEvents() {
   });
 }
 
+// needs to be refactored
 function shipYardActions(player) {
   // set orientation click events
   let shipOrientation = "horizontal";
@@ -132,7 +133,7 @@ function singlePlayerInit() {
   buildGrid(game.playerTwo, "playerTwo");
 
   addClickEvents(game);
-  shipYardActions(game.playerOne);
+ // shipYardActions(game.playerOne);
 
   game.playerOne.active = true;
 }
