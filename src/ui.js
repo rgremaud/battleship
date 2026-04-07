@@ -21,13 +21,13 @@ export function buttonEvents() {
   const singlePlayer = document.getElementById("single");
   const twoPlayer = document.getElementById("double");
   const clear = document.getElementById("clear");
-  const console = document.getElementById("console")
+  const console = document.getElementById("console");
 
   singlePlayer.addEventListener(
     "click",
     () => {
       singlePlayerInit();
-      console.textContent = "Please place your ships!"
+      console.textContent = "Please place your ships!";
     },
     { once: true },
   );
@@ -36,7 +36,8 @@ export function buttonEvents() {
     "click",
     () => {
       doublePlayerInit(); // still testing this
-      console.textContent = "You selected a two player game!  This is still under development"
+      console.textContent =
+        "You selected a two player game!  This is still under development";
     },
     { once: true },
   );
@@ -49,12 +50,13 @@ export function buttonEvents() {
 // needs to be refactored
 function shipYardActions(player) {
   // set orientation click events
+  // set initial orientation
   let shipOrientation = "horizontal";
 
   const horizontalButton = document.getElementById(`${player.name}Horizontal`);
   horizontalButton.style.backgroundColor = "cyan";
   const verticalButton = document.getElementById(`${player.name}Vertical`);
-  const console = document.getElementById("console")
+  const console = document.getElementById("console");
 
   horizontalButton.addEventListener("click", () => {
     shipOrientation = "horizontal";
@@ -106,8 +108,9 @@ function shipYardActions(player) {
           shipOrientation,
         );
         displayShips(player);
-        if ( activeShip.length === 2 ) { 
-          console.textContent = "All ships placed.  Please fire your first missle!"
+        if (activeShip.length === 2) {
+          console.textContent =
+            "All ships placed.  Please fire your first missle!";
         }
         activeShip = shipObjects[shipCount];
       }
@@ -133,17 +136,17 @@ function singlePlayerInit() {
   buildGrid(game.playerTwo, "playerTwo");
 
   addClickEvents(game);
- // shipYardActions(game.playerOne);
+  shipYardActions(game.playerOne);
 
   game.playerOne.active = true;
 }
 
 function doublePlayerInit() {
-   const game = new Battleship("double");
- 
-   // set up grid for both players
-   buildGrid(game.playerOne, "playerOne");
-   buildGrid(game.playerOne, "playerTwo");
+  const game = new Battleship("double");
+
+  // set up grid for both players
+  buildGrid(game.playerOne, "playerOne");
+  buildGrid(game.playerOne, "playerTwo");
 
   // add click events
   addClickEvents(game);
@@ -152,7 +155,7 @@ function doublePlayerInit() {
   shipYardActions(game.playerTwo);
 
   game.playerOne.active = true;
-  }
+}
 
 function displayShips(player) {
   const boardArray = player.gameboard.board;
@@ -169,7 +172,7 @@ function displayShips(player) {
 }
 
 function addClickEvents(game) {
-  if (game.type === "single" || game.type === "double" /* adding for testing */) {
+  if (game.type === "single") {
     const boxes = document.querySelectorAll(".gridBox-playerTwo");
 
     boxes.forEach((box) => {
@@ -177,8 +180,50 @@ function addClickEvents(game) {
         "click",
         () => {
           gridBoxClick(
+            game,
             game.playerTwo,
             game.playerOne,
+            box,
+            box.id.charAt(0),
+            box.id.charAt(1),
+          );
+        },
+        { once: true },
+      );
+    });
+  } else if (game.type === "double") {
+    // add logic for click events on two player game
+    // add for both player 1 and two - need to refactor
+
+    const p2boxes = document.querySelectorAll(".gridBox-playerTwo");
+
+    p2boxes.forEach((box) => {
+      box.addEventListener(
+        "click",
+        () => {
+          gridBoxClick(
+            game,
+            game.playerTwo,
+            game.playerOne,
+            box,
+            box.id.charAt(0),
+            box.id.charAt(1),
+          );
+        },
+        { once: true },
+      );
+    });
+
+    const p1boxes = document.querySelectorAll(".gridBox-playerOne");
+
+    p1boxes.forEach((box) => {
+      box.addEventListener(
+        "click",
+        () => {
+          gridBoxClick(
+            game,
+            game.playerOne,
+            game.playerTwo,
             box,
             box.id.charAt(0),
             box.id.charAt(1),
@@ -190,7 +235,7 @@ function addClickEvents(game) {
   }
 }
 
-function gridBoxClick(player, opponent, box, x, y) {
+function gridBoxClick(game, player, opponent, box, x, y) {
   const board = player.gameboard;
   const opponentBoard = opponent.gameboard;
   const console = document.getElementById("console");
@@ -203,16 +248,19 @@ function gridBoxClick(player, opponent, box, x, y) {
   }
 
   if (board.allSunk()) {
-    console.textContent = `${player.name} has lost!`
+    console.textContent = `${player.name} has lost!`;
   }
 
   // trigger computer player's move
-  const play = player.attack(opponentBoard);
-  const attackBox = document.getElementById(`${play[0]}${play[1]}playerOne`); // returning invalid at times
+  // below should only occur in single player game
+  if (game.type === "single") {
+    const play = player.attack(opponentBoard);
+    const attackBox = document.getElementById(`${play[0]}${play[1]}playerOne`);
 
-  if (play[2] === true) {
-    attackBox.style.backgroundColor = "red";
-  } else {
-    attackBox.style.backgroundColor = "purple";
+    if (play[2] === true) {
+      attackBox.style.backgroundColor = "red";
+    } else {
+      attackBox.style.backgroundColor = "purple";
+    }
   }
 }
