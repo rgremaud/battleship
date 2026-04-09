@@ -14,4 +14,14 @@ export class Battleship {
       this.activePlayer = this.playerOne;
     }
   }
+
+  togglePlayer() {
+    if ( this.activePlayer === this.playerOne ) {
+      this.activePlayer = this.playerTwo;
+      this.playerOne.active = false;
+    } else {
+      this.activePlayer = this.playerOne;
+      this.playerTwo.active = false;
+    }
+  }
 }

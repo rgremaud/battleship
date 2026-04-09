@@ -2,6 +2,12 @@
   display: flex;
 }
 
+#console { 
+  font-size: 2rem;
+  border: 1px solid red;
+  margin: 10px;
+}
+
 .fullBoard {
   display: flex;
   flex-direction: row;

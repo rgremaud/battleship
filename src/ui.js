@@ -37,7 +37,7 @@ export function buttonEvents() {
     () => {
       doublePlayerInit(); // still testing this
       console.textContent =
-        "You selected a two player game!  This is still under development";
+        "Two player game!  Player one please place your ships.";  
     },
     { once: true },
   );
@@ -72,7 +72,7 @@ function shipYardActions(player) {
   });
 
   // set ship variables
-  const shipDivs = document.querySelectorAll(".ship");
+  const shipDivs = document.querySelectorAll(`.${player.name}ship`);
   let shipCount = 0;
   shipHighlight(shipDivs[shipCount], "cyan");
 
@@ -113,6 +113,8 @@ function shipYardActions(player) {
             "All ships placed.  Please fire your first missle!";
         }
         activeShip = shipObjects[shipCount];
+      } else { 
+        console.textContent = "Invalid ship placement - please try again";
       }
     });
   });
@@ -142,17 +144,22 @@ function singlePlayerInit() {
 }
 
 function doublePlayerInit() {
+  /*
+  Two do for double player init:
+  - add prompts for p1 and p2 to place ships w/view of other player hidden
+  - track active player at all times to help w/visibility
+  - remove ship placement click event after all ships are placed
+ */
   const game = new Battleship("double");
 
   // set up grid for both players
   buildGrid(game.playerOne, "playerOne");
-  buildGrid(game.playerOne, "playerTwo");
+  buildGrid(game.playerTwo, "playerTwo");
 
   // add click events
-  addClickEvents(game);
   shipYardActions(game.playerOne);
-  // need to add a function that pushs playerTwo to place ships
   shipYardActions(game.playerTwo);
+  addClickEvents(game); // adds click listeners to both
 
   game.playerOne.active = true;
 }
@@ -160,8 +167,8 @@ function doublePlayerInit() {
 function displayShips(player) {
   const boardArray = player.gameboard.board;
 
-  for (let i = 0; i <= 9; i++) {
-    for (let j = 0; j <= 9; j++) {
+    for (let i = 0; i <= 9; i++) {
+      for (let j = 0; j <= 9; j++) {
       const box = document.getElementById(`${i}${j}${player.name}`);
 
       if (boardArray[i][j]) {
@@ -263,4 +270,8 @@ function gridBoxClick(game, player, opponent, box, x, y) {
       attackBox.style.backgroundColor = "purple";
     }
   }
+
+  if (game.type === "double") {
+   game.togglePlayer(); 
+  } 
 }

@@ -12,6 +12,15 @@ test("Place ship test", () => {
   expect(board.board[1][0]).toBe(ship3);
 });
 
+test("Coordinate taken ship test", () => {
+  ship4 = new Ship(4);
+  ship3 = new Ship(3);
+  board = new Gameboard();
+
+  board.placeShip(ship4, 0, 0, "horizontal");
+  expect(board.placeShip(ship3, 0, 0, "horizontal")).toBe("error");
+});
+
 test("Recieve Attack - sink ship", () => {
   ship3 = new Ship(3);
   board = new Gameboard();
