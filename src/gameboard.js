@@ -9,7 +9,7 @@ export class Gameboard {
     // need to update validMove check to check that board location is available
     if (!(x >= 0 && x <= 9 && y >= 0 && y <= 9)) {
       throw new Error(`Coordinate is not valid: [${x}, ${y}]`);
-    } else if ( !this.board  ) {
+    } else if ( this.board[x][y] !== null  ) {
       throw new Error(`Coordinate is taken: [${x}, ${y}]`);
     }
     return true;
@@ -17,6 +17,7 @@ export class Gameboard {
 
   placeShip(ship, x, y, orientation) {
     try {
+      // update so valid moves are only placed if ALL moves are valid
       // need to update to check valid move for all coordinates of a ship
       if (orientation === "horizontal") {
         for (let i = 0; i < ship.length; i++) {

@@ -17,8 +17,10 @@ test("Coordinate taken ship test", () => {
   ship3 = new Ship(3);
   board = new Gameboard();
 
-  board.placeShip(ship4, 0, 0, "horizontal");
+  board.placeShip(ship4, 1, 0, "horizontal");
   expect(board.placeShip(ship3, 0, 0, "horizontal")).toBe("error");
+  expect(board.board[1][0]).toBe(ship4);
+  expect(board.board[0][0]).toBe(ship3);
 });
 
 test("Recieve Attack - sink ship", () => {
@@ -49,7 +51,6 @@ test("Recieve attack - missed hits", () => {
 });
 
 // // check how x and y coordinates are applied
-
 test("All sunk", () => {
   board = new Gameboard();
   sunk = board.allSunk();
