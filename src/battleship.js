@@ -16,7 +16,7 @@ export class Battleship {
   }
 
   togglePlayer() {
-    if ( this.activePlayer === this.playerOne ) {
+    if (this.activePlayer === this.playerOne) {
       this.activePlayer = this.playerTwo;
       this.playerOne.active = false;
     } else {
