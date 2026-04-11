@@ -90,7 +90,7 @@ function shipYardActions(player) {
           Number(box.id.charAt(0)),
           Number(box.id.charAt(1)),
           shipOrientation,
-        ) !== "error"
+        ) !== false
       ) {
         shipCount += 1;
         shipDivs.forEach((ship) => {
@@ -137,7 +137,7 @@ function singlePlayerInit() {
   buildGrid(game.playerOne, "playerOne");
   buildGrid(game.playerTwo, "playerTwo");
 
-  addClickEvents(game);
+  addClickEvents(game, "playerOne");
   shipYardActions(game.playerOne);
 
   game.playerOne.active = true;
@@ -178,9 +178,8 @@ function displayShips(player) {
   }
 }
 
-function addClickEvents(game) {
-  if (game.type === "single") {
-    const boxes = document.querySelectorAll(".gridBox-playerTwo");
+function addClickEvents(game, playerName) {
+    const boxes = document.querySelectorAll(`.gridBox-${playerName}`);
 
     boxes.forEach((box) => {
       box.addEventListener(
@@ -188,63 +187,27 @@ function addClickEvents(game) {
         () => {
           gridBoxClick(
             game,
-            game.playerTwo,
-            game.playerOne,
+            playerName, // player
             box,
             box.id.charAt(0),
             box.id.charAt(1),
           );
         },
         { once: true },
-      );
-    });
-  } else if (game.type === "double") {
-    // add logic for click events on two player game
-    // add for both player 1 and two - need to refactor
-
-    const p2boxes = document.querySelectorAll(".gridBox-playerTwo");
-
-    p2boxes.forEach((box) => {
-      box.addEventListener(
-        "click",
-        () => {
-          gridBoxClick(
-            game,
-            game.playerTwo,
-            game.playerOne,
-            box,
-            box.id.charAt(0),
-            box.id.charAt(1),
-          );
-        },
-        { once: true },
-      );
-    });
-
-    const p1boxes = document.querySelectorAll(".gridBox-playerOne");
-
-    p1boxes.forEach((box) => {
-      box.addEventListener(
-        "click",
-        () => {
-          gridBoxClick(
-            game,
-            game.playerOne,
-            game.playerTwo,
-            box,
-            box.id.charAt(0),
-            box.id.charAt(1),
-          );
-        },
-        { once: true },
-      );
-    });
-  }
+      )});
 }
 
-function gridBoxClick(game, player, opponent, box, x, y) {
-  const board = player.gameboard;
-  const opponentBoard = opponent.gameboard;
+// currently broken
+function gridBoxClick(game, playerName, box, x, y) {
+  let board = "";
+  let opponentBoard = "";
+  if ( playerName === "playerOne") { 
+    board = game.playerOne.gameboard;
+    opponentBoard = game.playerTwo.gameboard;
+  } else {
+    board = game.playerTwo.gameboard;
+    opponentBoard = game.playerOne.gameboard;
+  }
   const console = document.getElementById("console");
 
   // update box
@@ -261,7 +224,7 @@ function gridBoxClick(game, player, opponent, box, x, y) {
   // trigger computer player's move
   // below should only occur in single player game
   if (game.type === "single") {
-    const play = player.attack(opponentBoard);
+    const play = game.playerTwo.attack(opponentBoard);
     const attackBox = document.getElementById(`${play[0]}${play[1]}playerOne`);
 
     if (play[2] === true) {

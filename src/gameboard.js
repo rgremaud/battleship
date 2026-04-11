@@ -37,6 +37,8 @@ export class Gameboard {
       moves.forEach((cord) => {
         this.board[cord[0]][cord[1]] = ship;
       });
+    } else {
+      return false
     }
   }
 

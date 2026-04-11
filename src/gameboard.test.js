@@ -22,7 +22,7 @@ test("Coordinate taken ship test", () => {
   expect(board.board[1][0]).toBe(ship4);
   expect(board.board[0][0]).toBe(null);
 });
-/*
+
 test("Recieve Attack - sink ship", () => {
   ship3 = new Ship(3);
   board = new Gameboard();
@@ -92,4 +92,3 @@ test("All sunk", () => {
 
   expect(board.sunkShips).toBe(5);
 });
-*/
