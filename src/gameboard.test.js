@@ -18,7 +18,6 @@ test("Coordinate taken ship test", () => {
   board = new Gameboard();
 
   board.placeShip(ship4, 1, 0, "horizontal");
- // expect(board.placeShip(ship3, 0, 0, "horizontal")).toBe("error");
   expect(board.board[1][0]).toBe(ship4);
   expect(board.board[0][0]).toBe(null);
 });
@@ -32,7 +31,6 @@ test("Recieve Attack - sink ship", () => {
   board.receiveAttack(1, 2);
   board.receiveAttack(1, 1);
   board.receiveAttack(1, 0);
-  // expect(ship3.hits).toBe(3);
   expect(board.sunkShips).toBe(1);
 });
 
@@ -60,10 +58,15 @@ test("All sunk", () => {
   ship4 = new Ship(3);
   ship5 = new Ship(2);
   board.placeShip(ship1, 0, 0, "horizontal");
+  expect(board.shipsPlaced).toBe(1);
   board.placeShip(ship2, 0, 1, "horizontal");
+  expect(board.shipsPlaced).toBe(2);
   board.placeShip(ship3, 0, 2, "horizontal");
+  expect(board.shipsPlaced).toBe(3);
   board.placeShip(ship4, 0, 3, "horizontal");
+  expect(board.shipsPlaced).toBe(4);
   board.placeShip(ship5, 0, 4, "horizontal");
+  expect(board.shipsPlaced).toBe(5);
 
   expect(sunk).toBe(false);
 

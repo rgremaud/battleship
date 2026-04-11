@@ -3,6 +3,7 @@ export class Gameboard {
     this.board = Array.from({ length: 10 }, () => Array(10).fill(null));
     this.missed = [];
     this.sunkShips = 0;
+    this.shipsPlaced = 0; // testing for game ui
   }
 
   validMove(x, y) {
@@ -22,7 +23,6 @@ export class Gameboard {
         if (this.validMove(x + i, y) !== true) {
           trigger = false;
         }
-        //this.board[x + i][y] = ship;
       }
     } else if (orientation === "vertical") {
       for (let i = 0; i < ship.length; i++) {
@@ -30,13 +30,13 @@ export class Gameboard {
         if (this.validMove(x, y - i) !== true) {
           trigger = false;
         }
-        //this.board[x][y - i] = ship;
       }
     }
     if (trigger === true) {
       moves.forEach((cord) => {
         this.board[cord[0]][cord[1]] = ship;
       });
+      this.shipsPlaced += 1;
     } else {
       return false
     }

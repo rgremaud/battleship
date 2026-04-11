@@ -66,20 +66,62 @@ function shipYardButtons(player) {
 
 function colorFlip(button1, button2) { 
   button1.addEventListener("click", () => {
-    button1.style.backgroundColor = "gray";
-    button2.style.backgroundColor = "cyan";
+    button1.style.backgroundColor = "cyan";
+    button2.style.backgroundColor = "gray";
   });
 }
 
 function singlePlayerInit() {
   const game = new Battleship("single");
-
+  
+  // build grid display
   buildGrid(game.playerOne); 
   buildGrid(game.playerTwo);
+  // add ship yard button toggle
   shipYardButtons(game.playerOne);
+  shipTracker(game.playerOne);
+  placeShips(game.playerOne);
 }
-/*
-  
+
+function shipTracker(player) {
+  const shipDivs = document.querySelectorAll(`.${player.name}ship`);
+  console.log(shipDivs);
+  shipDivs[0].style.backgroundColor = "cyan";
+  /*
+  const shipsPlaced = player.gameboard.shipsPlaced;
+
+  shipDivs.children[shipsPlaced].style.backgroundColor = "cyan";
+  */
+}
+
+function handleClick(player) {
+  // use a query selector to pull all of the players gridBoxes
+  const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`);
+  gridBoxes.forEach((box) => {
+    box.addEventListener("click", () => {
+    if ( player.active === true ) {
+      console.log("Player is active!");
+      console.log(`You have placed ${player.gameboard.shipsPlaced} ships`);
+      // use ships placed number to pull index value from player.ships for placing ships
+    }});
+  });
+  // if player is active and has not placed all ships
+  // place current ship at location clicked
+  // refresh player board
+}
+function placeShips(player) {
+  // set player active
+  player.active = true;
+  // highlight current ship to place
+  const ships = player.gameboard.shipsPlaced;
+  console.log(`You have placed ${ships} ships`);
+  // read grid click and place on players board
+  // add click events to players board -- move to separate function
+  handleClick(player);
+  // return error message if placement is invalid
+  // refresh ui to display ship placed
+}
+/* 
   Shipyard Buttons - Horizontal or Vertical
   Gameboards - Grid needs to be selectable for placing and ships and then playing game
 
@@ -95,12 +137,16 @@ function singlePlayerInit() {
     Create a single player game
     Add grids for both playerOne and playerTwo board
     Prompt user to place their ships on the board
+    Create game stage:
+      staging
+  grid clicks to check following scenarios:
+    if player is active, and not all ships placed
+      allow to click on own board to place current ship in queue
+    if player is active, and all ships placed
+      allow to click on opponents board to make attack
+    else do nothing
 
 
 
 
-
-
-
-  
  */
