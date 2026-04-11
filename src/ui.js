@@ -179,29 +179,30 @@ function displayShips(player) {
 }
 
 function addClickEvents(game, playerName) {
-    const boxes = document.querySelectorAll(`.gridBox-${playerName}`);
+  const boxes = document.querySelectorAll(`.gridBox-${playerName}`);
 
-    boxes.forEach((box) => {
-      box.addEventListener(
-        "click",
-        () => {
-          gridBoxClick(
-            game,
-            playerName, // player
-            box,
-            box.id.charAt(0),
-            box.id.charAt(1),
-          );
-        },
-        { once: true },
-      )});
+  boxes.forEach((box) => {
+    box.addEventListener(
+      "click",
+      () => {
+        gridBoxClick(
+          game,
+          playerName, // player
+          box,
+          box.id.charAt(0),
+          box.id.charAt(1),
+        );
+      },
+      { once: true },
+    );
+  });
 }
 
 // currently broken
 function gridBoxClick(game, playerName, box, x, y) {
   let board = "";
   let opponentBoard = "";
-  if ( playerName === "playerOne") { 
+  if (playerName === "playerOne") {
     board = game.playerOne.gameboard;
     opponentBoard = game.playerTwo.gameboard;
   } else {

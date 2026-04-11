@@ -64,7 +64,7 @@ function shipYardButtons(player) {
   colorFlip(vertical, horizontal);
 }
 
-function colorFlip(button1, button2) { 
+function colorFlip(button1, button2) {
   button1.addEventListener("click", () => {
     button1.style.backgroundColor = "cyan";
     button2.style.backgroundColor = "gray";
@@ -73,9 +73,9 @@ function colorFlip(button1, button2) {
 
 function singlePlayerInit() {
   const game = new Battleship("single");
-  
+
   // build grid display
-  buildGrid(game.playerOne); 
+  buildGrid(game.playerOne);
   buildGrid(game.playerTwo);
   // add ship yard button toggle
   shipYardButtons(game.playerOne);
@@ -83,15 +83,24 @@ function singlePlayerInit() {
   placeShips(game.playerOne);
 }
 
+function colorShip(ship, color) {
+  for (let i = 0; i < ship.children.length; i++) {
+    let child = ship.children[i];
+
+    child.style.backgroundColor = color;
+  }
+}
+
 function shipTracker(player) {
   const shipDivs = document.querySelectorAll(`.${player.name}ship`);
-  console.log(shipDivs);
-  shipDivs[0].style.backgroundColor = "cyan";
-  /*
-  const shipsPlaced = player.gameboard.shipsPlaced;
+  // pull all ships and color them all gray
+  shipDivs.forEach((ship) => {
+    colorShip(ship, "purple");
+  });
+  // assigns active ship and colors it cyan
+  const activeShip = shipDivs[player.gameboard.shipsPlaced];
 
-  shipDivs.children[shipsPlaced].style.backgroundColor = "cyan";
-  */
+  colorShip(activeShip, "cyan");
 }
 
 function handleClick(player) {
@@ -99,11 +108,16 @@ function handleClick(player) {
   const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`);
   gridBoxes.forEach((box) => {
     box.addEventListener("click", () => {
-    if ( player.active === true ) {
-      console.log("Player is active!");
-      console.log(`You have placed ${player.gameboard.shipsPlaced} ships`);
-      // use ships placed number to pull index value from player.ships for placing ships
-    }});
+      if (player.active === true) {
+        player.gameboard.shipsPlaced += 1;
+        shipTracker(player);
+        // next steps:
+        // add in || test that player.shipsPlaced !== 5
+        // add in check that move is valid
+        // if valid, place activeShip
+        //
+      }
+    });
   });
   // if player is active and has not placed all ships
   // place current ship at location clicked

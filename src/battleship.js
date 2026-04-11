@@ -13,7 +13,7 @@ export class Battleship {
       this.playerTwo = new Human("playerTwo");
       this.activePlayer = this.playerOne;
     }
-    this.stage = false // false - board not set and true - board set
+    this.stage = false; // false - board not set and true - board set
   }
 
   togglePlayer() {

@@ -8,8 +8,8 @@ export class Gameboard {
 
   validMove(x, y) {
     // need to update validMove check to check that board location is available
-    if ( !(x >= 0 && x <= 9 && y >= 0 && y <= 9) || this.board[x][y] !== null ) {
-      return false
+    if (!(x >= 0 && x <= 9 && y >= 0 && y <= 9) || this.board[x][y] !== null) {
+      return false;
     }
     return true;
   }
@@ -38,7 +38,7 @@ export class Gameboard {
       });
       this.shipsPlaced += 1;
     } else {
-      return false
+      return false;
     }
   }
 
