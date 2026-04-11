@@ -8,15 +8,15 @@ import { Battleship } from "./battleship";
     Simple - use existing functions to add click events
   */
 // buildGrid for each player board
-function buildGrid(player, boardDivId) {
-  const playerBoard = document.getElementById(boardDivId);
+function buildGrid(player) {
+  const playerBoard = document.getElementById(`${player.name}`);
   for (let i = 0; i <= 9; i++) {
     const column = document.createElement("div");
     column.className = "column";
     for (let j = 0; j <= 9; j++) {
       const box = document.createElement("div");
       box.className = `gridBox-${player.name}`;
-      box.id = `${i}${9 - j}${boardDivId}`;
+      box.id = `${i}${9 - j}${player.name}`;
 
       column.appendChild(box);
     }
@@ -56,17 +56,27 @@ export function gameInit() {
   });
 }
 
-function shipYardButtons() {
-// add class to horizontal and vertical buttons
-  // color horizontal button cyan, leave vertical gray
-  // add event listener to each which swaps the colors when they are clicked
-
+function shipYardButtons(player) {
+  const horizontal = document.getElementById(`${player.name}Horizontal`);
+  horizontal.style.backgroundColor = "cyan";
+  const vertical = document.getElementById(`${player.name}Vertical`);
+  colorFlip(horizontal, vertical);
+  colorFlip(vertical, horizontal);
 }
+
+function colorFlip(button1, button2) { 
+  button1.addEventListener("click", () => {
+    button1.style.backgroundColor = "gray";
+    button2.style.backgroundColor = "cyan";
+  });
+}
+
 function singlePlayerInit() {
   const game = new Battleship("single");
 
-  buildGrid(game.playerOne, "playerOne");
-  buildGrid(game.playerTwo, "playerTwo");
+  buildGrid(game.playerOne); 
+  buildGrid(game.playerTwo);
+  shipYardButtons(game.playerOne);
 }
 /*
   
