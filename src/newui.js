@@ -103,19 +103,47 @@ function shipTracker(player) {
   colorShip(activeShip, "cyan");
 }
 
+function displayShips(player) {
+  const boardArray = player.gameboard.board;
+
+  for (let i = 0; i <= 9; i++) {
+    for (let j = 0; j <= 9; j++) {
+      const box = document.getElementById(`${i}${j}${player.name}`);
+
+      if (boardArray[i][j]) {
+        box.style.backgroundColor = "green";
+      }
+    }
+  }
+}
+
 function handleClick(player) {
   // use a query selector to pull all of the players gridBoxes
   const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`);
   gridBoxes.forEach((box) => {
     box.addEventListener("click", () => {
-      if (player.active === true) {
-        player.gameboard.shipsPlaced += 1;
-        shipTracker(player);
-        // next steps:
-        // add in || test that player.shipsPlaced !== 5
+      // test if player is in ship placement stage
+      if (player.active === true && player.gameboard.shipsPlaced <= 4) {
         // add in check that move is valid
-        // if valid, place activeShip
-        //
+        if (
+          player.gameboard.placeShip(
+            player.ships[player.gameboard.shipsPlaced],
+            Number(box.id.charAt(0)),
+            Number(box.id.charAt(1)),
+            "horizontal", // placeholder for now
+            ) !== false
+        ) {
+        // place ship if valid move 
+        shipTracker(player);
+        player.gameboard.placeShip(
+          player.ships[player.gameboard.shipsPlaced],
+          Number(box.id.charAt(0)),
+          Number(box.id.charAt(1)),
+          "horizontal", // placeholder for now
+        )
+        displayShips(player);
+        console.log(`Total ships placed ${player.gameboard.shipsPlaced}`)
+        }
       }
     });
   });
@@ -128,7 +156,6 @@ function placeShips(player) {
   player.active = true;
   // highlight current ship to place
   const ships = player.gameboard.shipsPlaced;
-  console.log(`You have placed ${ships} ships`);
   // read grid click and place on players board
   // add click events to players board -- move to separate function
   handleClick(player);
