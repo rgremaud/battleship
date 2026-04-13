@@ -60,14 +60,19 @@ function shipYardButtons(player) {
   const horizontal = document.getElementById(`${player.name}Horizontal`);
   horizontal.style.backgroundColor = "cyan";
   const vertical = document.getElementById(`${player.name}Vertical`);
-  colorFlip(horizontal, vertical);
-  colorFlip(vertical, horizontal);
+  colorFlip(player, horizontal, vertical);
+  colorFlip(player, vertical, horizontal);
 }
 
-function colorFlip(button1, button2) {
+function colorFlip(player, button1, button2) {
   button1.addEventListener("click", () => {
     button1.style.backgroundColor = "cyan";
     button2.style.backgroundColor = "gray";
+    if ( player.gameboard.orientation === "horizontal" ) {
+      player.gameboard.orientation = "vertical";
+    } else {
+      player.gameboard.orientation = "horizontal";
+    }
   });
 }
 
@@ -84,10 +89,12 @@ function singlePlayerInit() {
 }
 
 function colorShip(ship, color) {
-  for (let i = 0; i < ship.children.length; i++) {
-    let child = ship.children[i];
+  if ( ship ) { 
+    for (let i = 0; i < ship.children.length; i++) {
+      let child = ship.children[i];
 
-    child.style.backgroundColor = color;
+      child.style.backgroundColor = color;
+    }
   }
 }
 
@@ -122,28 +129,16 @@ function handleClick(player) {
   const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`);
   gridBoxes.forEach((box) => {
     box.addEventListener("click", () => {
-      // test if player is in ship placement stage
-      if (player.active === true && player.gameboard.shipsPlaced <= 4) {
-        // add in check that move is valid
-        if (
-          player.gameboard.placeShip(
-            player.ships[player.gameboard.shipsPlaced],
-            Number(box.id.charAt(0)),
-            Number(box.id.charAt(1)),
-            "horizontal", // placeholder for now
-            ) !== false
-        ) {
-        // place ship if valid move 
-        shipTracker(player);
+      if (player.active === true && player.gameboard.shipsPlaced < 5) {
         player.gameboard.placeShip(
           player.ships[player.gameboard.shipsPlaced],
           Number(box.id.charAt(0)),
           Number(box.id.charAt(1)),
-          "horizontal", // placeholder for now
-        )
-        displayShips(player);
-        console.log(`Total ships placed ${player.gameboard.shipsPlaced}`)
-        }
+          player.gameboard.orientation,
+        ) 
+        shipTracker(player);
+        displayShips(player); 
+        consoleTracker(player);
       }
     });
   });
@@ -151,6 +146,16 @@ function handleClick(player) {
   // place current ship at location clicked
   // refresh player board
 }
+
+function consoleTracker(player) {
+  const console = document.getElementById('console');
+
+  // update for all ships placed
+  if ( player.gameboard.shipsPlaced === 5 ) {
+    console.textContent = "All your ships have been placed.  Time to attack!";
+  };
+}
+
 function placeShips(player) {
   // set player active
   player.active = true;

@@ -4,6 +4,7 @@ export class Gameboard {
     this.missed = [];
     this.sunkShips = 0;
     this.shipsPlaced = 0; // testing for game ui
+    this.orientation = "horizontal";
   }
 
   validMove(x, y) {
