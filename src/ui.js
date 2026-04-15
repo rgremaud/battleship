@@ -1,23 +1,7 @@
 import { Battleship } from "./battleship";
 
-function buildGrid(player, boardDivId) {
-  const playerBoard = document.getElementById(boardDivId);
-  for (let i = 0; i <= 9; i++) {
-    const column = document.createElement("div");
-    column.className = "column";
-    for (let j = 0; j <= 9; j++) {
-      const box = document.createElement("div");
-      box.className = `gridBox-${player.name}`;
-      box.id = `${i}${9 - j}${boardDivId}`;
-
-      column.appendChild(box);
-    }
-
-    playerBoard.appendChild(column);
-  }
-}
-
-export function buttonEvents() {
+// General functions
+export function gameInit() {
   const singlePlayer = document.getElementById("single");
   const twoPlayer = document.getElementById("double");
   const clear = document.getElementById("clear");
@@ -43,128 +27,80 @@ export function buttonEvents() {
   );
 
   clear.addEventListener("click", () => {
-    alert("You clicked me! I don't do anything yet!");
+    clearGame();
   });
 }
 
-// needs to be refactored
-function shipYardActions(player) {
-  // set orientation click events
-  // set initial orientation
-  let shipOrientation = "horizontal";
+function clearGame() {
+  // doesnt work
+  // needs to reset all of the visuals for both sides
+  const playerOne = document.getElementById("playerOne");
+  const playerTwo = document.getElementById("playerTwo");
 
-  const horizontalButton = document.getElementById(`${player.name}Horizontal`);
-  horizontalButton.style.backgroundColor = "cyan";
-  const verticalButton = document.getElementById(`${player.name}Vertical`);
-  const console = document.getElementById("console");
-
-  horizontalButton.addEventListener("click", () => {
-    shipOrientation = "horizontal";
-    horizontalButton.style.backgroundColor = "cyan";
-    verticalButton.style.backgroundColor = "gray";
-  });
-
-  verticalButton.addEventListener("click", () => {
-    shipOrientation = "vertical";
-
-    horizontalButton.style.backgroundColor = "gray";
-    verticalButton.style.backgroundColor = "cyan";
-  });
-
-  // set ship variables
-  const shipDivs = document.querySelectorAll(`.${player.name}ship`);
-  let shipCount = 0;
-  shipHighlight(shipDivs[shipCount], "cyan");
-
-  const shipObjects = player.ships;
-  let activeShip = shipObjects[0];
-
-  // add a click event to all of the player one grid boxes that increases ship count by 1
-  const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`);
-  gridBoxes.forEach((box) => {
-    box.addEventListener("click", () => {
-      // throws an error when you have highlighted all ships and click again
-      if (
-        player.gameboard.placeShip(
-          activeShip,
-          Number(box.id.charAt(0)),
-          Number(box.id.charAt(1)),
-          shipOrientation,
-        ) !== false
-      ) {
-        shipCount += 1;
-        shipDivs.forEach((ship) => {
-          shipHighlight(ship, "gray");
-        });
-        if (shipCount <= 4) {
-          shipHighlight(shipDivs[shipCount], "cyan");
-        }
-
-        // need to add logic to utilize invalid move notification when placing ship
-        player.gameboard.placeShip(
-          activeShip,
-          Number(box.id.charAt(0)),
-          Number(box.id.charAt(1)),
-          shipOrientation,
-        );
-        displayShips(player);
-        if (activeShip.length === 2) {
-          console.textContent =
-            "All ships placed.  Please fire your first missle!";
-        }
-        activeShip = shipObjects[shipCount];
-      } else {
-        console.textContent = "Invalid ship placement - please try again";
-      }
-    });
-  });
+  playerOne.textContent = "";
+  playerTwo.textContent = "";
 }
 
-function shipHighlight(ship, color) {
-  for (let i = 0; i < ship.children.length; i++) {
-    let child = ship.children[i];
+function buildGrid(player) {
+  const playerBoard = document.getElementById(`${player.name}`);
+  for (let i = 0; i <= 9; i++) {
+    const column = document.createElement("div");
+    column.className = "column";
+    for (let j = 0; j <= 9; j++) {
+      const box = document.createElement("div");
+      box.className = `gridBox-${player.name}`;
+      box.id = `${i}${9 - j}${player.name}`;
 
-    child.style.backgroundColor = color;
+      column.appendChild(box);
+    }
+
+    playerBoard.appendChild(column);
   }
 }
 
-function singlePlayerInit() {
-  const game = new Battleship("single");
-
-  // prompt human player to place all their ships for gave to start
-  game.playerTwo.shipSetup();
-
-  buildGrid(game.playerOne, "playerOne");
-  buildGrid(game.playerTwo, "playerTwo");
-
-  addClickEvents(game, "playerOne");
-  shipYardActions(game.playerOne);
-
-  game.playerOne.active = true;
+function shipYardButtons(player) {
+  const horizontal = document.getElementById(`${player.name}Horizontal`);
+  horizontal.style.backgroundColor = "cyan";
+  const vertical = document.getElementById(`${player.name}Vertical`);
+  colorFlip(player, horizontal, vertical);
+  colorFlip(player, vertical, horizontal);
 }
 
-function doublePlayerInit() {
-  /*
-  Two do for double player init:
-  - add prompts for p1 and p2 to place ships w/view of other player hidden
-  - track active player at all times to help w/visibility
-  - remove ship placement click event after all ships are placed
- */
-  const game = new Battleship("double");
-
-  // set up grid for both players
-  buildGrid(game.playerOne, "playerOne");
-  buildGrid(game.playerTwo, "playerTwo");
-
-  // add click events
-  shipYardActions(game.playerOne);
-  shipYardActions(game.playerTwo);
-  addClickEvents(game); // adds click listeners to both
-
-  game.playerOne.active = true;
+function colorFlip(player, button1, button2) {
+  button1.addEventListener("click", () => {
+    button1.style.backgroundColor = "cyan";
+    button2.style.backgroundColor = "gray";
+    if ( player.gameboard.orientation === "horizontal" ) {
+      player.gameboard.orientation = "vertical";
+    } else {
+      player.gameboard.orientation = "horizontal";
+    }
+  });
 }
 
-function displayShips(player) {
+function colorShip(ship, color) {
+  if ( ship ) { 
+    for (let i = 0; i < ship.children.length; i++) {
+      let child = ship.children[i];
+
+      child.style.backgroundColor = color;
+    }
+  }
+}
+
+function shipTracker(player) {
+  const shipDivs = document.querySelectorAll(`.${player.name}ship`);
+  // pull all ships and color them all gray
+  shipDivs.forEach((ship) => {
+    colorShip(ship, "purple");
+  });
+  // assigns active ship and colors it cyan
+  const activeShip = shipDivs[player.gameboard.shipsPlaced];
+
+  colorShip(activeShip, "cyan");
+}
+
+function displayBoard(player) {
   const boardArray = player.gameboard.board;
 
   for (let i = 0; i <= 9; i++) {
@@ -178,64 +114,184 @@ function displayShips(player) {
   }
 }
 
-function addClickEvents(game, playerName) {
-  const boxes = document.querySelectorAll(`.gridBox-${playerName}`);
+function setupEvent(box, game, player) {
+      if (player.active === true && player.gameboard.shipsPlaced < 5) {
+        const move = player.gameboard.placeShip(
+          player.ships[player.gameboard.shipsPlaced],
+          Number(box.id.charAt(0)),
+          Number(box.id.charAt(1)),
+          player.gameboard.orientation,
+        ) 
+        shipTracker(player);
+        displayBoard(player); 
+        consoleTracker(game, player, move);
+        if ( player.gameboard.shipsPlaced === 5) {
+          game.togglePlayer();
+        }
+      }
+}
 
-  boxes.forEach((box) => {
-    box.addEventListener(
-      "click",
-      () => {
-        gridBoxClick(
-          game,
-          playerName, // player
-          box,
-          box.id.charAt(0),
-          box.id.charAt(1),
-        );
-      },
-      { once: true },
+function boardSetupClick(game, player) {
+  // use a query selector to pull all of the players gridBoxes
+  const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`);
+  gridBoxes.forEach((box) => {
+    box.addEventListener("click", () => {
+      setupEvent(box, game, player);
+        if (  game.stage === false &&
+              game.playerOne.gameboard.shipsPlaced === 5 && 
+              game.playerTwo.gameboard.shipsPlaced === 5
+           ) {
+          game.stage = true;
+        }
+    });
+  });
+}
+
+function consoleTracker(game, player, move) {
+  const console = document.getElementById('console');
+
+  // update for all ships placed for single and double games
+  if ( player.gameboard.shipsPlaced === 5 ) {
+    console.textContent = "All your ships have been placed.  Time to attack!";
+  };
+  if ( player.gameboard.shipsPlaced === 5 && game.type !== "single" && player.name === "playerOne" ) {
+    console.textContent = "Player two place your ships!";
+  }
+
+  // update console if move is not valid
+  if ( move === false ) {
+    console.textContent = "Invalid move.  Please try again";
+  }
+}
+
+function winCheck(player) {
+  const console = document.getElementById('console');
+ if ( player.gameboard.sunkShips === 5 ) {
+  console.textContent = `${player.name} has lost`;  
+ } 
+}
+
+// Single player functions
+function singlePlayerInit() {
+  const game = new Battleship("single");
+
+  // build grid display
+  buildGrid(game.playerOne);
+  buildGrid(game.playerTwo);
+  // add ship yard button toggle
+  shipYardButtons(game.playerOne);
+  shipTracker(game.playerOne);
+  // set player active and set board click
+  game.playerOne.active = true;
+  boardSetupClick(game, game.playerOne);
+  // prompt computer player to set up board
+  game.playerTwo.shipSetup();
+  // add click events to computer player board
+  computerBoardClick(game.playerOne, game.playerTwo);
+}
+
+function computerBoardClick(human, computer) {
+  const gridBoxes = document.querySelectorAll(`.gridBox-${computer.name}`);
+  gridBoxes.forEach((box) => {
+    box.addEventListener("click", () => {
+      if ( human.gameboard.shipsPlaced === 5 ) {
+      // recieve attack
+      const x = Number(box.id.charAt(0));
+      const y = Number(box.id.charAt(1));
+      const recieveAttack = computer.gameboard.receiveAttack(x, y);
+      // refresh board
+      if ( recieveAttack === true ) {
+        box.style.backgroundColor = "red"; 
+      } else {
+        box.style.backgroundColor = "purple";
+      };
+      winCheck(computer);
+      // attack
+      const attack = computer.attack(human.gameboard);
+      // will need to refactor this
+      const humanBox = document.getElementById(`${attack[0]}${attack[1]}${human.name}`);
+      if ( attack[2] === true ) {
+        humanBox.style.backgroundColor = 'red';
+      } else {
+        humanBox.style.backgroundColor = 'purple';
+      }
+      winCheck(human);
+      }
+    },
+    { once: true },
     );
   });
 }
 
-// currently broken
-function gridBoxClick(game, playerName, box, x, y) {
-  let board = "";
-  let opponentBoard = "";
-  if (playerName === "playerOne") {
-    board = game.playerOne.gameboard;
-    opponentBoard = game.playerTwo.gameboard;
-  } else {
-    board = game.playerTwo.gameboard;
-    opponentBoard = game.playerOne.gameboard;
-  }
-  const console = document.getElementById("console");
+// double player functions
+function doublePlayerInit() {
+  const game = new Battleship("double");
 
-  // update box
-  if (board.receiveAttack(x, y) === true) {
-    box.style.backgroundColor = "red";
-  } else {
-    box.style.backgroundColor = "purple";
-  }
-
-  if (board.allSunk()) {
-    console.textContent = `${player.name} has lost!`;
-  }
-
-  // trigger computer player's move
-  // below should only occur in single player game
-  if (game.type === "single") {
-    const play = game.playerTwo.attack(opponentBoard);
-    const attackBox = document.getElementById(`${play[0]}${play[1]}playerOne`);
-
-    if (play[2] === true) {
-      attackBox.style.backgroundColor = "red";
-    } else {
-      attackBox.style.backgroundColor = "purple";
-    }
-  }
-
-  if (game.type === "double") {
-    game.togglePlayer();
-  }
+  // build grid display
+  buildGrid(game.playerOne);
+  buildGrid(game.playerTwo);
+  // add ship yard button toggle
+  shipYardButtons(game.playerOne);
+  shipYardButtons(game.playerTwo);
+  shipTracker(game.playerOne);
+  shipTracker(game.playerTwo);
+  // set player active and set board clicks w/p1 active
+  game.playerOne.active = true;
+  boardSetupClick(game, game.playerOne);
+  boardSetupClick(game, game.playerTwo);
+  // add clicks to board that recieves attacks and hides board
+  //removeClicks(playerOne);
+  //removeClicks(playerTwo);
+  gameClicks(game, game.playerOne);
+  gameClicks(game, game.playerTwo);
 }
+
+// doesnt work
+function removeClicks(player) {
+  const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`);
+  gridBoxes.forEach((box) => {
+    box.removeEventListener('click', setupEvent);
+  });
+}
+
+function gameClicks(game, player) {
+  const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`);
+  gridBoxes.forEach((box) => {
+    box.addEventListener("click", () => {
+      if ( game.stage === true ) { 
+        console.log("All ships placed!")
+      };
+    });
+  });
+}
+
+
+/* 
+  Shipyard Buttons - Horizontal or Vertical
+  Gameboards - Grid needs to be selectable for placing and ships and then playing game
+
+  Shipyard buttons and game flow should be closely integrated with active player
+  
+  Items to build w/ui.js
+  Grid for gameboard - take from existing ui doc.
+
+  Items that track game:
+  Console section with promps etc.
+  
+  singlePlayerInit - 
+    Create a single player game
+    Add grids for both playerOne and playerTwo board
+    Prompt user to place their ships on the board
+    Create game stage:
+      staging
+  grid clicks to check following scenarios:
+    if player is active, and not all ships placed
+      allow to click on own board to place current ship in queue
+    if player is active, and all ships placed
+      allow to click on opponents board to make attack
+    else do nothing
+
+
+
+
+ */
