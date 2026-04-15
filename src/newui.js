@@ -34,8 +34,18 @@ export function gameInit() {
   );
 
   clear.addEventListener("click", () => {
-    alert("You clicked me! I don't do anything yet!");
+    clearGame();
   });
+}
+
+function clearGame() {
+  // doesnt work
+  // needs to reset all of the visuals for both sides
+  const playerOne = document.getElementById("playerOne");
+  const playerTwo = document.getElementById("playerTwo");
+
+  playerOne.textContent = "";
+  playerTwo.textContent = "";
 }
 
 function buildGrid(player) {
@@ -111,11 +121,7 @@ function displayBoard(player) {
   }
 }
 
-function boardSetupClick(player) {
-  // use a query selector to pull all of the players gridBoxes
-  const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`);
-  gridBoxes.forEach((box) => {
-    box.addEventListener("click", () => {
+function setupEvent(box, game, player) {
       if (player.active === true && player.gameboard.shipsPlaced < 5) {
         const move = player.gameboard.placeShip(
           player.ships[player.gameboard.shipsPlaced],
@@ -125,19 +131,33 @@ function boardSetupClick(player) {
         ) 
         shipTracker(player);
         displayBoard(player); 
-        consoleTracker(player, move);
+        consoleTracker(game, player, move);
+        if ( player.gameboard.shipsPlaced === 5) {
+          game.togglePlayer();
+        }
       }
+}
+
+function boardSetupClick(game, player) {
+  // use a query selector to pull all of the players gridBoxes
+  const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`);
+  gridBoxes.forEach((box) => {
+    box.addEventListener("click", () => {
+      setupEvent(box, game, player);
     });
   });
 }
 
-function consoleTracker(player, move) {
+function consoleTracker(game, player, move) {
   const console = document.getElementById('console');
 
-  // update for all ships placed
+  // update for all ships placed for single and double games
   if ( player.gameboard.shipsPlaced === 5 ) {
     console.textContent = "All your ships have been placed.  Time to attack!";
   };
+  if ( player.gameboard.shipsPlaced === 5 && game.type !== "single" && player.name === "playerOne" ) {
+    console.textContent = "Player two place your ships!";
+  }
 
   // update console if move is not valid
   if ( move === false ) {
@@ -164,7 +184,7 @@ function singlePlayerInit() {
   shipTracker(game.playerOne);
   // set player active and set board click
   game.playerOne.active = true;
-  boardSetupClick(game.playerOne);
+  boardSetupClick(game, game.playerOne);
   // prompt computer player to set up board
   game.playerTwo.shipSetup();
   // add click events to computer player board
@@ -197,6 +217,49 @@ function computerBoardClick(human, computer) {
         humanBox.style.backgroundColor = 'purple';
       }
       winCheck(human);
+      }
+    });
+  });
+}
+
+// double player functions
+function doublePlayerInit() {
+  const game = new Battleship("double");
+
+  // build grid display
+  buildGrid(game.playerOne);
+  buildGrid(game.playerTwo);
+  // add ship yard button toggle
+  shipYardButtons(game.playerOne);
+  shipYardButtons(game.playerTwo);
+  shipTracker(game.playerOne);
+  shipTracker(game.playerTwo);
+  // set player active and set board clicks w/p1 active
+  game.playerOne.active = true;
+  boardSetupClick(game, game.playerOne);
+  boardSetupClick(game, game.playerTwo);
+  // add clicks to board that recieves attacks and hides board
+  removeClicks(playerOne);
+  removeClicks(playerTwo);
+  gameClicks(game, playerOne);
+  gameClicks(game, playerTwo);
+}
+
+// doesnt work
+function removeClicks(player) {
+  const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`);
+  gridBoxes.forEach((box) => {
+    box.removeEventListener('click', setupEvent);
+  });
+}
+
+function gameClicks(game, player) {
+  const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`);
+  gridBoxes.forEach((box) => {
+    box.addEventListener("click", () => {
+      if (player.active === false && player.gameboard.shipsPlaced === 5) {
+        console.log("You placed your ships and are attacking");
+        game.togglePlayer();
       }
     });
   });
