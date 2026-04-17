@@ -1,6 +1,17 @@
 import { Gameboard } from "./gameboard";
 import { Ship } from "./ship";
 
+test("Track hits", () => {
+  ship3 = new Ship(3);
+  board = new Gameboard();
+  board.placeShip(ship3, 1, 2, "vertical");
+
+  board.receiveAttack(1, 2);
+  board.receiveAttack(1, 1);
+  board.receiveAttack(1, 0);
+
+  expect(board.hits).toEqual(["12", "11", "10"]);
+});
 test("Place ship test", () => {
   ship3 = new Ship(3);
   board = new Gameboard();
@@ -41,11 +52,7 @@ test("Recieve attack - missed hits", () => {
   board.receiveAttack(8, 9);
   board.receiveAttack(0, 1);
 
-  expect(board.missed).toStrictEqual([
-    [2, 1],
-    [8, 9],
-    [0, 1],
-  ]);
+  expect(board.missed).toEqual(["21","89","01"]);
 });
 
 // // check how x and y coordinates are applied
