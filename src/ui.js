@@ -75,10 +75,41 @@ function displayBoard(player) {
 }
 
 function hideBoard(player) {
+  // selet all boxes and color them lightblue
   const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`);
   gridBoxes.forEach((box) => {
     box.style.backgroundColor = "lightblue";
+    // doesnt work
+    /*
+    const boardArray = player.gameboard.board;
+    const x = Number(box.id.charAt(0));
+    const y = Number(box.id.charAt(1));
+    if ( player.active === true && boardArray[x][y] ) {
+     box.style.backgroundColor = "green"; 
+    }
+    */
   });
+  
+  // look at player board and pull array of all hits
+  const hits = player.gameboard.hits;
+  if ( hits.length >= 1) {
+    hits.forEach((hit) => {
+      const x = Number(hit.charAt(0));
+      const y = Number(hit.charAt(1));
+      const box = document.getElementById(`${x}${y}${player.name}`);
+      box.style.backgroundColor = "red";
+    });
+  }
+
+  const misses = player.gameboard.missed;
+  if ( misses.length >= 1 ) {
+    misses.forEach((miss) => {
+      const x = Number(miss.charAt(0));
+      const y = Number(miss.charAt(1));
+      const box = document.getElementById(`${x}${y}${player.name}`);
+      box.style.backgroundColor = "purple";
+    });
+  }
 }
 
 // ship yard functions
@@ -158,13 +189,14 @@ function boardSetupClick(game, player) {
   });
 }
 
-function consoleTracker(game, player, move) {
+function consoleTracker(game, player, move = "") {
   const console = document.getElementById("console");
 
   // update for all ships placed for single and double games
   if (player.gameboard.shipsPlaced === 5) {
     console.textContent = "All your ships have been placed.  Time to attack!";
   }
+
   if (
     player.gameboard.shipsPlaced === 5 &&
     game.type !== "single" &&
@@ -172,9 +204,15 @@ function consoleTracker(game, player, move) {
   ) {
     console.textContent = "Player two place your ships!";
   }
+
   // update console if move is not valid
   if (move === false) {
     console.textContent = "Invalid move.  Please try again";
+  }
+
+  // track active player
+  if (game.stage === true) {
+    console.textContent = `Active player is ${game.activePlayer.name}`;
   }
 }
 
@@ -265,6 +303,7 @@ function gameClicks(game, player) {
     box.addEventListener(
       "click",
       () => {
+        // recieve and attack
         if (game.stage === true && player.active === false) {
           // recieve the board click and convert to an x and y
           const x = Number(box.id.charAt(0));
@@ -289,6 +328,8 @@ function gameClicks(game, player) {
             box.style.backgroundColor = "purple";
           }
           game.togglePlayer();
+          // write function that updates console w/active player
+          consoleTracker(game, player);
         }
       },
       { once: true },

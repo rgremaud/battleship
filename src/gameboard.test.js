@@ -52,7 +52,7 @@ test("Recieve attack - missed hits", () => {
   board.receiveAttack(8, 9);
   board.receiveAttack(0, 1);
 
-  expect(board.missed).toEqual(["21","89","01"]);
+  expect(board.missed).toEqual(["21", "89", "01"]);
 });
 
 // // check how x and y coordinates are applied

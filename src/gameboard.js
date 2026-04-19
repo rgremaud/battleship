@@ -2,7 +2,7 @@ export class Gameboard {
   constructor() {
     this.board = Array.from({ length: 10 }, () => Array(10).fill(null));
     this.missed = [];
-    this.hits = []; 
+    this.hits = [];
     this.sunkShips = 0;
     this.shipsPlaced = 0;
     this.orientation = "horizontal";
