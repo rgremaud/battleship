@@ -9,7 +9,10 @@ test("Track hits", () => {
   board.receiveAttack(1, 2);
   board.receiveAttack(1, 1);
   board.receiveAttack(1, 0);
+  board.receiveAttack(1, 8);
 
+  expect(board.board[1][2]).toBe("hit");
+  expect(board.board[1][8]).toBe("miss");
   expect(board.hits).toEqual(["12", "11", "10"]);
 });
 test("Place ship test", () => {

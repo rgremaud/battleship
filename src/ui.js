@@ -19,7 +19,7 @@ export function gameInit() {
   twoPlayer.addEventListener(
     "click",
     () => {
-      doublePlayerInit(); // still testing this
+      doublePlayerInit();
       console.textContent =
         "Two player game!  Player one please place your ships.";
     },
@@ -58,8 +58,10 @@ function clearGame() {
 }
 
 // Gameboard functions
-function displayBoard(player) {
+function newDisplay(game, player) {
+  // pull a copy of boardArray
   const boardArray = player.gameboard.board;
+<<<<<<< HEAD
 
   for (let i = 0; i <= 9; i++) {
     for (let j = 0; j <= 9; j++) {
@@ -76,8 +78,15 @@ function displayBoard(player) {
 
 function hideBoard(game, player) {
   // selet all boxes and color them lightblue
+=======
+  // pull all gridBox divs
+>>>>>>> 0878686 (Update display functions)
   const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`);
+  // identify active player
+  const active = game.activePlayer;
+  // iterate over board and assign blue, red, green, purple
   gridBoxes.forEach((box) => {
+<<<<<<< HEAD
     // doesnt work
     const boardArray = player.gameboard.board;
     const x = Number(box.id.charAt(0));
@@ -96,19 +105,23 @@ function hideBoard(game, player) {
       const x = Number(hit.charAt(0));
       const y = Number(hit.charAt(1));
       const box = document.getElementById(`${x}${y}${player.name}`);
+=======
+    const x = Number(box.id.charAt(0));
+    const y = Number(box.id.charAt(1));
+    if (boardArray[x][y] === "hit") {
+>>>>>>> 0878686 (Update display functions)
       box.style.backgroundColor = "red";
-    });
-  }
-
-  const misses = player.gameboard.missed;
-  if ( misses.length >= 1 ) {
-    misses.forEach((miss) => {
-      const x = Number(miss.charAt(0));
-      const y = Number(miss.charAt(1));
-      const box = document.getElementById(`${x}${y}${player.name}`);
+    } else if (boardArray[x][y] === "miss") {
       box.style.backgroundColor = "purple";
-    });
-  }
+    } else if (
+      boardArray[x][y] &&
+      (active !== player || game.type === "single" || game.stage === false)
+    ) {
+      box.style.backgroundColor = "green";
+    } else {
+      box.style.backgroundColor = "lightblue";
+    }
+  });
 }
 
 // ship yard functions
@@ -153,7 +166,7 @@ function shipTracker(player) {
 }
 
 function boardSetupEvent(box, game, player) {
-  if (player.active === true && player.gameboard.shipsPlaced < 5) {
+  if (game.activePlayer === player && player.gameboard.shipsPlaced < 5) {
     const move = player.gameboard.placeShip(
       player.ships[player.gameboard.shipsPlaced],
       Number(box.id.charAt(0)),
@@ -161,10 +174,10 @@ function boardSetupEvent(box, game, player) {
       player.gameboard.orientation,
     );
     shipTracker(player);
-    displayBoard(player);
+    newDisplay(game, player);
     consoleTracker(game, player, move);
     if (player.gameboard.shipsPlaced === 5) {
-      game.togglePlayer();
+      game.toggleActive();
     }
   }
 }
@@ -279,12 +292,22 @@ function computerBoardClick(human, computer) {
 }
 
 // double player functions
+function stageButton(game) {
+  const pause = document.getElementById("stage");
+
+  pause.addEventListener("click", () => {
+    game.stage = true;
+  });
+}
+
 function doublePlayerInit() {
   const game = new Battleship("double");
 
   // build grid display
   buildGrid(game.playerOne);
   buildGrid(game.playerTwo);
+  // add pause button
+  stageButton(game);
   // add ship yard button toggle
   shipYardButtons(game.playerOne);
   shipYardButtons(game.playerTwo);
@@ -302,14 +325,12 @@ function gameClicks(game, player) {
     box.addEventListener(
       "click",
       () => {
-        // recieve and attack
-        if (game.stage === true && player.active === false) {
-          // recieve the board click and convert to an x and y
+        if (game.stage === true && game.activePlayer !== player) {
           const x = Number(box.id.charAt(0));
           const y = Number(box.id.charAt(1));
-          // check if attack is a hit
           const board = player.gameboard;
           const attack = board.receiveAttack(x, y);
+<<<<<<< HEAD
           // if yes flag the box as red
           // else flag as purple
           // find logic ot hide other player
@@ -321,13 +342,17 @@ function gameClicks(game, player) {
           if (player.active === true) {
             displayBoard(player);
           }
+=======
+          newDisplay(game, game.playerOne);
+          newDisplay(game, game.playerTwo);
+>>>>>>> 0878686 (Update display functions)
           if (attack === true) {
             box.style.backgroundColor = "red";
           } else {
             box.style.backgroundColor = "purple";
           }
-          game.togglePlayer();
-          // write function that updates console w/active player
+          game.toggleActive();
+          // game.stage = "pause";
           consoleTracker(game, player);
         }
       },

@@ -46,11 +46,13 @@ export class Gameboard {
 
   receiveAttack(x, y) {
     if (this.board[x][y]) {
-      this.board[x][y].hit();
-      if (this.board[x][y].sunk === true) this.sunkShips += 1;
-      this.hits.push(`${x}${y}`);
+      this.board[x][y].hit(); // tracks hit on ship
+      if (this.board[x][y].sunk === true) this.sunkShips += 1; // sink ship
+      this.board[x][y] = "hit"; // testing for ui
+      this.hits.push(`${x}${y}`); // push to hits
       return true;
     } else {
+      this.board[x][y] = "miss";
       this.missed.push(`${x}${y}`);
       return false;
     }

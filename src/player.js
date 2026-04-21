@@ -17,7 +17,6 @@ class Player {
       this.ship3v2,
       this.ship2,
     ];
-    this.active = false; // possibly remove
   }
 }
 
