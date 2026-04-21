@@ -74,20 +74,19 @@ function displayBoard(player) {
   }
 }
 
-function hideBoard(player) {
+function hideBoard(game, player) {
   // selet all boxes and color them lightblue
   const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`);
   gridBoxes.forEach((box) => {
-    box.style.backgroundColor = "lightblue";
     // doesnt work
-    /*
     const boardArray = player.gameboard.board;
     const x = Number(box.id.charAt(0));
     const y = Number(box.id.charAt(1));
-    if ( player.active === true && boardArray[x][y] ) {
+    if ( game.activePlayer === player && boardArray[x][y] ) {
      box.style.backgroundColor = "green"; 
+    } else {
+    box.style.backgroundColor = "lightblue";
     }
-    */
   });
   
   // look at player board and pull array of all hits
@@ -315,9 +314,9 @@ function gameClicks(game, player) {
           // else flag as purple
           // find logic ot hide other player
           if (game.activePlayer.name === "playerOne") {
-            hideBoard(game.playerOne);
+            hideBoard(game, game.playerOne);
           } else {
-            hideBoard(game.playerTwo);
+            hideBoard(game, game.playerTwo);
           }
           if (player.active === true) {
             displayBoard(player);
