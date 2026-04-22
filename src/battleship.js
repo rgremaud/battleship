@@ -9,6 +9,7 @@ export class Battleship {
       this.playerTwo = new Computer("playerTwo");
       this.activePlayer = this.playerOne;
     } else {
+      this.type = "double";
       this.playerOne = new Human("playerOne");
       this.playerTwo = new Human("playerTwo");
       this.activePlayer = this.playerOne;

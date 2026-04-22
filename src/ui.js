@@ -59,57 +59,13 @@ function clearGame() {
 
 // Gameboard functions
 function newDisplay(game, player) {
-  // pull a copy of boardArray
   const boardArray = player.gameboard.board;
-<<<<<<< HEAD
-
-  for (let i = 0; i <= 9; i++) {
-    for (let j = 0; j <= 9; j++) {
-      const box = document.getElementById(`${i}${j}${player.name}`);
-
-      if (boardArray[i][j] && player.gameboard.hits.includes(`${i}${j}`)) {
-        box.style.backgroundColor = "red";
-      } else if (boardArray[i][j]) {
-        box.style.backgroundColor = "green";
-      }
-    }
-  }
-}
-
-function hideBoard(game, player) {
-  // selet all boxes and color them lightblue
-=======
-  // pull all gridBox divs
->>>>>>> 0878686 (Update display functions)
   const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`);
-  // identify active player
   const active = game.activePlayer;
-  // iterate over board and assign blue, red, green, purple
   gridBoxes.forEach((box) => {
-<<<<<<< HEAD
-    // doesnt work
-    const boardArray = player.gameboard.board;
-    const x = Number(box.id.charAt(0));
-    const y = Number(box.id.charAt(1));
-    if ( game.activePlayer === player && boardArray[x][y] ) {
-     box.style.backgroundColor = "green"; 
-    } else {
-    box.style.backgroundColor = "lightblue";
-    }
-  });
-  
-  // look at player board and pull array of all hits
-  const hits = player.gameboard.hits;
-  if ( hits.length >= 1) {
-    hits.forEach((hit) => {
-      const x = Number(hit.charAt(0));
-      const y = Number(hit.charAt(1));
-      const box = document.getElementById(`${x}${y}${player.name}`);
-=======
     const x = Number(box.id.charAt(0));
     const y = Number(box.id.charAt(1));
     if (boardArray[x][y] === "hit") {
->>>>>>> 0878686 (Update display functions)
       box.style.backgroundColor = "red";
     } else if (boardArray[x][y] === "miss") {
       box.style.backgroundColor = "purple";
@@ -205,7 +161,7 @@ function consoleTracker(game, player, move = "") {
   const console = document.getElementById("console");
 
   // update for all ships placed for single and double games
-  if (player.gameboard.shipsPlaced === 5) {
+  if (player.gameboard.shipsPlaced === 5 && game.stype === "single") {
     console.textContent = "All your ships have been placed.  Time to attack!";
   }
 
@@ -225,6 +181,14 @@ function consoleTracker(game, player, move = "") {
   // track active player
   if (game.stage === true) {
     console.textContent = `Active player is ${game.activePlayer.name}`;
+  }
+
+  if (
+    game.playerOne.shipsPlaced === 5 &&
+    game.playerTwo.shipsPlaced === 5 &&
+    game.type === "double"
+  ) {
+    console.textContent = `All ships placed.  Active player ${game.activePlayer.name}`;
   }
 }
 
@@ -296,6 +260,7 @@ function stageButton(game) {
   const pause = document.getElementById("stage");
 
   pause.addEventListener("click", () => {
+    // hide the player's ships
     game.stage = true;
   });
 }
@@ -330,33 +295,25 @@ function gameClicks(game, player) {
           const y = Number(box.id.charAt(1));
           const board = player.gameboard;
           const attack = board.receiveAttack(x, y);
-<<<<<<< HEAD
-          // if yes flag the box as red
-          // else flag as purple
-          // find logic ot hide other player
-          if (game.activePlayer.name === "playerOne") {
-            hideBoard(game, game.playerOne);
-          } else {
-            hideBoard(game, game.playerTwo);
-          }
-          if (player.active === true) {
-            displayBoard(player);
-          }
-=======
           newDisplay(game, game.playerOne);
           newDisplay(game, game.playerTwo);
->>>>>>> 0878686 (Update display functions)
           if (attack === true) {
             box.style.backgroundColor = "red";
           } else {
             box.style.backgroundColor = "purple";
           }
           game.toggleActive();
-          // game.stage = "pause";
           consoleTracker(game, player);
+          // game.stage = "pause";
         }
       },
       { once: true },
     );
   });
 }
+/*
+ To do list on two player:
+  After all ships placed - update console to show: All ships placed.  Attacking player is player one!
+  Update all 'active player' to attacking player
+  
+ */
