@@ -1,4 +1,10 @@
 import { Battleship } from "./battleship";
+/*
+ To do list on two player:
+  After all ships placed - update console to show: All ships placed.  Attacking player is player one!
+  Update all 'active player' to attacking player
+  refactor click code so there is a single function for both single player and double player
+ */
 
 // Game init function
 export function gameInit() {
@@ -58,10 +64,10 @@ function clearGame() {
 }
 
 // Gameboard functions
-function newDisplay(game, player) {
+function displayBoard(game, player) {
   const boardArray = player.gameboard.board;
   const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`);
-  const active = game.activePlayer;
+  const attacker = game.attacker;
   gridBoxes.forEach((box) => {
     const x = Number(box.id.charAt(0));
     const y = Number(box.id.charAt(1));
@@ -71,7 +77,7 @@ function newDisplay(game, player) {
       box.style.backgroundColor = "purple";
     } else if (
       boardArray[x][y] &&
-      (active !== player || game.type === "single" || game.stage === false)
+      (attacker !== player || game.type === "single" || game.stage === false)
     ) {
       box.style.backgroundColor = "green";
     } else {
@@ -122,7 +128,7 @@ function shipTracker(player) {
 }
 
 function boardSetupEvent(box, game, player) {
-  if (game.activePlayer === player && player.gameboard.shipsPlaced < 5) {
+  if (game.attacker === player && player.gameboard.shipsPlaced < 5) {
     const move = player.gameboard.placeShip(
       player.ships[player.gameboard.shipsPlaced],
       Number(box.id.charAt(0)),
@@ -130,7 +136,7 @@ function boardSetupEvent(box, game, player) {
       player.gameboard.orientation,
     );
     shipTracker(player);
-    newDisplay(game, player);
+    displayBoard(game, player);
     consoleTracker(game, player, move);
     if (player.gameboard.shipsPlaced === 5) {
       game.toggleActive();
@@ -180,7 +186,7 @@ function consoleTracker(game, player, move = "") {
 
   // track active player
   if (game.stage === true) {
-    console.textContent = `Active player is ${game.activePlayer.name}`;
+    console.textContent = `Active player is ${game.attacker.name}`;
   }
 
   if (
@@ -188,7 +194,7 @@ function consoleTracker(game, player, move = "") {
     game.playerTwo.shipsPlaced === 5 &&
     game.type === "double"
   ) {
-    console.textContent = `All ships placed.  Active player ${game.activePlayer.name}`;
+    console.textContent = `All ships placed.  Active player ${game.attacker.name}`;
   }
 }
 
@@ -215,7 +221,10 @@ function singlePlayerInit() {
   // prompt computer player to set up board
   game.playerTwo.shipSetup();
   // add click events to computer player board
-  computerBoardClick(game.playerOne, game.playerTwo);
+//  computerBoardClick(game.playerOne, game.playerTwo);
+  gameTestClick(game, game.playerOne);
+  gameTestClick(game, game.playerTwo);
+  
 }
 
 function computerBoardClick(human, computer) {
@@ -290,13 +299,13 @@ function gameClicks(game, player) {
     box.addEventListener(
       "click",
       () => {
-        if (game.stage === true && game.activePlayer !== player) {
+        if (game.stage === true && game.attacker !== player) {
           const x = Number(box.id.charAt(0));
           const y = Number(box.id.charAt(1));
           const board = player.gameboard;
           const attack = board.receiveAttack(x, y);
-          newDisplay(game, game.playerOne);
-          newDisplay(game, game.playerTwo);
+          displayBoard(game, game.playerOne);
+          displayBoard(game, game.playerTwo);
           if (attack === true) {
             box.style.backgroundColor = "red";
           } else {
@@ -311,9 +320,45 @@ function gameClicks(game, player) {
     );
   });
 }
-/*
- To do list on two player:
-  After all ships placed - update console to show: All ships placed.  Attacking player is player one!
-  Update all 'active player' to attacking player
-  
- */
+
+function gameTestClicks(game, player) {
+  const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`);
+  gridBoxes.forEach((box) => {
+    box.addEventListener(
+      "click",
+      () => {
+        // need to update game.attacker to track on both a single player and 2x game
+        if (game.stage === true && game.attacker !== player) {
+          // recieve attack
+          const x = Number(box.id.charAt(0));
+          const y = Number(box.id.charAt(1));
+          const board = player.gameboard;
+          const attack = board.receiveAttack(x, y);
+          // refresh boards - Update to just player's board?
+          displayBoard(game, game.playerOne);
+          displayBoard(game, game.playerTwo);
+          if (attack === true) {
+            box.style.backgroundColor = "red";
+          } else {
+            box.style.backgroundColor = "purple";
+          }
+          // prompt computer attack back
+          if (player.name === "computer") {
+            const humanBox = document.getElementById(
+              `${attack[0]}${attack[1]}${human.name}`,
+            );
+            if (attack[2] === true) {
+              humanBox.style.backgroundColor = "red";
+            } else {
+              humanBox.style.backgroundColor = "purple";
+            }
+          }
+          game.toggleActive();
+          consoleTracker(game, player);
+          // game.stage = "pause";
+        }
+      },
+      { once: true },
+    );
+  });
+}
