@@ -216,13 +216,13 @@ function singlePlayerInit() {
   shipYardButtons(game.playerOne);
   shipTracker(game.playerOne);
   // set player active and set board click
-  game.playerOne.active = true;
   boardSetupClick(game, game.playerOne);
   // prompt computer player to set up board
   game.playerTwo.shipSetup();
   // add click events to computer player board
+  game.attacker = game.playerOne;
 //  computerBoardClick(game.playerOne, game.playerTwo);
-  gameTestClick(game, game.playerOne);
+  //gameTestClick(game, game.playerOne);
   gameTestClick(game, game.playerTwo);
   
 }
@@ -321,7 +321,7 @@ function gameClicks(game, player) {
   });
 }
 
-function gameTestClicks(game, player) {
+function gameTestClick(game, player) {
   const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`);
   gridBoxes.forEach((box) => {
     box.addEventListener(
@@ -343,14 +343,15 @@ function gameTestClicks(game, player) {
             box.style.backgroundColor = "purple";
           }
           // prompt computer attack back
-          if (player.name === "computer") {
-            const humanBox = document.getElementById(
-              `${attack[0]}${attack[1]}${human.name}`,
+          if (player.name === "playerTwo" && game.type === "single") {
+            const computerAttack = game.playerTwo.attack(game.playerOne.gameboard);
+            const playerBox = document.getElementById(
+              `${attack[0]}${attack[1]}${game.playerOne.name}`,
             );
-            if (attack[2] === true) {
-              humanBox.style.backgroundColor = "red";
+            if (computerAttack[2] === true) {
+              playerBox.style.backgroundColor = "red";
             } else {
-              humanBox.style.backgroundColor = "purple";
+              playerBox.style.backgroundColor = "purple";
             }
           }
           game.toggleActive();

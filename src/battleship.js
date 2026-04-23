@@ -6,7 +6,7 @@ export class Battleship {
     this.type = type;
     if (type === "single") {
       this.playerOne = new Human("playerOne");
-      this.playerTwo = new Computer("computer");
+      this.playerTwo = new Computer("playerTwo");
     } else {
       this.type = "double";
       this.playerOne = new Human("playerOne");
