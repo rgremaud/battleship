@@ -60,9 +60,32 @@ function gameInit(gameType) {
 }
 
 function addClicks(game) {
-  // add event listeners to all grid spots that properly process depending on game stage
-  // playerBoxes = query select all
+  const playerOne = game.playerOne;
+  const playerTwo = game.playerTwo;
+
+  const boxesP1 = document.querySelectorAll(`.gridBox-${playerOne.name}`);
+  const boxesP2 = document.querySelectorAll(`.gridBox-${playerTwo.name}`);
+
+  clickEvent(game, playerOne, boxesP1);
+  clickEvent(game, playerTwo, boxesP2);
+}
+
+function clickEvent(game, player, boxes) {
+
   // if game.type === single and playerOne
+  boxes.forEach((box) => {
+    box.addEventListener("click", () => {
+     if ( game.stage === false && player.gameboard.shipsPlaced !== 5) {
+      console.log("You need to play your ships");
+      const x = Number(box.id.charAt(0));
+      const y = Number(box.id.charAt(1));
+      
+      const activeShip = player.ships[player.gameboard.shipsPlaced]; 
+       player.gameboard.placeShip(activeShip, x, y, player.gameboard.orientation);
+       displayBoard(game, player);
+     } 
+    });
+  });
   // allow for ship placement on board when game.stage = false
   // if game.type === single and playerTwo (computer) and game.stage = true
   // allow to recieve attack from playerOne
@@ -72,9 +95,10 @@ function addClicks(game) {
   // else if game.type === double and player one has placed all ships and game.stage = false
   // allow player two to place ships
 }
+
 function boardSetup(game) {
   // if game.type === single
-  if ( game.type === single ) {
+  if ( game.type === "single" ) {
     shipYardButtons(game.playerOne);
     shipTracker(game.playerOne);
     game.playerTwo.shipSetup();
