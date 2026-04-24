@@ -1,4 +1,6 @@
 import { Battleship } from "./battleship";
+import { shipYardButtons } from "./shiptracker.js";
+import { shipTracker } from "./shiptracker.js";
 
 export function buttonInit() {
   const singlePlayer = document.getElementById("single");
@@ -54,7 +56,7 @@ function gameInit(gameType) {
   // add click events
   addClicks(game);
   // prompt ship setup
-  shipSetup(game);
+  boardSetup(game);
 }
 
 function addClicks(game) {
@@ -70,9 +72,14 @@ function addClicks(game) {
   // else if game.type === double and player one has placed all ships and game.stage = false
   // allow player two to place ships
 }
-
-function shipSetup(game) {
+function boardSetup(game) {
   // if game.type === single
+  if ( game.type === single ) {
+    shipYardButtons(game.playerOne);
+    shipTracker(game.playerOne);
+    game.playerTwo.shipSetup();
+    game.attacker = game.playerOne // look at moving this into click event?
+  }
   // prompt playerOne to setup ships
   // add computer ships game.playerTwo.shipSetup();
   // set game.stage = true
