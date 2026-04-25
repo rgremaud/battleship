@@ -1,6 +1,14 @@
-
 // ship yard functions
-export function shipYardButtons(player) {
+export function addShipYard(game) {
+  if ( game.type === "single" ) {
+    shipYardButtons(game.playerOne);
+    shipTracker(game.playerOne);
+    game.playerTwo.shipSetup();
+    game.attacker = game.playerOne // look at moving this into click event?
+  }
+}
+
+function shipYardButtons(player) {
   const horizontal = document.getElementById(`${player.name}Horizontal`);
   horizontal.style.backgroundColor = "cyan";
   const vertical = document.getElementById(`${player.name}Vertical`);

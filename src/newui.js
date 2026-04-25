@@ -1,5 +1,5 @@
 import { Battleship } from "./battleship";
-import { shipYardButtons } from "./shiptracker.js";
+import { addShipYard } from "./shiptracker.js";
 import { shipTracker } from "./shiptracker.js";
 
 export function buttonInit() {
@@ -76,13 +76,13 @@ function clickEvent(game, player, boxes) {
   boxes.forEach((box) => {
     box.addEventListener("click", () => {
      if ( game.stage === false && player.gameboard.shipsPlaced !== 5) {
-      console.log("You need to play your ships");
       const x = Number(box.id.charAt(0));
       const y = Number(box.id.charAt(1));
       
       const activeShip = player.ships[player.gameboard.shipsPlaced]; 
        player.gameboard.placeShip(activeShip, x, y, player.gameboard.orientation);
        displayBoard(game, player);
+       shipTracker(player); // look at moving this to shiptracker function
      } 
     });
   });
@@ -98,12 +98,7 @@ function clickEvent(game, player, boxes) {
 
 function boardSetup(game) {
   // if game.type === single
-  if ( game.type === "single" ) {
-    shipYardButtons(game.playerOne);
-    shipTracker(game.playerOne);
-    game.playerTwo.shipSetup();
-    game.attacker = game.playerOne // look at moving this into click event?
-  }
+  addShipYard(game);
   // prompt playerOne to setup ships
   // add computer ships game.playerTwo.shipSetup();
   // set game.stage = true
