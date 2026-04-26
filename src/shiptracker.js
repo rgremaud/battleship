@@ -1,10 +1,10 @@
 // ship yard functions
 export function addShipYard(game) {
-  if ( game.type === "single" ) {
+  if (game.type === "single") {
     shipYardButtons(game.playerOne);
     shipTracker(game.playerOne);
     game.playerTwo.shipSetup();
-    game.attacker = game.playerOne // look at moving this into click event?
+    game.attacker = game.playerOne; // look at moving this into click event?
   }
 }
 

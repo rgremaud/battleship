@@ -1,6 +1,7 @@
 import { Battleship } from "./battleship";
 import { addShipYard } from "./shiptracker.js";
 import { shipTracker } from "./shiptracker.js";
+import { shipSetup } from "./clickevents.js";
 
 export function buttonInit() {
   const singlePlayer = document.getElementById("single");
@@ -71,19 +72,49 @@ function addClicks(game) {
 }
 
 function clickEvent(game, player, boxes) {
-
   // if game.type === single and playerOne
   boxes.forEach((box) => {
     box.addEventListener("click", () => {
-     if ( game.stage === false && player.gameboard.shipsPlaced !== 5) {
-      const x = Number(box.id.charAt(0));
-      const y = Number(box.id.charAt(1));
-      
-      const activeShip = player.ships[player.gameboard.shipsPlaced]; 
-       player.gameboard.placeShip(activeShip, x, y, player.gameboard.orientation);
-       displayBoard(game, player);
-       shipTracker(player); // look at moving this to shiptracker function
-     } 
+      // ship placement stage
+      if (
+        game.stage === false &&
+        player.gameboard.shipsPlaced !== 5 &&
+        game.attacker === player
+      ) {
+        shipSetup(game, player, box);
+        displayBoard(game, player);
+        shipTracker(player); // look at moving this to shiptracker function
+        // attack stage
+      } else if (game.stage === true && game.attacker !== player) {
+        // recieve attack
+        const x = Number(box.id.charAt(0));
+        const y = Number(box.id.charAt(1));
+        const board = player.gameboard;
+        const attack = board.receiveAttack(x, y);
+        displayBoard(game, player);
+        // displayBoard(game, game.playerTwo); removing for now
+        if (attack === true) {
+          box.style.backgroundColor = "red";
+        } else {
+          box.style.backgroundColor = "purple";
+        }
+        // prompt computer attack back
+        if (player.name === "playerTwo" && game.type === "single") {
+          const computerAttack = game.playerTwo.attack(
+            game.playerOne.gameboard,
+          );
+          const attackLocation = document.getElementById(
+            `${computerAttack[0]}${computerAttack[1]}${game.playerOne.name}`,
+          );
+          if (computerAttack[2] === true) {
+            attackLocation.style.backgroundColor = "red";
+          } else {
+            attackLocation.style.backgroundColor = "purple";
+          }
+          game.toggleActive();
+        }
+        game.toggleActive();
+      }
     });
   });
   // allow for ship placement on board when game.stage = false
@@ -129,25 +160,3 @@ function displayBoard(game, player) {
     }
   });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

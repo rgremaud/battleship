@@ -221,10 +221,9 @@ function singlePlayerInit() {
   game.playerTwo.shipSetup();
   // add click events to computer player board
   game.attacker = game.playerOne;
-//  computerBoardClick(game.playerOne, game.playerTwo);
+  //  computerBoardClick(game.playerOne, game.playerTwo);
   //gameTestClick(game, game.playerOne);
   gameTestClick(game, game.playerTwo);
-  
 }
 
 function computerBoardClick(human, computer) {
@@ -344,7 +343,9 @@ function gameTestClick(game, player) {
           }
           // prompt computer attack back
           if (player.name === "playerTwo" && game.type === "single") {
-            const computerAttack = game.playerTwo.attack(game.playerOne.gameboard);
+            const computerAttack = game.playerTwo.attack(
+              game.playerOne.gameboard,
+            );
             const playerBox = document.getElementById(
               `${attack[0]}${attack[1]}${game.playerOne.name}`,
             );
