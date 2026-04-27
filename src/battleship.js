@@ -14,6 +14,15 @@ export class Battleship {
     }
     this.attacker = this.playerOne;
     this.stage = false; // false, true, pause
+    this.winner = null;
+  }
+
+  winCheck() {
+    if ( this.playerOne.gameBoard.shipsPlaced === 5 ) {
+      this.winner = this.playerTwo;
+    } else if ( this.playerTwo.gameBoard.shipsPlaced === 5 ) {
+      this.winner = this.playerOne;
+    }
   }
 
   toggleActive() {

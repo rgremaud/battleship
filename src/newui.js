@@ -2,6 +2,8 @@ import { Battleship } from "./battleship";
 import { addShipYard } from "./shiptracker.js";
 import { shipTracker } from "./shiptracker.js";
 import { shipSetup } from "./clickevents.js";
+import { attackEvent } from "./clickevents.js";
+
 
 export function buttonInit() {
   const singlePlayer = document.getElementById("single");
@@ -86,36 +88,12 @@ function clickEvent(game, player, boxes) {
         shipTracker(player); // look at moving this to shiptracker function
         // attack stage
       } else if (game.stage === true && game.attacker !== player) {
-        // recieve attack
-        const x = Number(box.id.charAt(0));
-        const y = Number(box.id.charAt(1));
-        const board = player.gameboard;
-        const attack = board.receiveAttack(x, y);
+        attackEvent(game, player, box);
         displayBoard(game, player);
-        // displayBoard(game, game.playerTwo); removing for now
-        if (attack === true) {
-          box.style.backgroundColor = "red";
-        } else {
-          box.style.backgroundColor = "purple";
-        }
-        // prompt computer attack back
-        if (player.name === "playerTwo" && game.type === "single") {
-          const computerAttack = game.playerTwo.attack(
-            game.playerOne.gameboard,
-          );
-          const attackLocation = document.getElementById(
-            `${computerAttack[0]}${computerAttack[1]}${game.playerOne.name}`,
-          );
-          if (computerAttack[2] === true) {
-            attackLocation.style.backgroundColor = "red";
-          } else {
-            attackLocation.style.backgroundColor = "purple";
-          }
-          game.toggleActive();
-        }
-        game.toggleActive();
       }
-    });
+    },
+    { once: true },
+    );
   });
   // allow for ship placement on board when game.stage = false
   // if game.type === single and playerTwo (computer) and game.stage = true
@@ -151,8 +129,9 @@ function displayBoard(game, player) {
     } else if (boardArray[x][y] === "miss") {
       box.style.backgroundColor = "purple";
     } else if (
-      boardArray[x][y] &&
-      (attacker !== player || game.type === "single" || game.stage === false)
+      boardArray[x][y] && player.name === "playerOne"
+      // board spot exists AND not attacker OR 
+     // (attacker !== player || game.type === "single" || game.stage === false)
     ) {
       box.style.backgroundColor = "green";
     } else {
