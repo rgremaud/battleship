@@ -3,6 +3,8 @@ import { addShipYard } from "./shiptracker.js";
 import { shipTracker } from "./shiptracker.js";
 import { shipSetup } from "./clickevents.js";
 import { attackEvent } from "./clickevents.js";
+import { winCheck } from "./clickevents.js";
+
 
 
 export function buttonInit() {
@@ -71,6 +73,7 @@ function addClicks(game) {
 
   clickEvent(game, playerOne, boxesP1);
   clickEvent(game, playerTwo, boxesP2);
+  pauseButton(game); 
 }
 
 function clickEvent(game, player, boxes) {
@@ -89,20 +92,13 @@ function clickEvent(game, player, boxes) {
         // attack stage
       } else if (game.stage === true && game.attacker !== player) {
         attackEvent(game, player, box);
+        winCheck(game, player, box);
         displayBoard(game, player);
       }
     },
     { once: true },
     );
   });
-  // allow for ship placement on board when game.stage = false
-  // if game.type === single and playerTwo (computer) and game.stage = true
-  // allow to recieve attack from playerOne
-  // return attack to playerOne
-  // else if game.type === double and player one and game.stage = false
-  // allow for ship placement
-  // else if game.type === double and player one has placed all ships and game.stage = false
-  // allow player two to place ships
 }
 
 function boardSetup(game) {
@@ -129,9 +125,8 @@ function displayBoard(game, player) {
     } else if (boardArray[x][y] === "miss") {
       box.style.backgroundColor = "purple";
     } else if (
-      boardArray[x][y] && player.name === "playerOne"
-      // board spot exists AND not attacker OR 
-     // (attacker !== player || game.type === "single" || game.stage === false)
+     // ( boardArray[x][y] && player.name === "playerOne" && game.type === "single" )
+      boardArray[x][y] && game.attacker === player
     ) {
       box.style.backgroundColor = "green";
     } else {
@@ -139,3 +134,25 @@ function displayBoard(game, player) {
     }
   });
 }
+
+function pauseButton(game) {
+  const button = document.getElementById("pause"); 
+
+  button.addEventListener("click", () => {
+    game.stage = true;
+    // breaks when you click on board
+  });
+}
+/*
+ * two player game flow
+ * update game flow to include ship tracker
+ * after player one places all their ships - hide all ships and  
+ * show prompt that player two needs to place ships
+ * after player two places all their ships - hide all ships and set game.stage to pause
+ * use button to unpause 
+ * show player board of attacker - let them attack - enable pause
+ *
+ *
+ *
+ * 
+ */

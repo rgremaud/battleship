@@ -1,5 +1,9 @@
 export function winCheck(game, player, box) {
   // add in logic to track if there is a winner
+  const console = document.getElementById("console");
+  if ( player.gameboard.sunkShips === 5 ) {
+    console.textContent = `${player.name} has lost!`;
+  }
 }
 
 export function shipSetup(game, player, box) {
@@ -53,5 +57,8 @@ export function attackEvent(game, player, box) {
           }
           game.toggleActive();
         }
+         if ( game.type === "double" ) {
+           game.stage = "pause"
+         }
         game.toggleActive();
 }
