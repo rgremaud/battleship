@@ -18,9 +18,9 @@ export class Battleship {
   }
 
   winCheck() {
-    if ( this.playerOne.gameBoard.shipsPlaced === 5 ) {
+    if (this.playerOne.gameBoard.shipsPlaced === 5) {
       this.winner = this.playerTwo;
-    } else if ( this.playerTwo.gameBoard.shipsPlaced === 5 ) {
+    } else if (this.playerTwo.gameBoard.shipsPlaced === 5) {
       this.winner = this.playerOne;
     }
   }

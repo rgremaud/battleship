@@ -5,8 +5,6 @@ import { shipSetup } from "./clickevents.js";
 import { attackEvent } from "./clickevents.js";
 import { winCheck } from "./clickevents.js";
 
-
-
 export function buttonInit() {
   const singlePlayer = document.getElementById("single");
   const twoPlayer = document.getElementById("double");
@@ -61,7 +59,7 @@ function gameInit(gameType) {
   // add click events
   addClicks(game);
   // prompt ship setup
-  boardSetup(game);
+  addShipYard(game);
 }
 
 function addClicks(game) {
@@ -73,47 +71,36 @@ function addClicks(game) {
 
   clickEvent(game, playerOne, boxesP1);
   clickEvent(game, playerTwo, boxesP2);
-  pauseButton(game); 
+  pauseButton(game);
 }
 
 function clickEvent(game, player, boxes) {
-  // if game.type === single and playerOne
   boxes.forEach((box) => {
-    box.addEventListener("click", () => {
-      // ship placement stage
-      if (
-        game.stage === false &&
-        player.gameboard.shipsPlaced !== 5 &&
-        game.attacker === player
-      ) {
-        shipSetup(game, player, box);
-        displayBoard(game, player);
-        shipTracker(player); // look at moving this to shiptracker function
-        // attack stage
-      } else if (game.stage === true && game.attacker !== player) {
-        attackEvent(game, player, box);
-        winCheck(game, player, box);
-        displayBoard(game, player);
-      }
-    },
-    { once: true },
+    box.addEventListener(
+      "click",
+      () => {
+        // ship placement stage
+        if (
+          game.stage === false &&
+          player.gameboard.shipsPlaced !== 5 &&
+          game.attacker === player
+        ) {
+          shipSetup(game, player, box);
+          displayBoard(game, player);
+          shipTracker(player); // look at moving this to shiptracker function
+          // attack stage
+        } else if (game.stage === true && game.attacker !== player) {
+          attackEvent(game, player, box);
+          winCheck(game, player, box);
+          displayBoard(game, player);
+        }
+      },
+      { once: true },
     );
   });
 }
 
-function boardSetup(game) {
-  // if game.type === single
-  addShipYard(game);
-  // prompt playerOne to setup ships
-  // add computer ships game.playerTwo.shipSetup();
-  // set game.stage = true
-  // else (game.type === double
-  // prompt playerOne to setup ships
-  // prompt playertwo to setup ships
-  // set game.stage = true
-}
-
-function displayBoard(game, player) {
+export function displayBoard(game, player) {
   const boardArray = player.gameboard.board;
   const gridBoxes = document.querySelectorAll(`.gridBox-${player.name}`);
   const attacker = game.attacker;
@@ -124,10 +111,7 @@ function displayBoard(game, player) {
       box.style.backgroundColor = "red";
     } else if (boardArray[x][y] === "miss") {
       box.style.backgroundColor = "purple";
-    } else if (
-     // ( boardArray[x][y] && player.name === "playerOne" && game.type === "single" )
-      boardArray[x][y] && game.attacker === player
-    ) {
+    } else if (boardArray[x][y] && game.attacker === player) {
       box.style.backgroundColor = "green";
     } else {
       box.style.backgroundColor = "lightblue";
@@ -136,23 +120,11 @@ function displayBoard(game, player) {
 }
 
 function pauseButton(game) {
-  const button = document.getElementById("pause"); 
+  const button = document.getElementById("pause");
 
   button.addEventListener("click", () => {
     game.stage = true;
-    // breaks when you click on board
+    displayBoard(game, game.playerOne);
+    displayBoard(game, game.playerTwo);
   });
 }
-/*
- * two player game flow
- * update game flow to include ship tracker
- * after player one places all their ships - hide all ships and  
- * show prompt that player two needs to place ships
- * after player two places all their ships - hide all ships and set game.stage to pause
- * use button to unpause 
- * show player board of attacker - let them attack - enable pause
- *
- *
- *
- * 
- */
