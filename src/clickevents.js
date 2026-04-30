@@ -40,8 +40,8 @@ export function attackEvent(game, player, box) {
   const board = player.gameboard;
   const attack = board.receiveAttack(x, y);
   const console = document.getElementById("console");
-  displayBoard(game, game.attacker);
-  displayBoard(game, game.playerTwo);
+  //displayBoard(game, game.playerOne);
+  //displayBoard(game, game.playerTwo);
   if (attack === true) {
     box.style.backgroundColor = "red";
   } else {

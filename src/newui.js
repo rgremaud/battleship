@@ -4,7 +4,12 @@ import { shipTracker } from "./shiptracker.js";
 import { shipSetup } from "./clickevents.js";
 import { attackEvent } from "./clickevents.js";
 import { winCheck } from "./clickevents.js";
-
+/*
+ two player - after attack 
+  selecting the un-hide ships properly hides the non-attackers board
+  single player game doesnt stop when you lose
+ *
+ */
 export function buttonInit() {
   const singlePlayer = document.getElementById("single");
   const twoPlayer = document.getElementById("double");
@@ -86,18 +91,23 @@ function clickEvent(game, player, boxes) {
           game.attacker === player
         ) {
           shipSetup(game, player, box);
-          displayBoard(game, player);
           shipTracker(player); // look at moving this to shiptracker function
           // attack stage
         } else if (game.stage === true && game.attacker !== player) {
           attackEvent(game, player, box);
           winCheck(game, player, box);
-          displayBoard(game, player);
         }
+        refreshDisplay(game)
       },
       { once: true },
     );
   });
+}
+
+
+function refreshDisplay(game) {
+ displayBoard(game, game.playerOne);
+ displayBoard(game, game.playerTwo);
 }
 
 export function displayBoard(game, player) {
@@ -111,7 +121,9 @@ export function displayBoard(game, player) {
       box.style.backgroundColor = "red";
     } else if (boardArray[x][y] === "miss") {
       box.style.backgroundColor = "purple";
-    } else if (boardArray[x][y] && game.attacker === player) {
+    } else if (boardArray[x][y] && game.attacker === player)
+               //(boardArray[x][y] && game.type === "double" && (game.stage === "pause" || game.stage === false) && game.attacker === player)) 
+      {
       box.style.backgroundColor = "green";
     } else {
       box.style.backgroundColor = "lightblue";
@@ -124,7 +136,6 @@ function pauseButton(game) {
 
   button.addEventListener("click", () => {
     game.stage = true;
-    displayBoard(game, game.playerOne);
-    displayBoard(game, game.playerTwo);
+    refreshDisplay(game);
   });
 }
