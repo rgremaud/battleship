@@ -1,6 +1,6 @@
 import "./reset.css";
 import "./styles.css";
 
-import { buttonInit } from "./newui";
+import { buttonInit } from "./ui";
 
 buttonInit();

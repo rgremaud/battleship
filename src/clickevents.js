@@ -1,6 +1,6 @@
-import { displayBoard } from "./newui.js";
+import { addClicks } from "./ui.js"
 
-export function winCheck(game, player, box) {
+export function winCheck(game, player) {
   // add in logic to track if there is a winner
   const console = document.getElementById("console");
   if (player.gameboard.sunkShips === 5) {
@@ -29,6 +29,8 @@ export function shipSetup(game, player, box) {
     game.playerTwo.gameboard.shipsPlaced === 5
   ) {
     console.textContent = `All ships placed!  Attacker is ${game.attacker.name}`;
+    // try to add back click events
+    addClicks(game);
     game.stage = true;
   }
 }
@@ -40,8 +42,6 @@ export function attackEvent(game, player, box) {
   const board = player.gameboard;
   const attack = board.receiveAttack(x, y);
   const console = document.getElementById("console");
-  //displayBoard(game, game.playerOne);
-  //displayBoard(game, game.playerTwo);
   if (attack === true) {
     box.style.backgroundColor = "red";
   } else {
