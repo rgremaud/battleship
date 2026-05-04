@@ -6,7 +6,8 @@ import { attackEvent } from "./clickevents.js";
 import { winCheck } from "./clickevents.js";
 
 /*
-  computer places twice on single player
+  computer attacks twice on single player
+  single player doesn't update when computer wins
  */
 
 export function buttonInit() {
@@ -94,8 +95,8 @@ function clickEvent(game, player, boxes) {
           // attack stage
         } else if (game.stage === true && game.attacker !== player) {
           attackEvent(game, player, box);
-          winCheck(game, player, box);
         }
+        winCheck(game, player, box);
         refreshDisplay(game)
       },
       { once: true },
