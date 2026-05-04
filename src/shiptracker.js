@@ -4,13 +4,19 @@ export function addShipYard(game) {
     shipYardButtons(game.playerOne);
     shipTracker(game.playerOne);
     game.playerTwo.shipSetup();
-    game.attacker = game.playerOne; // look at moving this into click event?
+    game.attacker = game.playerOne;
+  } else { 
+    shipYardButtons(game.playerOne);
+    shipYardButtons(game.playerTwo);
+    shipTracker(game.playerOne);
+    shipTracker(game.playerTwo);
+    game.attacker = game.playerOne; 
   }
 }
 
 function shipYardButtons(player) {
   const horizontal = document.getElementById(`${player.name}Horizontal`);
-  horizontal.style.backgroundColor = "cyan";
+  horizontal.style.backgroundColor = "#e0af68";
   const vertical = document.getElementById(`${player.name}Vertical`);
   colorFlip(player, horizontal, vertical);
   colorFlip(player, vertical, horizontal);
@@ -18,8 +24,8 @@ function shipYardButtons(player) {
 
 function colorFlip(player, button1, button2) {
   button1.addEventListener("click", () => {
-    button1.style.backgroundColor = "cyan";
-    button2.style.backgroundColor = "gray";
+    button1.style.backgroundColor = "#e0af68";
+    button2.style.backgroundColor = "#c0caf5";
     if (player.gameboard.orientation === "horizontal") {
       player.gameboard.orientation = "vertical";
     } else {
@@ -41,9 +47,9 @@ function colorShip(ship, color) {
 export function shipTracker(player) {
   const shipDivs = document.querySelectorAll(`.${player.name}ship`);
   shipDivs.forEach((ship) => {
-    colorShip(ship, "purple");
+    colorShip(ship, "#bb9af7");
   });
   const activeShip = shipDivs[player.gameboard.shipsPlaced];
 
-  colorShip(activeShip, "cyan");
+  colorShip(activeShip, "#e0af68");
 }

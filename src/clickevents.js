@@ -40,12 +40,12 @@ export function attackEvent(game, player, box) {
   const x = Number(box.id.charAt(0));
   const y = Number(box.id.charAt(1));
   const board = player.gameboard;
-  const attack = board.receiveAttack(x, y);
+  const attack = board.receiveAttack(x, y); // check if this prompts attack
   const console = document.getElementById("console");
   if (attack === true) {
-    box.style.backgroundColor = "red";
+    box.style.backgroundColor = "#f77b8e";
   } else {
-    box.style.backgroundColor = "purple";
+    box.style.backgroundColor = "#1f2335";
   }
   // prompt computer attack back
   if (player.name === "playerTwo" && game.type === "single") {
@@ -54,9 +54,9 @@ export function attackEvent(game, player, box) {
       `${computerAttack[0]}${computerAttack[1]}${game.playerOne.name}`,
     );
     if (computerAttack[2] === true) {
-      attackLocation.style.backgroundColor = "red";
+      attackLocation.style.backgroundColor = "#f77b8e";
     } else {
-      attackLocation.style.backgroundColor = "purple";
+      attackLocation.style.backgroundColor = "#7dcfff";
     }
     game.toggleActive();
   }
@@ -64,5 +64,5 @@ export function attackEvent(game, player, box) {
     game.stage = "pause";
   }
   game.toggleActive();
-  console.textContent = `Attacker is ${game.attacker.name}`;
+  console.textContent = `Time for ${game.attacker.name} to attack!`;
 }

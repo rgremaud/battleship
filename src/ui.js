@@ -4,11 +4,11 @@ import { shipTracker } from "./shiptracker.js";
 import { shipSetup } from "./clickevents.js";
 import { attackEvent } from "./clickevents.js";
 import { winCheck } from "./clickevents.js";
-/* two player issues:
- * ship tracker for player 2 doesn't display ship 1 as active
- * ship placement click wipes the click event
- * fix by adding click event back?
+
+/*
+  computer places twice on single player
  */
+
 export function buttonInit() {
   const singlePlayer = document.getElementById("single");
   const twoPlayer = document.getElementById("double");
@@ -116,17 +116,17 @@ export function displayBoard(game, player) {
     const x = Number(box.id.charAt(0));
     const y = Number(box.id.charAt(1));
     if (boardArray[x][y] === "hit") {
-      box.style.backgroundColor = "red";
+      box.style.backgroundColor = "#f77b8e";
     } else if (boardArray[x][y] === "miss") {
-      box.style.backgroundColor = "purple";
+      box.style.backgroundColor = "#7dcfff";
     } else if ((boardArray[x][y] && game.attacker === player && game.type === "single") ||
                (boardArray[x][y] && game.attacker === player && game.stage === false) || 
                (boardArray[x][y] && game.attacker === player && game.stage === "unpause")
               )
       {
-      box.style.backgroundColor = "green";
+      box.style.backgroundColor = "#e0af68";
     } else {
-      box.style.backgroundColor = "lightblue";
+      box.style.backgroundColor = "#c0caf5";
     }
   });
 }
