@@ -8,6 +8,7 @@ import { winCheck } from "./clickevents.js";
 /*
   computer attacks twice on single player
   single player doesn't update when computer wins
+  computer is not placing ships in single player?
  */
 
 export function buttonInit() {
@@ -122,7 +123,7 @@ export function displayBoard(game, player) {
       box.style.backgroundColor = "#7dcfff";
     } else if ((boardArray[x][y] && game.attacker === player && game.type === "single") ||
                (boardArray[x][y] && game.attacker === player && game.stage === false) || 
-               (boardArray[x][y] && game.attacker === player && game.stage === "unpause")
+               (boardArray[x][y] && game.attacker === player && game.stage === "unpause") 
               )
       {
       box.style.backgroundColor = "#e0af68";

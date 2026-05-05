@@ -123,5 +123,6 @@ export class Computer extends Player {
         }
       }
     });
+    console.log(this.gameboard.board); // testing
   }
 }

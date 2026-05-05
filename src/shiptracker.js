@@ -5,7 +5,7 @@ export function addShipYard(game) {
     shipTracker(game.playerOne);
     game.playerTwo.shipSetup();
     game.attacker = game.playerOne;
-  } else { 
+  } else if (game.type === "double" ) { 
     shipYardButtons(game.playerOne);
     shipYardButtons(game.playerTwo);
     shipTracker(game.playerOne);

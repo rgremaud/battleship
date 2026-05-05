@@ -45,8 +45,8 @@ export class Gameboard {
   }
 
   receiveAttack(x, y) {
-    if (this.board[x][y] && this.board[x][y] !== "hit" && this.board[x][y] !== "miss") {
-      this.board[x][y].hit(); // tracks hit on ship
+    if (this.board[x][y]) {
+      this.board[x][y].hit(); // causing errors
       if (this.board[x][y].sunk === true) this.sunkShips += 1; // sink ship
       this.board[x][y] = "hit"; // testing for ui
       this.hits.push(`${x}${y}`); // push to hits
