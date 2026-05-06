@@ -95,7 +95,7 @@ function clickEvent(game, player, boxes) {
         winCheck(game, player, box);
         refreshDisplay(game)
       },
-      { once: true },
+      { once: true }, // look at removing this and properly formatting clicks
     );
   });
 }

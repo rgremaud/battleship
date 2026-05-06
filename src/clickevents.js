@@ -57,13 +57,14 @@ export function attackEvent(game, player, box) {
     game.stage = "pause";
   }
   game.toggleActive();
-  if ( game.winner === null ) { console.textContent = `Time for ${game.attacker.name} to attack!`; }
+  if ( !game.winner ) { console.textContent = `Time for ${game.attacker.name} to attack!`; }
 }
 
 export function winCheck(game, player) {
   // add in logic to track if there is a winner
   const console = document.getElementById("console");
   if (player.gameboard.sunkShips === 5) {
+    game.winner = true;
     console.textContent = `${player.name} has lost!`;
     console.style.color = "#f7768e";
   }
