@@ -1,12 +1,4 @@
-import { addClicks } from "./ui.js"
-
-export function winCheck(game, player) {
-  // add in logic to track if there is a winner
-  const console = document.getElementById("console");
-  if (player.gameboard.sunkShips === 5) {
-    console.textContent = `${player.name} has lost!`;
-  }
-}
+//import { addClicks } from "./ui.js"
 
 export function shipSetup(game, player, box) {
   const x = Number(box.id.charAt(0));
@@ -30,7 +22,7 @@ export function shipSetup(game, player, box) {
   ) {
     console.textContent = `All ships placed!  Attacker is ${game.attacker.name}`;
     // try to add back click events
-    addClicks(game);
+    // addClicks(game);
     game.stage = true;
   }
 }
@@ -58,11 +50,21 @@ export function attackEvent(game, player, box) {
     } else {
       attackLocation.style.backgroundColor = "#7dcfff";
     }
+    winCheck(game, game.playerOne); // validate that this check if computer has won
     game.toggleActive();
   }
   if (game.type === "double") {
     game.stage = "pause";
   }
   game.toggleActive();
-  console.textContent = `Time for ${game.attacker.name} to attack!`;
+  if ( game.winner === null ) { console.textContent = `Time for ${game.attacker.name} to attack!`; }
+}
+
+export function winCheck(game, player) {
+  // add in logic to track if there is a winner
+  const console = document.getElementById("console");
+  if (player.gameboard.sunkShips === 5) {
+    console.textContent = `${player.name} has lost!`;
+    console.style.color = "#f7768e";
+  }
 }

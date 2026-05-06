@@ -6,9 +6,8 @@ import { attackEvent } from "./clickevents.js";
 import { winCheck } from "./clickevents.js";
 
 /*
-  computer attacks twice on single player
-  single player doesn't update when computer wins
-  computer is not placing ships in single player?
+ single player
+ triggers win check but then keeps game running
  */
 
 export function buttonInit() {
@@ -85,16 +84,12 @@ function clickEvent(game, player, boxes) {
     box.addEventListener(
       "click",
       () => {
-        // ship placement stage
-        if (
-          game.stage === false &&
-          player.gameboard.shipsPlaced !== 5 &&
-          game.attacker === player
-        ) {
+        if ( game.winner !== null ) {
+          winCheck(game, player, box); // redundent remove
+        } else if ( game.stage === false && player.gameboard.shipsPlaced !== 5 && game.attacker === player ) {
           shipSetup(game, player, box);
           shipTracker(player); // look at moving this to shiptracker function
-          // attack stage
-        } else if (game.stage === true && game.attacker !== player) {
+        } else if ( game.stage === true && game.attacker !== player ) {
           attackEvent(game, player, box);
         }
         winCheck(game, player, box);
@@ -104,7 +99,6 @@ function clickEvent(game, player, boxes) {
     );
   });
 }
-
 
 function refreshDisplay(game) {
  displayBoard(game, game.playerOne);
