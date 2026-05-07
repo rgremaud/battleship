@@ -1,4 +1,11 @@
-//import { addClicks } from "./ui.js"
+export function clearGame() {
+  // select the gameboard divs id playerOne id playerTwo
+  const playerOne = document.getElementById("playerOne");
+  const playerTwo = document.getElementById("playerTwo"); 
+  // clear textContent
+  playerOne.textContent = "";
+  playerTwo.textContent = "";
+}
 
 export function shipSetup(game, player, box) {
   const x = Number(box.id.charAt(0));

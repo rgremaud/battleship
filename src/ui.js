@@ -4,11 +4,7 @@ import { shipTracker } from "./shiptracker.js";
 import { shipSetup } from "./clickevents.js";
 import { attackEvent } from "./clickevents.js";
 import { winCheck } from "./clickevents.js";
-
-/*
- single player
- triggers win check but then keeps game running
- */
+import { clearGame } from "./clickevents.js";
 
 export function buttonInit() {
   const singlePlayer = document.getElementById("single");
@@ -22,7 +18,6 @@ export function buttonInit() {
       gameInit("single");
       console.textContent = "Please place your ships!";
     },
-    { once: true },
   );
 
   twoPlayer.addEventListener(
@@ -32,11 +27,10 @@ export function buttonInit() {
       console.textContent =
         "Two player game!  Player one please place your ships.";
     },
-    { once: true },
   );
 
   clear.addEventListener("click", () => {
-    //clearGame();
+    clearGame();
   });
 }
 
@@ -95,7 +89,6 @@ function clickEvent(game, player, boxes) {
         winCheck(game, player, box);
         refreshDisplay(game)
       },
-      { once: true }, // look at removing this and properly formatting clicks
     );
   });
 }
