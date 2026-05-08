@@ -13,22 +13,18 @@ export function buttonInit() {
   const clear = document.getElementById("clear");
   const console = document.getElementById("console");
 
-  singlePlayer.addEventListener(
-    "click",
-    () => {
-      gameInit("single");
-      console.textContent = "Please place your ships!";
-    },
-  );
+  singlePlayer.addEventListener("click", () => {
+    gameInit("single");
+    console.textContent = "Please place your ships!";
+    console.style.color = "#9ece6a";
+  });
 
-  twoPlayer.addEventListener(
-    "click",
-    () => {
-      gameInit("double");
-      console.textContent =
-        "Two player game!  Player one please place your ships.";
-    },
-  );
+  twoPlayer.addEventListener("click", () => {
+    gameInit("double");
+    console.textContent =
+      "Two player game!  Player one please place your ships.";
+    console.style.color = "#9ece6a";
+  });
 
   clear.addEventListener("click", () => {
     clearGame();
@@ -76,31 +72,32 @@ export function addClicks(game) {
 
 function clickEvent(game, player, boxes) {
   boxes.forEach((box) => {
-    box.addEventListener(
-      "click",
-      () => {
-        if ( game.winner !== null ) {
-          winCheck(game, player, box); // redundent remove
-        } else if ( clicked(game, player, box) ) {
-          const console = document.getElementById("console");
-          console.style.color = "#f77b8e";
-          console.textContent = "Invalid move.  Try again!"
-        } else if ( game.stage === false && player.gameboard.shipsPlaced !== 5 && game.attacker === player ) {
-          shipSetup(game, player, box);
-          shipTracker(player); // look at moving this to shiptracker function
-        } else if ( game.stage === true && game.attacker !== player ) {
-          attackEvent(game, player, box);
-        }
-        winCheck(game, player, box);
-        refreshDisplay(game)
-      },
-    );
+    box.addEventListener("click", () => {
+      if (game.winner !== null) {
+        winCheck(game, player, box); // redundent remove
+      } else if (clicked(game, player, box)) {
+        const console = document.getElementById("console");
+        console.style.color = "#f77b8e";
+        console.textContent = "Invalid move.  Try again!";
+      } else if (
+        game.stage === false &&
+        player.gameboard.shipsPlaced !== 5 &&
+        game.attacker === player
+      ) {
+        shipSetup(game, player, box);
+        shipTracker(player); // look at moving this to shiptracker function
+      } else if (game.stage === true && game.attacker !== player) {
+        attackEvent(game, player, box);
+      }
+      winCheck(game, player, box);
+      refreshDisplay(game);
+    });
   });
 }
 
 function refreshDisplay(game) {
- displayBoard(game, game.playerOne);
- displayBoard(game, game.playerTwo);
+  displayBoard(game, game.playerOne);
+  displayBoard(game, game.playerTwo);
 }
 
 export function displayBoard(game, player) {
@@ -113,11 +110,13 @@ export function displayBoard(game, player) {
       box.style.backgroundColor = "#f77b8e";
     } else if (boardArray[x][y] === "miss") {
       box.style.backgroundColor = "#7dcfff";
-    } else if ((boardArray[x][y] && game.attacker === player && game.type === "single") ||
-               (boardArray[x][y] && game.attacker === player && game.stage === false) || 
-               (boardArray[x][y] && game.attacker === player && game.stage === "unpause") 
-              )
-      {
+    } else if (
+      (boardArray[x][y] &&
+        game.attacker === player &&
+        game.type === "single") ||
+      (boardArray[x][y] && game.attacker === player && game.stage === false) ||
+      (boardArray[x][y] && game.attacker === player && game.stage === "unpause")
+    ) {
       box.style.backgroundColor = "#e0af68";
     } else {
       box.style.backgroundColor = "#c0caf5";

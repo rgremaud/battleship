@@ -5,12 +5,12 @@ export function addShipYard(game) {
     shipTracker(game.playerOne);
     game.playerTwo.shipSetup();
     game.attacker = game.playerOne;
-  } else if (game.type === "double" ) { 
+  } else if (game.type === "double") {
     shipYardButtons(game.playerOne);
     shipYardButtons(game.playerTwo);
     shipTracker(game.playerOne);
     shipTracker(game.playerTwo);
-    game.attacker = game.playerOne; 
+    game.attacker = game.playerOne;
   }
 }
 
@@ -18,6 +18,7 @@ function shipYardButtons(player) {
   const horizontal = document.getElementById(`${player.name}Horizontal`);
   horizontal.style.backgroundColor = "#e0af68";
   const vertical = document.getElementById(`${player.name}Vertical`);
+  vertical.style.backgroundColor = "#c0caf5";
   colorFlip(player, horizontal, vertical);
   colorFlip(player, vertical, horizontal);
 }

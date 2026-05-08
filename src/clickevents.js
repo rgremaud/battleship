@@ -1,7 +1,7 @@
 export function clearGame() {
   // select the gameboard divs id playerOne id playerTwo
   const playerOne = document.getElementById("playerOne");
-  const playerTwo = document.getElementById("playerTwo"); 
+  const playerTwo = document.getElementById("playerTwo");
   // clear textContent
   playerOne.textContent = "";
   playerTwo.textContent = "";
@@ -11,8 +11,12 @@ export function clicked(game, player, box) {
   const x = Number(box.id.charAt(0));
   const y = Number(box.id.charAt(1));
   const board = player.gameboard.board;
-  if ( board[x][y] ) {
-    return true
+  if (
+    board[x][y] &&
+    (player.gameboard.missed.includes(`${x}${y}`) ||
+      player.gameboard.hits.includes(`${x}${y}`))
+  ) {
+    return true;
   }
 }
 
@@ -31,14 +35,14 @@ export function shipSetup(game, player, box) {
   ) {
     game.toggleActive();
     console.textContent = `${game.attacker.name}'s turn to place ships!`;
+    console.style.color = "#9ece6a";
   }
   if (
     game.playerOne.gameboard.shipsPlaced === 5 &&
     game.playerTwo.gameboard.shipsPlaced === 5
   ) {
     console.textContent = `All ships placed!  Attacker is ${game.attacker.name}`;
-    // try to add back click events
-    // addClicks(game);
+    console.style.color = "#9ece6a";
     game.stage = true;
   }
 }
@@ -73,7 +77,9 @@ export function attackEvent(game, player, box) {
     game.stage = "pause";
   }
   game.toggleActive();
-  if ( !game.winner ) { console.textContent = `Time for ${game.attacker.name} to attack!`; }
+  if (!game.winner) {
+    console.textContent = `Time for ${game.attacker.name} to attack!`;
+  }
 }
 
 export function winCheck(game, player) {
