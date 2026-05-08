@@ -7,6 +7,15 @@ export function clearGame() {
   playerTwo.textContent = "";
 }
 
+export function clicked(game, player, box) {
+  const x = Number(box.id.charAt(0));
+  const y = Number(box.id.charAt(1));
+  const board = player.gameboard.board;
+  if ( board[x][y] ) {
+    return true
+  }
+}
+
 export function shipSetup(game, player, box) {
   const x = Number(box.id.charAt(0));
   const y = Number(box.id.charAt(1));

@@ -5,6 +5,7 @@ import { shipSetup } from "./clickevents.js";
 import { attackEvent } from "./clickevents.js";
 import { winCheck } from "./clickevents.js";
 import { clearGame } from "./clickevents.js";
+import { clicked } from "./clickevents.js";
 
 export function buttonInit() {
   const singlePlayer = document.getElementById("single");
@@ -80,6 +81,10 @@ function clickEvent(game, player, boxes) {
       () => {
         if ( game.winner !== null ) {
           winCheck(game, player, box); // redundent remove
+        } else if ( clicked(game, player, box) ) {
+          const console = document.getElementById("console");
+          console.style.color = "#f77b8e";
+          console.textContent = "Invalid move.  Try again!"
         } else if ( game.stage === false && player.gameboard.shipsPlaced !== 5 && game.attacker === player ) {
           shipSetup(game, player, box);
           shipTracker(player); // look at moving this to shiptracker function
